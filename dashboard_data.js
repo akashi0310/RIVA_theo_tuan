@@ -309,7 +309,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Brand guideline + key visual",
       "product": "Bộ template chỉnh sửa được",
       "director": "Dũng",
-      "executor": "Vân Anh",
+      "executor": "",
       "deadline": "2026-08-14",
       "status": "□"
     },
@@ -322,7 +322,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Brand guideline + content",
       "product": "Bộ template Instagram",
       "director": "Dũng",
-      "executor": "Vân Anh",
+      "executor": "",
       "deadline": "2026-08-14",
       "status": "□"
     },
@@ -335,7 +335,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Brand guideline + format video",
       "product": "Bộ template 9:16",
       "director": "Dũng",
-      "executor": "Vân Anh",
+      "executor": "",
       "deadline": "2026-08-15",
       "status": "□"
     },
@@ -517,7 +517,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Quy trình chăm sóc học sinh",
       "product": "Welcome Kit digital/in",
       "director": "Dũng",
-      "executor": "Chi",
+      "executor": "",
       "deadline": "2026-08-17",
       "status": "□"
     },
@@ -530,7 +530,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Quy trình chăm sóc + tài liệu trường",
       "product": "Student Handbook PDF",
       "director": "Dũng",
-      "executor": "Chi",
+      "executor": "",
       "deadline": "2026-08-18",
       "status": "□"
     },
@@ -1349,39 +1349,9 @@ const TUAN_PROJECT_DATA = {
     {
       "name": "Vân Anh",
       "directorCount": 0,
-      "executorCount": 8,
-      "totalTasks": 8,
+      "executorCount": 5,
+      "totalTasks": 5,
       "tasks": [
-        {
-          "stt": 25,
-          "task_name": "Bộ template Facebook",
-          "category": "D. SOCIAL MEDIA",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-14",
-          "status": "□"
-        },
-        {
-          "stt": 26,
-          "task_name": "Bộ template Instagram",
-          "category": "D. SOCIAL MEDIA",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-14",
-          "status": "□"
-        },
-        {
-          "stt": 27,
-          "task_name": "Bộ template TikTok/Reels",
-          "category": "D. SOCIAL MEDIA",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-15",
-          "status": "□"
-        },
         {
           "stt": 28,
           "task_name": "Carousel thông tin du học",
@@ -1525,29 +1495,9 @@ const TUAN_PROJECT_DATA = {
     {
       "name": "Chi",
       "directorCount": 0,
-      "executorCount": 8,
-      "totalTasks": 8,
+      "executorCount": 6,
+      "totalTasks": 6,
       "tasks": [
-        {
-          "stt": 41,
-          "task_name": "Welcome Kit",
-          "category": "F. ẤN PHẨM DÀNH CHO DU HỌC SINH",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-17",
-          "status": "□"
-        },
-        {
-          "stt": 42,
-          "task_name": "Student Handbook",
-          "category": "F. ẤN PHẨM DÀNH CHO DU HỌC SINH",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-18",
-          "status": "□"
-        },
         {
           "stt": 43,
           "task_name": "Pre-departure Guide",
