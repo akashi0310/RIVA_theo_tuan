@@ -281,7 +281,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 18px;
+            padding: 20px;
             border: 2px dashed rgba(168, 85, 247, 0.4);
             border-radius: 12px;
             background: rgba(168, 85, 247, 0.08);
@@ -297,12 +297,12 @@
         }
 
         .file-upload-dropzone i {
-            font-size: 26px;
+            font-size: 28px;
             color: #c084fc;
         }
 
         .file-upload-dropzone span {
-            font-size: 13px;
+            font-size: 13.5px;
             font-weight: 600;
             color: var(--text-sub);
         }
@@ -757,6 +757,7 @@
             border: 1px solid rgba(56, 189, 248, 0.3);
             font-size: 12px;
             transition: all 0.2s ease;
+            cursor: pointer;
         }
 
         .doc-link:hover {
@@ -898,7 +899,7 @@
             <div class="modal-actions">
                 <button type="button" class="btn btn-secondary" onclick="closeLinkModal()">Hủy Bỏ</button>
                 <button type="button" class="btn btn-secondary" style="color: #ef4444;" onclick="clearCurrentLink()">Xóa Tệp/Link</button>
-                <button type="button" class="btn btn-primary" onclick="saveLinkModal()">Lưu Thành Phẩm</button>
+                <button type="button" class="btn btn-primary" id="modal-save-btn" onclick="saveLinkModal()">Lưu Thành Phẩm</button>
             </div>
         </div>
     </div>
@@ -1037,9 +1038,98 @@
     </div>
 
     <!-- External Script containing TUAN_PROJECT_DATA -->
-    <script src="dashboard_data.js?v=20260810_v2"></script>
+    <script src="dashboard_data.js?v=20260810_v3"></script>
 
     <script>
+        // IndexedDB Storage Helper for Large Files
+        const DB_NAME = 'RivaTuanFilesDB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'uploaded_files';
+
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const req = indexedDB.open(DB_NAME, DB_VERSION);
+                req.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME);
+                    }
+                };
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function saveFileToDB(key, fileObj) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const store = tx.objectStore(STORE_NAME);
+                const req = store.put(fileObj, key);
+                req.onsuccess = () => resolve();
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function getFileFromDB(key) {
+            try {
+                const db = await openDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(STORE_NAME, 'readonly');
+                    const store = tx.objectStore(STORE_NAME);
+                    const req = store.get(key);
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => reject(req.error);
+                });
+            } catch (err) {
+                console.error(err);
+                return null;
+            }
+        }
+
+        async function deleteFileFromDB(key) {
+            try {
+                const db = await openDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(STORE_NAME, 'readwrite');
+                    const store = tx.objectStore(STORE_NAME);
+                    const req = store.delete(key);
+                    req.onsuccess = () => resolve();
+                    req.onerror = () => reject(req.error);
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function downloadAttachedFile(fileKey, defaultName) {
+            try {
+                const dbObj = await getFileFromDB(fileKey);
+                if (dbObj && dbObj.blob) {
+                    const blobUrl = URL.createObjectURL(dbObj.blob);
+                    const a = document.createElement('a');
+                    a.href = blobUrl;
+                    a.download = dbObj.fileName || defaultName || 'file';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+                } else if (customFiles[fileKey] && customFiles[fileKey].fileData) {
+                    const a = document.createElement('a');
+                    a.href = customFiles[fileKey].fileData;
+                    a.download = customFiles[fileKey].fileName || defaultName || 'file';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    alert('Không tìm thấy dữ liệu tệp!');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Lỗi tải tệp: ' + err.message);
+            }
+        }
+
         // State Management
         let savedStatuses = JSON.parse(localStorage.getItem('tuan_publication_task_statuses_v2') || '{}');
         let customRefLinks = JSON.parse(localStorage.getItem('tuan_custom_ref_links') || '{}');
@@ -1098,21 +1188,17 @@
             const file = event.target.files[0];
             if (!file) return;
 
-            if (file.size > 25 * 1024 * 1024) {
-                alert('Dung lượng tệp tải lên vượt quá 25MB! Vui lòng chọn tệp nhỏ hơn.');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                pendingUploadedFile = {
-                    fileName: file.name,
-                    fileData: e.target.result
-                };
-                document.getElementById('file-chosen-text').innerHTML = `<i class="fa-solid fa-check-circle" style="color:#10b981;"></i> Đã chọn: <b>${file.name}</b>`;
-                document.getElementById('modal-url-input').value = '';
+            const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            pendingUploadedFile = {
+                fileName: file.name,
+                fileBlob: file
             };
-            reader.readAsDataURL(file);
+
+            document.getElementById('file-chosen-text').innerHTML = `
+                <i class="fa-solid fa-circle-check" style="color:#10b981;"></i>
+                Đã chọn: <b style="color: #fff;">${file.name}</b> (${sizeMB} MB)
+            `;
+            document.getElementById('modal-url-input').value = '';
         }
 
         function handleUrlInput() {
@@ -1161,9 +1247,11 @@
             pendingUploadedFile = null;
         }
 
-        function clearCurrentLink() {
+        async function clearCurrentLink() {
             if (!activeModalStt || !activeModalType) return;
             const fileKey = `${activeModalType}_${activeModalStt}`;
+
+            await deleteFileFromDB(fileKey);
             delete customFiles[fileKey];
             localStorage.setItem('tuan_custom_files_v1', JSON.stringify(customFiles));
 
@@ -1173,7 +1261,6 @@
             } else {
                 delete customProductLinks[activeModalStt];
                 localStorage.setItem('tuan_custom_product_links', JSON.stringify(customProductLinks));
-                // Auto switch status back to □ Chưa xong when product deliverable is removed
                 savedStatuses[activeModalStt] = '□';
                 localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
             }
@@ -1181,38 +1268,62 @@
             renderDashboard();
         }
 
-        function saveLinkModal() {
+        async function saveLinkModal() {
             if (!activeModalStt || !activeModalType) return;
             const fileKey = `${activeModalType}_${activeModalStt}`;
 
-            if (pendingUploadedFile) {
-                customFiles[fileKey] = pendingUploadedFile;
-                localStorage.setItem('tuan_custom_files_v1', JSON.stringify(customFiles));
-                if (activeModalType === 'product') {
-                    // Auto switch status to ☑ Đã xong when product file is uploaded!
-                    savedStatuses[activeModalStt] = '☑';
-                    localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
-                }
-            } else {
-                const url = document.getElementById('modal-url-input').value.trim();
-                if (url) {
-                    delete customFiles[fileKey];
+            const saveBtn = document.getElementById('modal-save-btn');
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...`;
+            }
+
+            try {
+                if (pendingUploadedFile) {
+                    await saveFileToDB(fileKey, {
+                        fileName: pendingUploadedFile.fileName,
+                        blob: pendingUploadedFile.fileBlob
+                    });
+
+                    customFiles[fileKey] = {
+                        fileName: pendingUploadedFile.fileName,
+                        isDB: true
+                    };
                     localStorage.setItem('tuan_custom_files_v1', JSON.stringify(customFiles));
-                    if (activeModalType === 'ref_doc') {
-                        customRefLinks[activeModalStt] = url;
-                        localStorage.setItem('tuan_custom_ref_links', JSON.stringify(customRefLinks));
-                    } else {
-                        customProductLinks[activeModalStt] = url;
-                        localStorage.setItem('tuan_custom_product_links', JSON.stringify(customProductLinks));
-                        // Auto switch status to ☑ Đã xong when product link is attached!
+
+                    if (activeModalType === 'product') {
                         savedStatuses[activeModalStt] = '☑';
                         localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
                     }
-                }
-            }
+                } else {
+                    const url = document.getElementById('modal-url-input').value.trim();
+                    if (url) {
+                        await deleteFileFromDB(fileKey);
+                        delete customFiles[fileKey];
+                        localStorage.setItem('tuan_custom_files_v1', JSON.stringify(customFiles));
 
-            closeLinkModal();
-            renderDashboard();
+                        if (activeModalType === 'ref_doc') {
+                            customRefLinks[activeModalStt] = url;
+                            localStorage.setItem('tuan_custom_ref_links', JSON.stringify(customRefLinks));
+                        } else {
+                            customProductLinks[activeModalStt] = url;
+                            localStorage.setItem('tuan_custom_product_links', JSON.stringify(customProductLinks));
+                            savedStatuses[activeModalStt] = '☑';
+                            localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error("Lỗi lưu file:", err);
+                alert("Lỗi khi lưu tệp: " + err.message);
+            } finally {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = `Lưu Thành Phẩm`;
+                }
+                closeLinkModal();
+                renderDashboard();
+            }
         }
 
         // Initialize UI
@@ -1398,7 +1509,7 @@
                 if (refFileObj) {
                     refDocHTML = `
                         <div style="display: flex; align-items: center; gap: 6px;">
-                            <a href="${refFileObj.fileData}" download="${refFileObj.fileName}" class="doc-link" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);"><i class="fa-solid fa-file-arrow-down"></i> Tải ${refFileObj.fileName}</a>
+                            <button class="doc-link" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);" onclick="downloadAttachedFile('${refFileKey}', '${refFileObj.fileName}')"><i class="fa-solid fa-file-arrow-down"></i> Tải ${refFileObj.fileName}</button>
                             <button class="btn-edit-icon" title="Đổi tệp" onclick="openLinkModal(${t.stt}, 'ref_doc')"><i class="fa-solid fa-pen"></i></button>
                         </div>
                     `;
@@ -1429,7 +1540,7 @@
                 if (prodFileObj) {
                     productHTML = `
                         <div style="display: flex; align-items: center; gap: 6px;">
-                            <a href="${prodFileObj.fileData}" download="${prodFileObj.fileName}" class="doc-link" style="color: #a855f7; border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.15);"><i class="fa-solid fa-file-arrow-down"></i> Tải ${prodFileObj.fileName}</a>
+                            <button class="doc-link" style="color: #a855f7; border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.15);" onclick="downloadAttachedFile('${prodFileKey}', '${prodFileObj.fileName}')"><i class="fa-solid fa-file-arrow-down"></i> Tải ${prodFileObj.fileName}</button>
                             <button class="btn-edit-icon" title="Đổi thành phẩm" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-pen"></i></button>
                         </div>
                     `;
