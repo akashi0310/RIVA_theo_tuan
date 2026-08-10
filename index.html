@@ -1063,7 +1063,7 @@
     </div>
 
     <!-- External Script containing TUAN_PROJECT_DATA -->
-    <script src="dashboard_data.js?v=20260810_v8"></script>
+    <script src="dashboard_data.js?v=20260810_v9"></script>
 
     <script>
         // Real-time Global Cloud Database Endpoint (Zero token needed, Instant Team Sync)
@@ -1083,23 +1083,100 @@
         let chartWorkloadInstance = null;
         let chartCategoryInstance = null;
 
+        function loadAllLocalData() {
+            let refs = {};
+            let prods = {};
+
+            try { refs = { ...refs, ...JSON.parse(localStorage.getItem('tuan_custom_ref_links_v3') || '{}') }; } catch(e){}
+            try { prods = { ...prods, ...JSON.parse(localStorage.getItem('tuan_custom_product_links_v3') || '{}') }; } catch(e){}
+
+            // Recover old single link v1/v2 format
+            try {
+                const oldRefs = JSON.parse(localStorage.getItem('tuan_custom_ref_links') || '{}');
+                Object.keys(oldRefs).forEach(stt => {
+                    if (!refs[stt] || (Array.isArray(refs[stt]) && refs[stt].length === 0)) {
+                        refs[stt] = [{ title: 'Tài liệu 1', url: oldRefs[stt] }];
+                    }
+                });
+            } catch(e){}
+
+            try {
+                const oldProds = JSON.parse(localStorage.getItem('tuan_custom_product_links') || '{}');
+                Object.keys(oldProds).forEach(stt => {
+                    if (!prods[stt] || (Array.isArray(prods[stt]) && prods[stt].length === 0)) {
+                        prods[stt] = [{ title: 'Thành phẩm 1', url: oldProds[stt] }];
+                    }
+                });
+            } catch(e){}
+
+            // Recover old uploaded files v1 format
+            try {
+                const oldFiles = JSON.parse(localStorage.getItem('tuan_custom_files_v1') || '{}');
+                Object.keys(oldFiles).forEach(key => {
+                    const parts = key.split('_');
+                    if (parts.length >= 2) {
+                        const type = parts[0] + '_' + parts[1];
+                        const stt = parts[2] || parts[1];
+                        const f = oldFiles[key];
+                        const url = f.publicUrl || f.fileData || '';
+                        if (url && stt) {
+                            if (type === 'ref_doc') {
+                                if (!refs[stt]) refs[stt] = [];
+                                if (Array.isArray(refs[stt]) && !refs[stt].some(i => i.url === url)) {
+                                    refs[stt].push({ title: '📁 ' + (f.fileName || 'File'), url: url });
+                                }
+                            } else {
+                                if (!prods[stt]) prods[stt] = [];
+                                if (Array.isArray(prods[stt]) && !prods[stt].some(i => i.url === url)) {
+                                    prods[stt].push({ title: '📁 ' + (f.fileName || 'File'), url: url });
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch(e){}
+
+            return { refs, prods };
+        }
+
         // Sync State to/from Cloud
         async function syncGlobalStateFromCloud() {
+            // First recover all local items
+            const local = loadAllLocalData();
+            customRefLinks = local.refs;
+            customProductLinks = local.prods;
+
             try {
                 const res = await fetch(JSONBLOB_URL + '?v=' + Date.now());
                 if (res.ok) {
                     const data = await res.json();
-                    if (data.refLinks) customRefLinks = data.refLinks;
-                    if (data.productLinks) customProductLinks = data.productLinks;
-                    if (data.statuses) savedStatuses = data.statuses;
+                    
+                    if (data.refLinks) {
+                        Object.keys(data.refLinks).forEach(stt => {
+                            if (Array.isArray(data.refLinks[stt]) && data.refLinks[stt].length > 0) {
+                                customRefLinks[stt] = data.refLinks[stt];
+                            }
+                        });
+                    }
+                    if (data.productLinks) {
+                        Object.keys(data.productLinks).forEach(stt => {
+                            if (Array.isArray(data.productLinks[stt]) && data.productLinks[stt].length > 0) {
+                                customProductLinks[stt] = data.productLinks[stt];
+                            }
+                        });
+                    }
+                    if (data.statuses) {
+                        savedStatuses = { ...savedStatuses, ...data.statuses };
+                    }
 
                     localStorage.setItem('tuan_custom_ref_links_v3', JSON.stringify(customRefLinks));
                     localStorage.setItem('tuan_custom_product_links_v3', JSON.stringify(customProductLinks));
                     localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
-                    renderDashboard();
                 }
             } catch (err) {
                 console.warn("Lỗi tải bộ nhớ đám mây:", err);
+            } finally {
+                renderDashboard();
             }
         }
 
