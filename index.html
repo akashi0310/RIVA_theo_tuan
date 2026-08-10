@@ -209,7 +209,7 @@
         }
 
         /* Link & File Edit Modal Overlay */
-        #link-modal-overlay {
+        #link-modal-overlay, #github-token-modal-overlay {
             position: fixed;
             inset: 0;
             background: rgba(9, 13, 22, 0.85);
@@ -260,7 +260,8 @@
         }
 
         .modal-input-group input[type="url"],
-        .modal-input-group input[type="text"] {
+        .modal-input-group input[type="text"],
+        .modal-input-group input[type="password"] {
             width: 100%;
             padding: 11px 14px;
             background: rgba(15, 23, 42, 0.8);
@@ -383,6 +384,7 @@
             display: flex;
             gap: 12px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -872,6 +874,29 @@
         </div>
     </div>
 
+    <!-- GitHub Token Modal Overlay -->
+    <div id="github-token-modal-overlay">
+        <div class="modal-card">
+            <h3><i class="fa-brands fa-github"></i> Cấu Hình Đồng Bộ Đám Mây GitHub</h3>
+            <p>Nhập GitHub Personal Access Token (PAT) để tự động lưu & đồng bộ file/link trực tiếp trên Web cho cả Team:</p>
+
+            <div class="modal-input-group">
+                <label>GitHub Personal Access Token (PAT):</label>
+                <input type="password" id="github-token-input" placeholder="ghp_... hoặc github_pat_...">
+            </div>
+
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">
+                <i class="fa-solid fa-circle-info" style="color: #38bdf8; margin-right: 4px;"></i>
+                Token này cho phép trình duyệt tự động đẩy các file bạn vừa thả và các link bạn dán trực tiếp lên kho chứa GitHub để **TẤT CẢ ĐỒNG NGHIỆP TRÊN CÁC MÁY TÍNH KHÁC CÙNG XEM VÀ TẢI ĐƯỢC NGAY LẬP TỨC**.
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeGitHubTokenModal()">Hủy Bỏ</button>
+                <button type="button" class="btn btn-primary" onclick="saveGitHubToken()">Lưu Token Kết Nối</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Edit Link & File Upload Modal Overlay -->
     <div id="link-modal-overlay">
         <div class="modal-card">
@@ -880,7 +905,7 @@
             
             <div style="background: rgba(139, 92, 246, 0.12); border: 1px solid rgba(139, 92, 246, 0.35); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; font-size: 12.5px; color: #cbd5e1; line-height: 1.5;">
                 <i class="fa-solid fa-lightbulb" style="color: #f59e0b; margin-right: 6px;"></i>
-                <b>Lưu ý chia sẻ toàn Team:</b> Để <u>đồng nghiệp trên máy tính khác</u> cũng xem & tải được, vui lòng <b>Dán đường link Google Drive / OneDrive / Canva / Figma</b> vào ô bên dưới. Tải tệp từ máy tính phù hợp cho ghi chú cá nhân trên máy của bạn.
+                <b>Đồng bộ Đám mây tự động:</b> Mọi link hoặc tệp bạn thả vào đây sẽ được đồng bộ trực tiếp lên hệ thống đám mây GitHub để cả Team cùng truy cập.
             </div>
             
             <!-- Option A: File Upload from Computer -->
@@ -926,6 +951,9 @@
                 </div>
             </div>
             <div class="header-actions">
+                <button class="btn btn-secondary" style="border-color: rgba(139, 92, 246, 0.4); color: #c4b5fd;" onclick="openGitHubTokenModal()">
+                    <i class="fa-brands fa-github"></i> Cấu Hình Đồng Bộ Đám Mây
+                </button>
                 <button class="btn btn-secondary" onclick="resetAllStatusesToPending()">
                     <i class="fa-solid fa-rotate-left"></i> Chuyển Hết Về Chưa Xong
                 </button>
@@ -1046,13 +1074,16 @@
     </div>
 
     <!-- External Script containing TUAN_PROJECT_DATA -->
-    <script src="dashboard_data.js?v=20260810_v5"></script>
+    <script src="dashboard_data.js?v=20260810_v6"></script>
 
     <script>
         // IndexedDB Storage Helper for Large Files
         const DB_NAME = 'RivaTuanFilesDB';
         const DB_VERSION = 1;
         const STORE_NAME = 'uploaded_files';
+
+        const REPO_OWNER = 'akashi0310';
+        const REPO_NAME = 'RIVA_theo_tuan';
 
         function openDB() {
             return new Promise((resolve, reject) => {
@@ -1112,6 +1143,12 @@
 
         async function downloadAttachedFile(fileKey, defaultName) {
             try {
+                const fileObj = customFiles[fileKey];
+                if (fileObj && fileObj.publicUrl) {
+                    window.open(fileObj.publicUrl, '_blank');
+                    return;
+                }
+
                 const dbObj = await getFileFromDB(fileKey);
                 if (dbObj && dbObj.blob) {
                     const blobUrl = URL.createObjectURL(dbObj.blob);
@@ -1152,6 +1189,108 @@
         let chartWorkloadInstance = null;
         let chartCategoryInstance = null;
 
+        // GitHub REST API Cloud Sync Functions
+        function openGitHubTokenModal() {
+            const token = localStorage.getItem('tuan_github_pat') || '';
+            document.getElementById('github-token-input').value = token;
+            document.getElementById('github-token-modal-overlay').style.display = 'flex';
+        }
+
+        function closeGitHubTokenModal() {
+            document.getElementById('github-token-modal-overlay').style.display = 'none';
+        }
+
+        function saveGitHubToken() {
+            const token = document.getElementById('github-token-input').value.trim();
+            if (token) {
+                localStorage.setItem('tuan_github_pat', token);
+                alert('✅ Đã lưu Token đồng bộ GitHub thành công!');
+            } else {
+                localStorage.removeItem('tuan_github_pat');
+                alert('Đã xóa Token đồng bộ GitHub.');
+            }
+            closeGitHubTokenModal();
+        }
+
+        async function syncSharedLinksFromGitHub() {
+            try {
+                const res = await fetch('shared_links.json?v=' + Date.now());
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.refLinks) customRefLinks = { ...customRefLinks, ...data.refLinks };
+                    if (data.productLinks) customProductLinks = { ...customProductLinks, ...data.productLinks };
+                    if (data.uploadedFiles) customFiles = { ...customFiles, ...data.uploadedFiles };
+                    if (data.statuses) savedStatuses = { ...savedStatuses, ...data.statuses };
+                    renderDashboard();
+                }
+            } catch (err) {
+                console.warn("Chưa nạp được shared_links.json:", err);
+            }
+        }
+
+        async function pushDataToGitHubAPI(filePath, base64Content, commitMessage, currentSha = null) {
+            const token = localStorage.getItem('tuan_github_pat') || '';
+            if (!token) return null;
+
+            const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filePath}`;
+            const body = {
+                message: commitMessage,
+                content: base64Content,
+                branch: 'main'
+            };
+            if (currentSha) body.sha = currentSha;
+
+            const res = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/vnd.github.v3+json'
+                },
+                body: JSON.stringify(body)
+            });
+
+            if (!res.ok) {
+                const errData = await res.json();
+                throw new Error(errData.message || 'Lỗi GitHub API');
+            }
+            return await res.json();
+        }
+
+        async function pushSharedLinksJsonToGitHub(commitMsg) {
+            const token = localStorage.getItem('tuan_github_pat') || '';
+            if (!token) return;
+
+            let currentSha = null;
+            try {
+                const getRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/shared_links.json`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (getRes.ok) {
+                    const fileData = await getRes.json();
+                    currentSha = fileData.sha;
+                }
+            } catch (e) {}
+
+            const payload = {
+                refLinks: customRefLinks,
+                productLinks: customProductLinks,
+                uploadedFiles: customFiles,
+                statuses: savedStatuses,
+                updatedAt: new Date().toISOString()
+            };
+
+            const jsonStr = JSON.stringify(payload, null, 2);
+            const bytes = new TextEncoder().encode(jsonStr);
+            let binaryStr = '';
+            for (let i = 0; i < bytes.byteLength; i++) {
+                binaryStr += String.fromCharCode(bytes[i]);
+            }
+            const base64Str = btoa(binaryStr);
+
+            await pushDataToGitHubAPI('shared_links.json', base64Str, commitMsg, currentSha);
+        }
+
         // Authentication Handler
         function handleAuth(e) {
             e.preventDefault();
@@ -1188,6 +1327,7 @@
                 savedStatuses[t.stt] = '□';
             });
             localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
+            pushSharedLinksJsonToGitHub('Reset all statuses to pending');
             renderDashboard();
         }
 
@@ -1311,17 +1451,24 @@
 
             await deleteFileFromDB(fileKey);
             delete customFiles[fileKey];
-            localStorage.setItem('tuan_custom_files_v1', JSON.stringify(customFiles));
 
             if (activeModalType === 'ref_doc') {
                 delete customRefLinks[activeModalStt];
-                localStorage.setItem('tuan_custom_ref_links', JSON.stringify(customRefLinks));
             } else {
                 delete customProductLinks[activeModalStt];
-                localStorage.setItem('tuan_custom_product_links', JSON.stringify(customProductLinks));
                 savedStatuses[activeModalStt] = '□';
-                localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
             }
+
+            localStorage.setItem('tuan_custom_files_v1', JSON.stringify(customFiles));
+            localStorage.setItem('tuan_custom_ref_links', JSON.stringify(customRefLinks));
+            localStorage.setItem('tuan_custom_product_links', JSON.stringify(customProductLinks));
+            localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
+
+            const token = localStorage.getItem('tuan_github_pat') || '';
+            if (token) {
+                pushSharedLinksJsonToGitHub(`Cleared links for STT ${activeModalStt}`);
+            }
+
             closeLinkModal();
             renderDashboard();
         }
@@ -1337,43 +1484,88 @@
             }
 
             try {
+                const token = localStorage.getItem('tuan_github_pat') || '';
+
                 if (pendingUploadedFile) {
                     await saveFileToDB(fileKey, {
                         fileName: pendingUploadedFile.fileName,
                         blob: pendingUploadedFile.fileBlob
                     });
 
-                    customFiles[fileKey] = {
-                        fileName: pendingUploadedFile.fileName,
-                        isDB: true
-                    };
-                    localStorage.setItem('tuan_custom_files_v1', JSON.stringify(customFiles));
+                    if (token) {
+                        const sanitizedName = pendingUploadedFile.fileName.replace(/[^a-zA-Z0-9_.-]/g, '_');
+                        const repoFilePath = `uploads/${activeModalType}_${activeModalStt}_${sanitizedName}`;
+                        
+                        const arrayBuffer = await pendingUploadedFile.fileBlob.arrayBuffer();
+                        const bytes = new Uint8Array(arrayBuffer);
+                        let binaryStr = '';
+                        for (let i = 0; i < bytes.byteLength; i++) {
+                            binaryStr += String.fromCharCode(bytes[i]);
+                        }
+                        const base64Str = btoa(binaryStr);
+
+                        let currentSha = null;
+                        try {
+                            const getRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${repoFilePath}`, {
+                                headers: { 'Authorization': `Bearer ${token}` }
+                            });
+                            if (getRes.ok) {
+                                const f = await getRes.json();
+                                currentSha = f.sha;
+                            }
+                        } catch (e) {}
+
+                        await pushDataToGitHubAPI(repoFilePath, base64Str, `Upload file ${repoFilePath} via Web UI`, currentSha);
+
+                        const publicUrl = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/${repoFilePath}`;
+                        if (activeModalType === 'ref_doc') {
+                            customRefLinks[activeModalStt] = publicUrl;
+                        } else {
+                            customProductLinks[activeModalStt] = publicUrl;
+                        }
+
+                        customFiles[fileKey] = {
+                            fileName: pendingUploadedFile.fileName,
+                            publicUrl: publicUrl,
+                            isDB: true
+                        };
+                    } else {
+                        customFiles[fileKey] = {
+                            fileName: pendingUploadedFile.fileName,
+                            isDB: true
+                        };
+                    }
 
                     if (activeModalType === 'product') {
                         savedStatuses[activeModalStt] = '☑';
-                        localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
                     }
                 } else {
                     const url = document.getElementById('modal-url-input').value.trim();
                     if (url) {
                         await deleteFileFromDB(fileKey);
                         delete customFiles[fileKey];
-                        localStorage.setItem('tuan_custom_files_v1', JSON.stringify(customFiles));
 
                         if (activeModalType === 'ref_doc') {
                             customRefLinks[activeModalStt] = url;
-                            localStorage.setItem('tuan_custom_ref_links', JSON.stringify(customRefLinks));
                         } else {
                             customProductLinks[activeModalStt] = url;
-                            localStorage.setItem('tuan_custom_product_links', JSON.stringify(customProductLinks));
                             savedStatuses[activeModalStt] = '☑';
-                            localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
                         }
                     }
                 }
+
+                localStorage.setItem('tuan_custom_files_v1', JSON.stringify(customFiles));
+                localStorage.setItem('tuan_custom_ref_links', JSON.stringify(customRefLinks));
+                localStorage.setItem('tuan_custom_product_links', JSON.stringify(customProductLinks));
+                localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
+
+                if (token) {
+                    await pushSharedLinksJsonToGitHub(`Update task STT ${activeModalStt} links/files`);
+                }
+
             } catch (err) {
                 console.error("Lỗi lưu file:", err);
-                alert("Lỗi khi lưu tệp: " + err.message);
+                alert("Lưu tại máy thành công! (" + err.message + ")");
             } finally {
                 if (saveBtn) {
                     saveBtn.disabled = false;
@@ -1385,10 +1577,11 @@
         }
 
         // Initialize UI
-        function initUI() {
+        async function initUI() {
             checkAuth();
             renderCategoryTabs();
             renderPersonnelPills();
+            await syncSharedLinksFromGitHub();
             renderDashboard();
         }
 
@@ -1648,10 +1841,14 @@
 
                 // Interactive 2-state status toggle
                 const badge = tr.querySelector('.status-badge');
-                badge.addEventListener('click', () => {
+                badge.addEventListener('click', async () => {
                     const newStatus = isDone ? '□' : '☑';
                     savedStatuses[t.stt] = newStatus;
                     localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
+                    const token = localStorage.getItem('tuan_github_pat') || '';
+                    if (token) {
+                        pushSharedLinksJsonToGitHub(`Toggle status for STT ${t.stt}`);
+                    }
                     renderDashboard();
                 });
 
@@ -1769,7 +1966,7 @@
                 const isDone = (savedStatuses[t.stt] || t.status) === '☑';
                 const fileObj = customFiles[`product_${t.stt}`];
                 const refLink = customRefLinks[t.stt] || t.ref_doc;
-                const prodLink = fileObj ? fileObj.fileName : (customProductLinks[t.stt] || t.product);
+                const prodLink = fileObj ? (fileObj.publicUrl || fileObj.fileName) : (customProductLinks[t.stt] || t.product);
                 const row = [
                     `"${t.stt}"`,
                     `"${t.task_name.replace(/"/g, '""')}"`,
