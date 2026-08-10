@@ -615,6 +615,64 @@ const TUAN_PROJECT_DATA = {
   ],
   "people": [
     {
+      "name": "Ánh",
+      "directorCount": 0,
+      "executorCount": 5,
+      "totalTasks": 5,
+      "tasks": [
+        {
+          "stt": 2,
+          "task_name": "Brochure giới thiệu đơn vị",
+          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-10",
+          "status": "□"
+        },
+        {
+          "stt": 3,
+          "task_name": "Catalogue chương trình du học",
+          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-10",
+          "status": "□"
+        },
+        {
+          "stt": 4,
+          "task_name": "Catalogue trường/đối tác",
+          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-10",
+          "status": "□"
+        },
+        {
+          "stt": 5,
+          "task_name": "Success Story / Case Study",
+          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-10",
+          "status": "□"
+        },
+        {
+          "stt": 6,
+          "task_name": "Video giới thiệu đơn vị",
+          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-10",
+          "status": "□"
+        }
+      ]
+    },
+    {
       "name": "Dũng",
       "directorCount": 47,
       "executorCount": 0,
@@ -1088,64 +1146,6 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-19",
-          "status": "□"
-        }
-      ]
-    },
-    {
-      "name": "Ánh",
-      "directorCount": 0,
-      "executorCount": 5,
-      "totalTasks": 5,
-      "tasks": [
-        {
-          "stt": 2,
-          "task_name": "Brochure giới thiệu đơn vị",
-          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-10",
-          "status": "□"
-        },
-        {
-          "stt": 3,
-          "task_name": "Catalogue chương trình du học",
-          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-10",
-          "status": "□"
-        },
-        {
-          "stt": 4,
-          "task_name": "Catalogue trường/đối tác",
-          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-10",
-          "status": "□"
-        },
-        {
-          "stt": 5,
-          "task_name": "Success Story / Case Study",
-          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-10",
-          "status": "□"
-        },
-        {
-          "stt": 6,
-          "task_name": "Video giới thiệu đơn vị",
-          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-10",
           "status": "□"
         }
       ]
