@@ -880,11 +880,14 @@
             
             <!-- Option A: File Upload from Computer -->
             <div class="modal-input-group">
-                <label><i class="fa-solid fa-hard-drive"></i> Tải Tệp Trực Tiếp Từ Máy Tính (Không cần up Drive):</label>
+                <label><i class="fa-solid fa-hard-drive"></i> Tải Tệp Trực Tiếp Từ Máy Tính (Kéo & Thả hoặc Bấm chọn):</label>
                 <input type="file" id="modal-file-input" onchange="handleFileSelect(event)" style="display: none;">
-                <label for="modal-file-input" class="file-upload-dropzone">
+                <label for="modal-file-input" class="file-upload-dropzone" id="file-dropzone"
+                       ondragover="handleDragOver(event)"
+                       ondragleave="handleDragLeave(event)"
+                       ondrop="handleFileDrop(event)">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <span id="file-chosen-text">Bấm vào đây để chọn tệp từ máy tính...</span>
+                    <span id="file-chosen-text">Kéo & thả tệp vào đây hoặc bấm để chọn tệp từ máy tính...</span>
                 </label>
             </div>
 
@@ -1038,7 +1041,7 @@
     </div>
 
     <!-- External Script containing TUAN_PROJECT_DATA -->
-    <script src="dashboard_data.js?v=20260810_v3"></script>
+    <script src="dashboard_data.js?v=20260810_v4"></script>
 
     <script>
         // IndexedDB Storage Helper for Large Files
@@ -1201,10 +1204,54 @@
             document.getElementById('modal-url-input').value = '';
         }
 
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const dropzone = document.getElementById('file-dropzone');
+            if (dropzone) {
+                dropzone.style.borderColor = '#8b5cf6';
+                dropzone.style.background = 'rgba(139, 92, 246, 0.28)';
+                dropzone.style.transform = 'scale(1.02)';
+            }
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const dropzone = document.getElementById('file-dropzone');
+            if (dropzone) {
+                dropzone.style.borderColor = 'rgba(168, 85, 247, 0.4)';
+                dropzone.style.background = 'rgba(168, 85, 247, 0.08)';
+                dropzone.style.transform = 'scale(1)';
+            }
+        }
+
+        function handleFileDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            handleDragLeave(e);
+
+            const files = e.dataTransfer.files;
+            if (files && files.length > 0) {
+                const file = files[0];
+                const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                pendingUploadedFile = {
+                    fileName: file.name,
+                    fileBlob: file
+                };
+
+                document.getElementById('file-chosen-text').innerHTML = `
+                    <i class="fa-solid fa-circle-check" style="color:#10b981;"></i>
+                    Đã thả tệp: <b style="color: #fff;">${file.name}</b> (${sizeMB} MB)
+                `;
+                document.getElementById('modal-url-input').value = '';
+            }
+        }
+
         function handleUrlInput() {
             if (document.getElementById('modal-url-input').value.trim()) {
                 pendingUploadedFile = null;
-                document.getElementById('file-chosen-text').textContent = 'Bấm vào đây để chọn tệp từ máy tính...';
+                document.getElementById('file-chosen-text').textContent = 'Kéo & thả tệp vào đây hoặc bấm để chọn tệp từ máy tính...';
             }
         }
 
