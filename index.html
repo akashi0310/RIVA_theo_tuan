@@ -1116,7 +1116,19 @@
             const container = document.getElementById('personnel-pills');
             container.innerHTML = '<span class="pill-label"><i class="fa-solid fa-filter"></i> Lọc nhân sự:</span>';
 
-            const allPersons = ['Dũng', 'Ánh', 'Phương', 'Lộc', 'Vân Anh', 'Nam', 'Chi'];
+            // Dynamically collect all personnel names from dataset
+            const personSet = new Set(['Dũng', 'Ánh', 'Phương', 'Lộc', 'Vân Anh', 'Nam', 'Chi']);
+            TUAN_PROJECT_DATA.tasks.forEach(t => {
+                [t.director, t.executor].forEach(str => {
+                    if (str) {
+                        str.split(',').forEach(p => {
+                            p = p.trim();
+                            if (p) personSet.add(p);
+                        });
+                    }
+                });
+            });
+            const allPersons = Array.from(personSet);
 
             // "Tất cả" Pill
             const allPill = document.createElement('button');

@@ -10,8 +10,6 @@ if sys.platform == 'win32':
 
 print("=== HỆ THỐNG CẬP NHẬT DỮ LIỆU DASHBOARD RIVA THEO TUẤN (CHECKLIST ẤN PHẨM TRUYỀN THÔNG) ===")
 
-VALID_PEOPLE = ['Dũng', 'Ánh', 'Phương', 'Lộc', 'Vân Anh', 'Nam', 'Chi', 'Hà', 'Diệu Anh', 'Hường', 'Hảo']
-
 def find_excel_file(filename):
     paths = [
         os.path.join('Excel_file', filename),
@@ -33,8 +31,10 @@ def clean_and_extract_names(text):
     for p in parts:
         p = p.strip()
         if not p: continue
+        # Clean Mr/Ms prefix
         p_clean = re.sub(r'^(mr|ms)\.?\s*', '', p, flags=re.IGNORECASE).strip()
         
+        # Standardize common names
         if p_clean in ['Dũng', 'Mr Dũng', 'Mr. Dũng']: p_clean = 'Dũng'
         elif p_clean in ['Ánh', 'Ms Ánh', 'Ms. Ánh']: p_clean = 'Ánh'
         elif p_clean in ['Phương', 'Ms Phương', 'Ms. Phương']: p_clean = 'Phương'
@@ -42,12 +42,13 @@ def clean_and_extract_names(text):
         elif p_clean in ['Vân Anh', 'Ms Vân Anh', 'Ms. Vân Anh']: p_clean = 'Vân Anh'
         elif p_clean in ['Nam', 'Mr Nam', 'Mr. Nam']: p_clean = 'Nam'
         elif p_clean in ['Chi', 'Ms Chi', 'Ms. Chi']: p_clean = 'Chi'
+        elif p_clean in ['Nhi', 'Ms Nhi', 'Ms. Nhi']: p_clean = 'Nhi'
         elif p_clean in ['Hà', 'Ms Hà', 'Ms. Hà']: p_clean = 'Hà'
         elif p_clean in ['Diệu Anh', 'Ms Diệu Anh']: p_clean = 'Diệu Anh'
         elif p_clean in ['Hường', 'Ms Hường']: p_clean = 'Hường'
         elif p_clean in ['Hảo', 'Mr Hảo']: p_clean = 'Hảo'
 
-        if p_clean and p_clean in VALID_PEOPLE:
+        if p_clean and len(p_clean) >= 2:
             if p_clean not in names:
                 names.append(p_clean)
 

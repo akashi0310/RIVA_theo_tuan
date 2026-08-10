@@ -309,7 +309,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Brand guideline + key visual",
       "product": "Bộ template chỉnh sửa được",
       "director": "Dũng",
-      "executor": "",
+      "executor": "Nhi",
       "deadline": "2026-08-14",
       "status": "□"
     },
@@ -322,7 +322,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Brand guideline + content",
       "product": "Bộ template Instagram",
       "director": "Dũng",
-      "executor": "",
+      "executor": "Nhi",
       "deadline": "2026-08-14",
       "status": "□"
     },
@@ -335,7 +335,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Brand guideline + format video",
       "product": "Bộ template 9:16",
       "director": "Dũng",
-      "executor": "",
+      "executor": "Nhi",
       "deadline": "2026-08-15",
       "status": "□"
     },
@@ -517,7 +517,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Quy trình chăm sóc học sinh",
       "product": "Welcome Kit digital/in",
       "director": "Dũng",
-      "executor": "",
+      "executor": "Nhi",
       "deadline": "2026-08-17",
       "status": "□"
     },
@@ -530,7 +530,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Quy trình chăm sóc + tài liệu trường",
       "product": "Student Handbook PDF",
       "director": "Dũng",
-      "executor": "",
+      "executor": "Nhi",
       "deadline": "2026-08-18",
       "status": "□"
     },
@@ -614,64 +614,6 @@ const TUAN_PROJECT_DATA = {
     }
   ],
   "people": [
-    {
-      "name": "Ánh",
-      "directorCount": 0,
-      "executorCount": 5,
-      "totalTasks": 5,
-      "tasks": [
-        {
-          "stt": 2,
-          "task_name": "Brochure giới thiệu đơn vị",
-          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-10",
-          "status": "□"
-        },
-        {
-          "stt": 3,
-          "task_name": "Catalogue chương trình du học",
-          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-10",
-          "status": "□"
-        },
-        {
-          "stt": 4,
-          "task_name": "Catalogue trường/đối tác",
-          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-10",
-          "status": "□"
-        },
-        {
-          "stt": 5,
-          "task_name": "Success Story / Case Study",
-          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-10",
-          "status": "□"
-        },
-        {
-          "stt": 6,
-          "task_name": "Video giới thiệu đơn vị",
-          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
-          "roles": [
-            "Thực hiện"
-          ],
-          "deadline": "2026-08-10",
-          "status": "□"
-        }
-      ]
-    },
     {
       "name": "Dũng",
       "directorCount": 47,
@@ -1151,6 +1093,64 @@ const TUAN_PROJECT_DATA = {
       ]
     },
     {
+      "name": "Ánh",
+      "directorCount": 0,
+      "executorCount": 5,
+      "totalTasks": 5,
+      "tasks": [
+        {
+          "stt": 2,
+          "task_name": "Brochure giới thiệu đơn vị",
+          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-10",
+          "status": "□"
+        },
+        {
+          "stt": 3,
+          "task_name": "Catalogue chương trình du học",
+          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-10",
+          "status": "□"
+        },
+        {
+          "stt": 4,
+          "task_name": "Catalogue trường/đối tác",
+          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-10",
+          "status": "□"
+        },
+        {
+          "stt": 5,
+          "task_name": "Success Story / Case Study",
+          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-10",
+          "status": "□"
+        },
+        {
+          "stt": 6,
+          "task_name": "Video giới thiệu đơn vị",
+          "category": "A. I.ẤN PHẨM THƯƠNG HIỆU",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-10",
+          "status": "□"
+        }
+      ]
+    },
+    {
       "name": "Phương",
       "directorCount": 0,
       "executorCount": 8,
@@ -1342,6 +1342,64 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-14",
+          "status": "□"
+        }
+      ]
+    },
+    {
+      "name": "Nhi",
+      "directorCount": 0,
+      "executorCount": 5,
+      "totalTasks": 5,
+      "tasks": [
+        {
+          "stt": 25,
+          "task_name": "Bộ template Facebook",
+          "category": "D. SOCIAL MEDIA",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-14",
+          "status": "□"
+        },
+        {
+          "stt": 26,
+          "task_name": "Bộ template Instagram",
+          "category": "D. SOCIAL MEDIA",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-14",
+          "status": "□"
+        },
+        {
+          "stt": 27,
+          "task_name": "Bộ template TikTok/Reels",
+          "category": "D. SOCIAL MEDIA",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-15",
+          "status": "□"
+        },
+        {
+          "stt": 41,
+          "task_name": "Welcome Kit",
+          "category": "F. ẤN PHẨM DÀNH CHO DU HỌC SINH",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-17",
+          "status": "□"
+        },
+        {
+          "stt": 42,
+          "task_name": "Student Handbook",
+          "category": "F. ẤN PHẨM DÀNH CHO DU HỌC SINH",
+          "roles": [
+            "Thực hiện"
+          ],
+          "deadline": "2026-08-18",
           "status": "□"
         }
       ]
