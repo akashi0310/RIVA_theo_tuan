@@ -1037,7 +1037,7 @@
     </div>
 
     <!-- External Script containing TUAN_PROJECT_DATA -->
-    <script src="dashboard_data.js?v=20260810"></script>
+    <script src="dashboard_data.js?v=20260810_v2"></script>
 
     <script>
         // State Management
@@ -1173,6 +1173,9 @@
             } else {
                 delete customProductLinks[activeModalStt];
                 localStorage.setItem('tuan_custom_product_links', JSON.stringify(customProductLinks));
+                // Auto switch status back to □ Chưa xong when product deliverable is removed
+                savedStatuses[activeModalStt] = '□';
+                localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
             }
             closeLinkModal();
             renderDashboard();
@@ -1185,6 +1188,11 @@
             if (pendingUploadedFile) {
                 customFiles[fileKey] = pendingUploadedFile;
                 localStorage.setItem('tuan_custom_files_v1', JSON.stringify(customFiles));
+                if (activeModalType === 'product') {
+                    // Auto switch status to ☑ Đã xong when product file is uploaded!
+                    savedStatuses[activeModalStt] = '☑';
+                    localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
+                }
             } else {
                 const url = document.getElementById('modal-url-input').value.trim();
                 if (url) {
@@ -1196,6 +1204,9 @@
                     } else {
                         customProductLinks[activeModalStt] = url;
                         localStorage.setItem('tuan_custom_product_links', JSON.stringify(customProductLinks));
+                        // Auto switch status to ☑ Đã xong when product link is attached!
+                        savedStatuses[activeModalStt] = '☑';
+                        localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
                     }
                 }
             }
