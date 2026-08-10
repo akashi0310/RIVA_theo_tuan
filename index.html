@@ -1041,7 +1041,7 @@
     </div>
 
     <!-- External Script containing TUAN_PROJECT_DATA -->
-    <script src="dashboard_data.js?v=20260810_v4"></script>
+    <script src="dashboard_data.js?v=20260810_v5"></script>
 
     <script>
         // IndexedDB Storage Helper for Large Files
@@ -1261,6 +1261,12 @@
             activeModalType = type;
             pendingUploadedFile = null;
 
+            const saveBtn = document.getElementById('modal-save-btn');
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = 'Lưu Thành Phẩm';
+            }
+
             const isRef = type === 'ref_doc';
             const title = isRef ? '🔗 Tải Tệp / Gắn Link Tài Liệu' : '📦 Tải Tệp / Gắn Link Thành Phẩm';
             const desc = isRef 
@@ -1281,7 +1287,7 @@
             if (existingFile) {
                 document.getElementById('file-chosen-text').innerHTML = `<i class="fa-solid fa-file-check" style="color:#10b981;"></i> Tệp hiện tại: <b>${existingFile.fileName}</b>`;
             } else {
-                document.getElementById('file-chosen-text').textContent = 'Bấm vào đây để chọn tệp từ máy tính...';
+                document.getElementById('file-chosen-text').textContent = 'Kéo & thả tệp vào đây hoặc bấm để chọn tệp từ máy tính...';
             }
 
             document.getElementById('link-modal-overlay').style.display = 'flex';
@@ -1322,7 +1328,7 @@
             const saveBtn = document.getElementById('modal-save-btn');
             if (saveBtn) {
                 saveBtn.disabled = true;
-                saveBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...`;
+                saveBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang tải lên...`;
             }
 
             try {
