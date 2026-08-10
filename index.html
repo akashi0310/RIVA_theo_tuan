@@ -1190,6 +1190,22 @@
                 });
             }
 
+            // Sort: Uncompleted tasks first, then ascending by deadline date
+            tasks.sort((a, b) => {
+                const statusA = savedStatuses[a.stt] || a.status;
+                const statusB = savedStatuses[b.stt] || b.status;
+                const isDoneA = statusA === '☑';
+                const isDoneB = statusB === '☑';
+
+                if (isDoneA !== isDoneB) return isDoneA ? 1 : -1;
+
+                const dateA = a.deadline || '9999-12-31';
+                const dateB = b.deadline || '9999-12-31';
+                if (dateA !== dateB) return dateA.localeCompare(dateB);
+
+                return a.stt - b.stt;
+            });
+
             return tasks;
         }
 
@@ -1274,9 +1290,12 @@
                     productHTML = `<button class="btn-attach" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.3);" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-cloud-arrow-up"></i> Gắn link sản phẩm</button>`;
                 }
 
+                const isUrgent = !isDone && (t.deadline <= '2026-08-10');
                 const deadlineHTML = isDone 
                     ? `<span style="font-size: 12.5px; color: var(--success); font-weight: 600;"><i class="fa-solid fa-check"></i> ${t.deadline}</span>`
-                    : `<span style="font-size: 12.5px; color: #ef4444; font-weight: 700;"><i class="fa-regular fa-calendar" style="color: #ef4444;"></i> ${t.deadline}</span>`;
+                    : (isUrgent 
+                        ? `<span style="font-size: 12.5px; color: #ef4444; font-weight: 800;"><i class="fa-regular fa-calendar" style="color: #ef4444;"></i> ${t.deadline}</span>`
+                        : `<span style="font-size: 12.5px; color: var(--text-sub); font-weight: 600;"><i class="fa-regular fa-calendar"></i> ${t.deadline}</span>`);
 
                 tr.innerHTML = `
                     <td style="font-weight: 700; color: var(--primary); text-align: center;">${t.stt}</td>

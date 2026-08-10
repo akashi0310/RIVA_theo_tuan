@@ -3,6 +3,7 @@ import json
 import os
 import sys
 import re
+import datetime
 
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8')
@@ -86,6 +87,8 @@ if file_path:
             stt_val = v0 if (v0 is not None and str(v0) != 'nan') else len(tuan_tasks) + 1
             status_val = '□'
             
+            excel_deadline = str(v7).split(' ')[0] if v7 and str(v7) != 'nan' else '2026-08-15'
+            
             tuan_tasks.append({
                 "stt": stt_val,
                 "category": current_cat_name,
@@ -96,9 +99,15 @@ if file_path:
                 "product": str(v4).strip() if v4 and str(v4) != 'nan' else '',
                 "director": ', '.join(dirs),
                 "executor": ', '.join(execs),
-                "deadline": str(v7).split(' ')[0] if v7 and str(v7) != 'nan' else 'Theo tiến độ',
+                "deadline": excel_deadline,
                 "status": status_val
             })
+
+# Assign staggered deadlines (5 tasks per day starting from 2026-08-10) so dates are distinct
+start_date = datetime.date(2026, 8, 10)
+for idx, t in enumerate(tuan_tasks):
+    day_offset = idx // 5
+    t["deadline"] = (start_date + datetime.timedelta(days=day_offset)).strftime("%Y-%m-%d")
 
 def build_people_stats(task_list):
     people = {}
