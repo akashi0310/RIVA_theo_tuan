@@ -208,6 +208,80 @@
             border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
+        /* Link Edit Modal Overlay */
+        #link-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(9, 13, 22, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(139, 92, 246, 0.2);
+        }
+
+        .modal-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .modal-input-group {
+            margin-bottom: 16px;
+        }
+
+        .modal-input-group label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+        }
+
+        .modal-input-group input {
+            width: 100%;
+            padding: 11px 14px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .modal-input-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
         /* Header Section */
         .header {
             display: flex;
@@ -626,30 +700,53 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 4px 8px;
+            padding: 4px 10px;
             border-radius: 6px;
-            background: rgba(56, 189, 248, 0.1);
-            border: 1px solid rgba(56, 189, 248, 0.25);
-            font-size: 12.5px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            font-size: 12px;
             transition: all 0.2s ease;
         }
 
         .doc-link:hover {
-            background: rgba(56, 189, 248, 0.2);
+            background: rgba(56, 189, 248, 0.22);
             color: #7dd3fc;
         }
 
-        .product-badge {
+        .btn-attach {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            color: var(--text-muted);
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            color: #a855f7;
-            background: rgba(168, 85, 247, 0.12);
-            border: 1px solid rgba(168, 85, 247, 0.25);
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 12.5px;
-            font-weight: 600;
+        }
+
+        .btn-attach:hover {
+            background: rgba(139, 92, 246, 0.18);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        .btn-edit-icon {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 3px 6px;
+            font-size: 11px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-edit-icon:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* Charts Section */
@@ -722,6 +819,25 @@
         </div>
     </div>
 
+    <!-- Edit Link Modal Overlay -->
+    <div id="link-modal-overlay">
+        <div class="modal-card">
+            <h3 id="modal-title"><i class="fa-solid fa-link"></i> Gắn Link Trực Tiếp</h3>
+            <p id="modal-desc">Dán đường link Google Drive, OneDrive, Figma, Website hoặc link tệp thành phẩm...</p>
+            
+            <div class="modal-input-group">
+                <label id="modal-input-label">Đường Link URL / Link Tệp:</label>
+                <input type="url" id="modal-url-input" placeholder="https://drive.google.com/file/d/..." autofocus>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeLinkModal()">Hủy Bỏ</button>
+                <button type="button" class="btn btn-secondary" style="color: #ef4444;" onclick="clearCurrentLink()">Xóa Link</button>
+                <button type="button" class="btn btn-primary" onclick="saveLinkModal()">Lưu Đường Link</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Application Container -->
     <div class="container">
         <!-- Header Bar -->
@@ -736,8 +852,11 @@
                 </div>
             </div>
             <div class="header-actions">
+                <button class="btn btn-secondary" onclick="resetAllStatusesToPending()">
+                    <i class="fa-solid fa-rotate-left"></i> Chuyển Hết Về Chưa Xong
+                </button>
                 <button class="btn btn-secondary" onclick="resetFilters()">
-                    <i class="fa-solid fa-rotate-left"></i> Đặt Lại Bộ Lọc
+                    <i class="fa-solid fa-filter-circle-xmark"></i> Xóa Bộ Lọc
                 </button>
                 <button class="btn btn-primary" onclick="exportToCSV()">
                     <i class="fa-solid fa-file-csv"></i> Xuất File CSV
@@ -820,8 +939,8 @@
                         <th style="width: 50px;">STT</th>
                         <th style="width: 220px;">Hạng Mục Ấn Phẩm</th>
                         <th>Brief / Nội Dung Thực Hiện</th>
-                        <th style="width: 200px;">Tài Liệu Tham Khảo</th>
-                        <th style="width: 200px;">Thành Phẩm (Đầu Ra)</th>
+                        <th style="width: 210px;">Tài Liệu Tham Khảo</th>
+                        <th style="width: 210px;">Thành Phẩm (Đầu Ra)</th>
                         <th style="width: 110px;">Phụ Trách</th>
                         <th style="width: 120px;">Thực Hiện</th>
                         <th style="width: 110px;">Deadline</th>
@@ -857,9 +976,14 @@
 
     <script>
         // State Management
-        let savedStatuses = JSON.parse(localStorage.getItem('tuan_publication_task_statuses') || '{}');
+        let savedStatuses = JSON.parse(localStorage.getItem('tuan_publication_task_statuses_v2') || '{}');
+        let customRefLinks = JSON.parse(localStorage.getItem('tuan_custom_ref_links') || '{}');
+        let customProductLinks = JSON.parse(localStorage.getItem('tuan_custom_product_links') || '{}');
+
         let selectedCategory = 'all';
         let selectedPerson = 'all';
+        let activeModalStt = null;
+        let activeModalType = null;
         let chartWorkloadInstance = null;
         let chartCategoryInstance = null;
 
@@ -891,6 +1015,75 @@
                 input.type = 'password';
                 icon.className = 'fa-solid fa-eye';
             }
+        }
+
+        // Reset all statuses to pending '□'
+        function resetAllStatusesToPending() {
+            savedStatuses = {};
+            TUAN_PROJECT_DATA.tasks.forEach(t => {
+                savedStatuses[t.stt] = '□';
+            });
+            localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
+            renderDashboard();
+        }
+
+        // Link Modal Handlers
+        function openLinkModal(stt, type) {
+            activeModalStt = stt;
+            activeModalType = type;
+
+            const isRef = type === 'ref_doc';
+            const title = isRef ? '🔗 Gắn Link Tài Liệu Tham Khảo' : '📦 Gắn Link Thành Phẩm (Đầu Ra)';
+            const desc = isRef 
+                ? 'Dán đường link Google Drive, OneDrive, Figma, Canva hoặc tài liệu tham khảo cho ấn phẩm này...'
+                : 'Dán đường link file thành phẩm, bản preview, poster in hoặc video đã hoàn thành...';
+            const label = isRef ? 'Đường Link Tài Liệu Tham Khảo (URL):' : 'Đường Link File Thành Phẩm (URL):';
+            
+            const existing = isRef ? (customRefLinks[stt] || '') : (customProductLinks[stt] || '');
+
+            document.getElementById('modal-title').innerHTML = `<i class="${isRef ? 'fa-solid fa-link' : 'fa-solid fa-box-open'}"></i> ${title}`;
+            document.getElementById('modal-desc').textContent = desc;
+            document.getElementById('modal-input-label').textContent = label;
+            document.getElementById('modal-url-input').value = existing;
+
+            document.getElementById('link-modal-overlay').style.display = 'flex';
+        }
+
+        function closeLinkModal() {
+            document.getElementById('link-modal-overlay').style.display = 'none';
+            activeModalStt = null;
+            activeModalType = null;
+        }
+
+        function clearCurrentLink() {
+            if (!activeModalStt || !activeModalType) return;
+            if (activeModalType === 'ref_doc') {
+                delete customRefLinks[activeModalStt];
+                localStorage.setItem('tuan_custom_ref_links', JSON.stringify(customRefLinks));
+            } else {
+                delete customProductLinks[activeModalStt];
+                localStorage.setItem('tuan_custom_product_links', JSON.stringify(customProductLinks));
+            }
+            closeLinkModal();
+            renderDashboard();
+        }
+
+        function saveLinkModal() {
+            if (!activeModalStt || !activeModalType) return;
+            const url = document.getElementById('modal-url-input').value.trim();
+
+            if (activeModalType === 'ref_doc') {
+                if (url) customRefLinks[activeModalStt] = url;
+                else delete customRefLinks[activeModalStt];
+                localStorage.setItem('tuan_custom_ref_links', JSON.stringify(customRefLinks));
+            } else {
+                if (url) customProductLinks[activeModalStt] = url;
+                else delete customProductLinks[activeModalStt];
+                localStorage.setItem('tuan_custom_product_links', JSON.stringify(customProductLinks));
+            }
+
+            closeLinkModal();
+            renderDashboard();
         }
 
         // Initialize UI
@@ -967,36 +1160,34 @@
         function getFilteredTasks() {
             let tasks = TUAN_PROJECT_DATA.tasks;
 
-            // Apply category filter
             if (selectedCategory !== 'all') {
                 tasks = tasks.filter(t => t.category_code === selectedCategory);
             }
 
-            // Apply personnel filter
             if (selectedPerson !== 'all') {
                 tasks = tasks.filter(t => t.director.includes(selectedPerson) || t.executor.includes(selectedPerson));
             }
 
-            // Apply status filter
             const statusVal = document.getElementById('status-filter').value;
             if (statusVal !== 'all') {
                 tasks = tasks.filter(t => {
-                    const saved = savedStatuses[t.stt] || t.status;
+                    const saved = savedStatuses[t.stt] || '□';
                     return statusVal === 'done' ? saved === '☑' : saved !== '☑';
                 });
             }
 
-            // Apply search filter
             const query = document.getElementById('search-input').value.toLowerCase().trim();
             if (query) {
-                tasks = tasks.filter(t => 
-                    t.task_name.toLowerCase().includes(query) ||
-                    t.brief.toLowerCase().includes(query) ||
-                    t.ref_doc.toLowerCase().includes(query) ||
-                    t.product.toLowerCase().includes(query) ||
-                    t.director.toLowerCase().includes(query) ||
-                    t.executor.toLowerCase().includes(query)
-                );
+                tasks = tasks.filter(t => {
+                    const customRef = customRefLinks[t.stt] || t.ref_doc;
+                    const customProd = customProductLinks[t.stt] || t.product;
+                    return t.task_name.toLowerCase().includes(query) ||
+                        t.brief.toLowerCase().includes(query) ||
+                        customRef.toLowerCase().includes(query) ||
+                        customProd.toLowerCase().includes(query) ||
+                        t.director.toLowerCase().includes(query) ||
+                        t.executor.toLowerCase().includes(query);
+                });
             }
 
             return tasks;
@@ -1009,11 +1200,10 @@
 
             let doneCount = 0;
             TUAN_PROJECT_DATA.tasks.forEach(t => {
-                const currentStatus = savedStatuses[t.stt] || t.status;
+                const currentStatus = savedStatuses[t.stt] || '□';
                 if (currentStatus === '☑') doneCount++;
             });
 
-            // Update Metrics
             const totalTasks = TUAN_PROJECT_DATA.tasks.length;
             const pendingCount = totalTasks - doneCount;
             const rate = totalTasks > 0 ? Math.round((doneCount / totalTasks) * 100) : 0;
@@ -1039,21 +1229,49 @@
 
             tasks.forEach(t => {
                 const tr = document.createElement('tr');
-                const currentStatus = savedStatuses[t.stt] || t.status;
+                const currentStatus = savedStatuses[t.stt] || '□';
                 const isDone = currentStatus === '☑';
 
-                // Format Ref Doc (Tài liệu tham khảo)
-                let refDocHTML = t.ref_doc || '<span style="color: var(--text-muted); font-size: 12px;">N/A</span>';
-                if (t.ref_doc.startsWith('http://') || t.ref_doc.startsWith('https://')) {
-                    refDocHTML = `<a href="${t.ref_doc}" target="_blank" class="doc-link"><i class="fa-solid fa-link"></i> Mở Link Tài Liệu</a>`;
+                // Format Ref Doc Column
+                const activeRefLink = customRefLinks[t.stt] || (t.ref_doc.startsWith('http') ? t.ref_doc : '');
+                let refDocHTML = '';
+                if (activeRefLink) {
+                    refDocHTML = `
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <a href="${activeRefLink}" target="_blank" class="doc-link"><i class="fa-solid fa-link"></i> Mở Link Tài Liệu</a>
+                            <button class="btn-edit-icon" title="Sửa đường link" onclick="openLinkModal(${t.stt}, 'ref_doc')"><i class="fa-solid fa-pen"></i></button>
+                        </div>
+                    `;
+                } else if (t.ref_doc) {
+                    refDocHTML = `
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="font-size: 12px; color: var(--text-sub);">${t.ref_doc}</span>
+                            <button class="btn-attach" onclick="openLinkModal(${t.stt}, 'ref_doc')"><i class="fa-solid fa-paperclip"></i> Gắn link URL</button>
+                        </div>
+                    `;
+                } else {
+                    refDocHTML = `<button class="btn-attach" onclick="openLinkModal(${t.stt}, 'ref_doc')"><i class="fa-solid fa-plus"></i> Gắn link tài liệu</button>`;
                 }
 
-                // Format Product (Thành phẩm / Đầu ra)
-                let productHTML = t.product || '<span style="color: var(--text-muted); font-size: 12px;">N/A</span>';
-                if (t.product.startsWith('http://') || t.product.startsWith('https://')) {
-                    productHTML = `<a href="${t.product}" target="_blank" class="doc-link" style="color: #a855f7; border-color: rgba(168, 85, 247, 0.3); background: rgba(168, 85, 247, 0.1);"><i class="fa-solid fa-box-open"></i> Xem Thành Phẩm</a>`;
+                // Format Product Deliverable Column
+                const activeProductLink = customProductLinks[t.stt] || (t.product.startsWith('http') ? t.product : '');
+                let productHTML = '';
+                if (activeProductLink) {
+                    productHTML = `
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <a href="${activeProductLink}" target="_blank" class="doc-link" style="color: #a855f7; border-color: rgba(168, 85, 247, 0.3); background: rgba(168, 85, 247, 0.15);"><i class="fa-solid fa-box-open"></i> Xem Thành Phẩm</a>
+                            <button class="btn-edit-icon" title="Sửa đường link" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-pen"></i></button>
+                        </div>
+                    `;
                 } else if (t.product) {
-                    productHTML = `<span class="product-badge"><i class="fa-solid fa-file-export"></i> ${t.product}</span>`;
+                    productHTML = `
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="product-badge"><i class="fa-solid fa-file-export"></i> ${t.product}</span>
+                            <button class="btn-attach" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.3);" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-cloud-arrow-up"></i> Gắn link tệp</button>
+                        </div>
+                    `;
+                } else {
+                    productHTML = `<button class="btn-attach" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.3);" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-cloud-arrow-up"></i> Gắn link sản phẩm</button>`;
                 }
 
                 tr.innerHTML = `
@@ -1080,7 +1298,7 @@
                 badge.addEventListener('click', () => {
                     const newStatus = isDone ? '□' : '☑';
                     savedStatuses[t.stt] = newStatus;
-                    localStorage.setItem('tuan_publication_task_statuses', JSON.stringify(savedStatuses));
+                    localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
                     renderDashboard();
                 });
 
@@ -1091,7 +1309,6 @@
         }
 
         function renderCharts(tasks) {
-            // Chart 1: Workload by Staff
             const staffCounts = {};
             tasks.forEach(t => {
                 [t.director, t.executor].forEach(roleStr => {
@@ -1134,7 +1351,6 @@
                 }
             });
 
-            // Chart 2: Completion Status by Category
             const catStats = {};
             TUAN_PROJECT_DATA.categories.filter(c => c.code !== 'all').forEach(c => {
                 catStats[c.name] = { total: 0, done: 0 };
@@ -1145,7 +1361,7 @@
                 const catName = catObj ? catObj.name : t.category;
                 if (!catStats[catName]) catStats[catName] = { total: 0, done: 0 };
                 catStats[catName].total++;
-                if ((savedStatuses[t.stt] || t.status) === '☑') catStats[catName].done++;
+                if ((savedStatuses[t.stt] || '□') === '☑') catStats[catName].done++;
             });
 
             const catLabels = Object.keys(catStats);
@@ -1197,14 +1413,16 @@
             csvContent += "STT,Hạng Mục Ấn Phẩm,Nhóm Ấn Phẩm,Brief / Nội Dung,Tài Liệu Tham Khảo,Thành Phẩm (Đầu Ra),Phụ Trách (PIC),Người Thực Hiện,Deadline,Trạng Thái\n";
 
             tasks.forEach(t => {
-                const isDone = (savedStatuses[t.stt] || t.status) === '☑';
+                const isDone = (savedStatuses[t.stt] || '□') === '☑';
+                const refLink = customRefLinks[t.stt] || t.ref_doc;
+                const prodLink = customProductLinks[t.stt] || t.product;
                 const row = [
                     `"${t.stt}"`,
                     `"${t.task_name.replace(/"/g, '""')}"`,
                     `"${t.category.replace(/"/g, '""')}"`,
                     `"${t.brief.replace(/"/g, '""')}"`,
-                    `"${t.ref_doc.replace(/"/g, '""')}"`,
-                    `"${t.product.replace(/"/g, '""')}"`,
+                    `"${refLink.replace(/"/g, '""')}"`,
+                    `"${prodLink.replace(/"/g, '""')}"`,
                     `"${t.director.replace(/"/g, '""')}"`,
                     `"${t.executor.replace(/"/g, '""')}"`,
                     `"${t.deadline}"`,

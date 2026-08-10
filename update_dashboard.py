@@ -84,7 +84,7 @@ if file_path:
             dirs = clean_and_extract_names(v5)
             execs = clean_and_extract_names(v6)
             stt_val = v0 if (v0 is not None and str(v0) != 'nan') else len(tuan_tasks) + 1
-            status_val = '☑' if (v8 and 'Hoàn thành' in str(v8)) else '□'
+            status_val = '□'
             
             tuan_tasks.append({
                 "stt": stt_val,

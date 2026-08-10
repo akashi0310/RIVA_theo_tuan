@@ -12,7 +12,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Ánh",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 3,
@@ -25,7 +25,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Ánh",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 4,
@@ -38,7 +38,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Ánh",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 5,
@@ -51,7 +51,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Ánh",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 6,
@@ -64,7 +64,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Ánh",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 7,
@@ -77,7 +77,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Phương",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 8,
@@ -90,7 +90,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Phương",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 9,
@@ -103,7 +103,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Phương",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 10,
@@ -116,7 +116,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Phương",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 11,
@@ -129,7 +129,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Phương",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 12,
@@ -142,7 +142,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Phương",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 13,
@@ -155,7 +155,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Phương",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 14,
@@ -168,7 +168,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Phương",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 15,
@@ -181,7 +181,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Lộc",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 16,
@@ -194,7 +194,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Lộc",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 17,
@@ -207,7 +207,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Lộc",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 18,
@@ -220,7 +220,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Lộc",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 19,
@@ -233,7 +233,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Lộc",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 20,
@@ -246,7 +246,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Lộc",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 21,
@@ -259,7 +259,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Lộc",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 22,
@@ -272,7 +272,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Lộc",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 23,
@@ -285,7 +285,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Lộc",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 24,
@@ -298,7 +298,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Lộc",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 25,
@@ -311,7 +311,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Vân Anh",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 26,
@@ -324,7 +324,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Vân Anh",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 27,
@@ -337,7 +337,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Vân Anh",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 28,
@@ -350,7 +350,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Vân Anh",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 29,
@@ -363,7 +363,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Vân Anh",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 30,
@@ -376,7 +376,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Vân Anh",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 31,
@@ -389,7 +389,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Vân Anh",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 32,
@@ -402,7 +402,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Vân Anh",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 33,
@@ -415,7 +415,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Nam",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 34,
@@ -428,7 +428,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Nam",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 35,
@@ -441,7 +441,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Nam",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 36,
@@ -454,7 +454,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Nam",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 37,
@@ -467,7 +467,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Nam",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 38,
@@ -480,7 +480,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Nam",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 39,
@@ -493,7 +493,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Nam",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 40,
@@ -506,7 +506,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Nam",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 41,
@@ -519,7 +519,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Chi",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 42,
@@ -532,7 +532,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Chi",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 43,
@@ -545,7 +545,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Chi",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 44,
@@ -558,7 +558,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Chi",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 45,
@@ -571,7 +571,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Chi",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 46,
@@ -584,7 +584,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Chi",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 47,
@@ -597,7 +597,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Chi",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     },
     {
       "stt": 48,
@@ -610,7 +610,7 @@ const TUAN_PROJECT_DATA = {
       "director": "Dũng",
       "executor": "Chi",
       "deadline": "2026-08-15",
-      "status": "☑"
+      "status": "□"
     }
   ],
   "people": [
@@ -628,7 +628,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 3,
@@ -638,7 +638,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 4,
@@ -648,7 +648,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 5,
@@ -658,7 +658,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 6,
@@ -668,7 +668,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 7,
@@ -678,7 +678,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 8,
@@ -688,7 +688,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 9,
@@ -698,7 +698,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 10,
@@ -708,7 +708,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 11,
@@ -718,7 +718,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 12,
@@ -728,7 +728,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 13,
@@ -738,7 +738,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 14,
@@ -748,7 +748,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 15,
@@ -758,7 +758,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 16,
@@ -768,7 +768,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 17,
@@ -778,7 +778,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 18,
@@ -788,7 +788,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 19,
@@ -798,7 +798,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 20,
@@ -808,7 +808,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 21,
@@ -818,7 +818,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 22,
@@ -828,7 +828,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 23,
@@ -838,7 +838,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 24,
@@ -848,7 +848,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 25,
@@ -858,7 +858,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 26,
@@ -868,7 +868,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 27,
@@ -878,7 +878,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 28,
@@ -888,7 +888,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 29,
@@ -898,7 +898,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 30,
@@ -908,7 +908,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 31,
@@ -918,7 +918,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 32,
@@ -928,7 +928,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 33,
@@ -938,7 +938,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 34,
@@ -948,7 +948,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 35,
@@ -958,7 +958,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 36,
@@ -968,7 +968,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 37,
@@ -978,7 +978,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 38,
@@ -988,7 +988,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 39,
@@ -998,7 +998,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 40,
@@ -1008,7 +1008,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 41,
@@ -1018,7 +1018,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 42,
@@ -1028,7 +1028,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 43,
@@ -1038,7 +1038,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 44,
@@ -1048,7 +1048,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 45,
@@ -1058,7 +1058,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 46,
@@ -1068,7 +1068,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 47,
@@ -1078,7 +1078,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 48,
@@ -1088,7 +1088,7 @@ const TUAN_PROJECT_DATA = {
             "Phụ trách (PIC)"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         }
       ]
     },
@@ -1106,7 +1106,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 3,
@@ -1116,7 +1116,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 4,
@@ -1126,7 +1126,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 5,
@@ -1136,7 +1136,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 6,
@@ -1146,7 +1146,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         }
       ]
     },
@@ -1164,7 +1164,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 8,
@@ -1174,7 +1174,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 9,
@@ -1184,7 +1184,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 10,
@@ -1194,7 +1194,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 11,
@@ -1204,7 +1204,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 12,
@@ -1214,7 +1214,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 13,
@@ -1224,7 +1224,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 14,
@@ -1234,7 +1234,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         }
       ]
     },
@@ -1252,7 +1252,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 16,
@@ -1262,7 +1262,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 17,
@@ -1272,7 +1272,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 18,
@@ -1282,7 +1282,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 19,
@@ -1292,7 +1292,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 20,
@@ -1302,7 +1302,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 21,
@@ -1312,7 +1312,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 22,
@@ -1322,7 +1322,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 23,
@@ -1332,7 +1332,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 24,
@@ -1342,7 +1342,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         }
       ]
     },
@@ -1360,7 +1360,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 26,
@@ -1370,7 +1370,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 27,
@@ -1380,7 +1380,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 28,
@@ -1390,7 +1390,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 29,
@@ -1400,7 +1400,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 30,
@@ -1410,7 +1410,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 31,
@@ -1420,7 +1420,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 32,
@@ -1430,7 +1430,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         }
       ]
     },
@@ -1448,7 +1448,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 34,
@@ -1458,7 +1458,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 35,
@@ -1468,7 +1468,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 36,
@@ -1478,7 +1478,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 37,
@@ -1488,7 +1488,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 38,
@@ -1498,7 +1498,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 39,
@@ -1508,7 +1508,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 40,
@@ -1518,7 +1518,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         }
       ]
     },
@@ -1536,7 +1536,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 42,
@@ -1546,7 +1546,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 43,
@@ -1556,7 +1556,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 44,
@@ -1566,7 +1566,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 45,
@@ -1576,7 +1576,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 46,
@@ -1586,7 +1586,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 47,
@@ -1596,7 +1596,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         },
         {
           "stt": 48,
@@ -1606,7 +1606,7 @@ const TUAN_PROJECT_DATA = {
             "Thực hiện"
           ],
           "deadline": "2026-08-15",
-          "status": "☑"
+          "status": "□"
         }
       ]
     }
