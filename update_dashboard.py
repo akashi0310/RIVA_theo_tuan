@@ -104,10 +104,10 @@ if file_path:
                 "status": status_val
             })
 
-# Assign staggered deadlines (5 tasks per day starting from 2026-08-10) so dates are distinct
+# Assign staggered deadlines strictly bounded between 2026-08-10 and 2026-08-15 (max Aug 15)
 start_date = datetime.date(2026, 8, 10)
 for idx, t in enumerate(tuan_tasks):
-    day_offset = idx // 5
+    day_offset = min(idx // 8, 5)
     t["deadline"] = (start_date + datetime.timedelta(days=day_offset)).strftime("%Y-%m-%d")
 
 def build_people_stats(task_list):

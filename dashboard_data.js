@@ -76,7 +76,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Brochure bán hàng PDF + file gốc",
       "director": "Dũng",
       "executor": "Phương",
-      "deadline": "2026-08-11",
+      "deadline": "2026-08-10",
       "status": "□"
     },
     {
@@ -89,7 +89,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Flyer 2 mặt, bản in + digital",
       "director": "Dũng",
       "executor": "Phương",
-      "deadline": "2026-08-11",
+      "deadline": "2026-08-10",
       "status": "□"
     },
     {
@@ -102,7 +102,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Poster in + digital",
       "director": "Dũng",
       "executor": "Phương",
-      "deadline": "2026-08-11",
+      "deadline": "2026-08-10",
       "status": "□"
     },
     {
@@ -141,7 +141,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Cẩm nang học bổng PDF",
       "director": "Dũng",
       "executor": "Phương",
-      "deadline": "2026-08-12",
+      "deadline": "2026-08-11",
       "status": "□"
     },
     {
@@ -154,7 +154,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Landing page responsive + form lead",
       "director": "Dũng",
       "executor": "Phương",
-      "deadline": "2026-08-12",
+      "deadline": "2026-08-11",
       "status": "□"
     },
     {
@@ -167,7 +167,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Bộ banner theo kích thước từng kênh",
       "director": "Dũng",
       "executor": "Phương",
-      "deadline": "2026-08-12",
+      "deadline": "2026-08-11",
       "status": "□"
     },
     {
@@ -180,7 +180,7 @@ const TUAN_PROJECT_DATA = {
       "product": "5 bộ cẩm nang",
       "director": "Dũng",
       "executor": "Lộc",
-      "deadline": "2026-08-12",
+      "deadline": "2026-08-11",
       "status": "□"
     },
     {
@@ -193,7 +193,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Ebook/cẩm nang chọn trường",
       "director": "Dũng",
       "executor": "Lộc",
-      "deadline": "2026-08-12",
+      "deadline": "2026-08-11",
       "status": "□"
     },
     {
@@ -206,7 +206,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Cẩm nang chọn ngành",
       "director": "Dũng",
       "executor": "Lộc",
-      "deadline": "2026-08-13",
+      "deadline": "2026-08-11",
       "status": "□"
     },
     {
@@ -219,7 +219,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Guidebook + flowchart",
       "director": "Dũng",
       "executor": "Lộc",
-      "deadline": "2026-08-13",
+      "deadline": "2026-08-12",
       "status": "□"
     },
     {
@@ -232,7 +232,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Checklist dạng tick-box",
       "director": "Dũng",
       "executor": "Lộc",
-      "deadline": "2026-08-13",
+      "deadline": "2026-08-12",
       "status": "□"
     },
     {
@@ -245,7 +245,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Bộ hướng dẫn visa",
       "director": "Dũng",
       "executor": "Lộc",
-      "deadline": "2026-08-13",
+      "deadline": "2026-08-12",
       "status": "□"
     },
     {
@@ -258,7 +258,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Guidebook học bổng",
       "director": "Dũng",
       "executor": "Lộc",
-      "deadline": "2026-08-13",
+      "deadline": "2026-08-12",
       "status": "□"
     },
     {
@@ -271,7 +271,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Bộ infographic",
       "director": "Dũng",
       "executor": "Lộc",
-      "deadline": "2026-08-14",
+      "deadline": "2026-08-12",
       "status": "□"
     },
     {
@@ -284,7 +284,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Infographic timeline",
       "director": "Dũng",
       "executor": "Lộc",
-      "deadline": "2026-08-14",
+      "deadline": "2026-08-12",
       "status": "□"
     },
     {
@@ -297,7 +297,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Bộ FAQ PDF + website/social",
       "director": "Dũng",
       "executor": "Lộc",
-      "deadline": "2026-08-14",
+      "deadline": "2026-08-12",
       "status": "□"
     },
     {
@@ -310,7 +310,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Bộ template chỉnh sửa được",
       "director": "Dũng",
       "executor": "Nhi",
-      "deadline": "2026-08-14",
+      "deadline": "2026-08-12",
       "status": "□"
     },
     {
@@ -323,7 +323,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Bộ template Instagram",
       "director": "Dũng",
       "executor": "Nhi",
-      "deadline": "2026-08-14",
+      "deadline": "2026-08-13",
       "status": "□"
     },
     {
@@ -336,7 +336,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Bộ template 9:16",
       "director": "Dũng",
       "executor": "Nhi",
-      "deadline": "2026-08-15",
+      "deadline": "2026-08-13",
       "status": "□"
     },
     {
@@ -349,7 +349,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Bộ carousel + template",
       "director": "Dũng",
       "executor": "Vân Anh",
-      "deadline": "2026-08-15",
+      "deadline": "2026-08-13",
       "status": "□"
     },
     {
@@ -362,7 +362,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Bộ infographic social",
       "director": "Dũng",
       "executor": "Vân Anh",
-      "deadline": "2026-08-15",
+      "deadline": "2026-08-13",
       "status": "□"
     },
     {
@@ -375,7 +375,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Bộ story template",
       "director": "Dũng",
       "executor": "Vân Anh",
-      "deadline": "2026-08-15",
+      "deadline": "2026-08-13",
       "status": "□"
     },
     {
@@ -388,7 +388,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Content bank + template",
       "director": "Dũng",
       "executor": "Vân Anh",
-      "deadline": "2026-08-15",
+      "deadline": "2026-08-13",
       "status": "□"
     },
     {
@@ -401,7 +401,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Video 30–60 giây + bản đầy đủ",
       "director": "Dũng",
       "executor": "Vân Anh",
-      "deadline": "2026-08-16",
+      "deadline": "2026-08-13",
       "status": "□"
     },
     {
@@ -414,7 +414,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Invitation digital/in",
       "director": "Dũng",
       "executor": "Nam",
-      "deadline": "2026-08-16",
+      "deadline": "2026-08-13",
       "status": "□"
     },
     {
@@ -427,7 +427,7 @@ const TUAN_PROJECT_DATA = {
       "product": "01 Key Visual + guideline",
       "director": "Dũng",
       "executor": "Nam",
-      "deadline": "2026-08-16",
+      "deadline": "2026-08-14",
       "status": "□"
     },
     {
@@ -440,7 +440,7 @@ const TUAN_PROJECT_DATA = {
       "product": "File backdrop chuẩn in",
       "director": "Dũng",
       "executor": "Nam",
-      "deadline": "2026-08-16",
+      "deadline": "2026-08-14",
       "status": "□"
     },
     {
@@ -453,7 +453,7 @@ const TUAN_PROJECT_DATA = {
       "product": "File standee",
       "director": "Dũng",
       "executor": "Nam",
-      "deadline": "2026-08-16",
+      "deadline": "2026-08-14",
       "status": "□"
     },
     {
@@ -466,7 +466,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Agenda PDF/in",
       "director": "Dũng",
       "executor": "Nam",
-      "deadline": "2026-08-17",
+      "deadline": "2026-08-14",
       "status": "□"
     },
     {
@@ -479,7 +479,7 @@ const TUAN_PROJECT_DATA = {
       "product": "File thiết kế + file in",
       "director": "Dũng",
       "executor": "Nam",
-      "deadline": "2026-08-17",
+      "deadline": "2026-08-14",
       "status": "□"
     },
     {
@@ -492,7 +492,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Phiếu giấy + QR form",
       "director": "Dũng",
       "executor": "Nam",
-      "deadline": "2026-08-17",
+      "deadline": "2026-08-14",
       "status": "□"
     },
     {
@@ -505,7 +505,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Bộ tài liệu PDF/in",
       "director": "Dũng",
       "executor": "Nam",
-      "deadline": "2026-08-17",
+      "deadline": "2026-08-14",
       "status": "□"
     },
     {
@@ -518,7 +518,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Welcome Kit digital/in",
       "director": "Dũng",
       "executor": "Nhi",
-      "deadline": "2026-08-17",
+      "deadline": "2026-08-14",
       "status": "□"
     },
     {
@@ -531,7 +531,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Student Handbook PDF",
       "director": "Dũng",
       "executor": "Nhi",
-      "deadline": "2026-08-18",
+      "deadline": "2026-08-15",
       "status": "□"
     },
     {
@@ -544,7 +544,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Pre-departure Guide",
       "director": "Dũng",
       "executor": "Chi",
-      "deadline": "2026-08-18",
+      "deadline": "2026-08-15",
       "status": "□"
     },
     {
@@ -557,7 +557,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Checklist 1–2 trang",
       "director": "Dũng",
       "executor": "Chi",
-      "deadline": "2026-08-18",
+      "deadline": "2026-08-15",
       "status": "□"
     },
     {
@@ -570,7 +570,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Cẩm nang theo quốc gia",
       "director": "Dũng",
       "executor": "Chi",
-      "deadline": "2026-08-18",
+      "deadline": "2026-08-15",
       "status": "□"
     },
     {
@@ -583,7 +583,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Guidebook nhập học",
       "director": "Dũng",
       "executor": "Chi",
-      "deadline": "2026-08-18",
+      "deadline": "2026-08-15",
       "status": "□"
     },
     {
@@ -596,7 +596,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Card bản in + digital",
       "director": "Dũng",
       "executor": "Chi",
-      "deadline": "2026-08-19",
+      "deadline": "2026-08-15",
       "status": "□"
     },
     {
@@ -609,7 +609,7 @@ const TUAN_PROJECT_DATA = {
       "product": "Template newsletter + lịch gửi",
       "director": "Dũng",
       "executor": "Chi",
-      "deadline": "2026-08-19",
+      "deadline": "2026-08-15",
       "status": "□"
     }
   ],
@@ -735,7 +735,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-11",
+          "deadline": "2026-08-10",
           "status": "□"
         },
         {
@@ -745,7 +745,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-11",
+          "deadline": "2026-08-10",
           "status": "□"
         },
         {
@@ -755,7 +755,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-11",
+          "deadline": "2026-08-10",
           "status": "□"
         },
         {
@@ -785,7 +785,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-12",
+          "deadline": "2026-08-11",
           "status": "□"
         },
         {
@@ -795,7 +795,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-12",
+          "deadline": "2026-08-11",
           "status": "□"
         },
         {
@@ -805,7 +805,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-12",
+          "deadline": "2026-08-11",
           "status": "□"
         },
         {
@@ -815,7 +815,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-12",
+          "deadline": "2026-08-11",
           "status": "□"
         },
         {
@@ -825,7 +825,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-12",
+          "deadline": "2026-08-11",
           "status": "□"
         },
         {
@@ -835,7 +835,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-13",
+          "deadline": "2026-08-11",
           "status": "□"
         },
         {
@@ -845,7 +845,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-13",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -855,7 +855,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-13",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -865,7 +865,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-13",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -875,7 +875,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-13",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -885,7 +885,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-14",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -895,7 +895,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-14",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -905,7 +905,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-14",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -915,7 +915,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-14",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -925,7 +925,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-14",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -935,7 +935,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-15",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -945,7 +945,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-15",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -955,7 +955,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-15",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -965,7 +965,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-15",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -975,7 +975,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-15",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -985,7 +985,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-16",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -995,7 +995,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-16",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -1005,7 +1005,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-16",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1015,7 +1015,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-16",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1025,7 +1025,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-16",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1035,7 +1035,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-17",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1045,7 +1045,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-17",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1055,7 +1055,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-17",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1065,7 +1065,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-17",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1075,7 +1075,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-17",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1085,7 +1085,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-18",
+          "deadline": "2026-08-15",
           "status": "□"
         },
         {
@@ -1095,7 +1095,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-18",
+          "deadline": "2026-08-15",
           "status": "□"
         },
         {
@@ -1105,7 +1105,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-18",
+          "deadline": "2026-08-15",
           "status": "□"
         },
         {
@@ -1115,7 +1115,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-18",
+          "deadline": "2026-08-15",
           "status": "□"
         },
         {
@@ -1125,7 +1125,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-18",
+          "deadline": "2026-08-15",
           "status": "□"
         },
         {
@@ -1135,7 +1135,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-19",
+          "deadline": "2026-08-15",
           "status": "□"
         },
         {
@@ -1145,7 +1145,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Phụ trách (PIC)"
           ],
-          "deadline": "2026-08-19",
+          "deadline": "2026-08-15",
           "status": "□"
         }
       ]
@@ -1163,7 +1163,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-11",
+          "deadline": "2026-08-10",
           "status": "□"
         },
         {
@@ -1173,7 +1173,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-11",
+          "deadline": "2026-08-10",
           "status": "□"
         },
         {
@@ -1183,7 +1183,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-11",
+          "deadline": "2026-08-10",
           "status": "□"
         },
         {
@@ -1213,7 +1213,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-12",
+          "deadline": "2026-08-11",
           "status": "□"
         },
         {
@@ -1223,7 +1223,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-12",
+          "deadline": "2026-08-11",
           "status": "□"
         },
         {
@@ -1233,7 +1233,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-12",
+          "deadline": "2026-08-11",
           "status": "□"
         }
       ]
@@ -1251,7 +1251,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-12",
+          "deadline": "2026-08-11",
           "status": "□"
         },
         {
@@ -1261,7 +1261,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-12",
+          "deadline": "2026-08-11",
           "status": "□"
         },
         {
@@ -1271,7 +1271,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-13",
+          "deadline": "2026-08-11",
           "status": "□"
         },
         {
@@ -1281,7 +1281,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-13",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -1291,7 +1291,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-13",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -1301,7 +1301,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-13",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -1311,7 +1311,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-13",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -1321,7 +1321,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-14",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -1331,7 +1331,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-14",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -1341,7 +1341,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-14",
+          "deadline": "2026-08-12",
           "status": "□"
         }
       ]
@@ -1359,7 +1359,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-14",
+          "deadline": "2026-08-12",
           "status": "□"
         },
         {
@@ -1369,7 +1369,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-14",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -1379,7 +1379,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-15",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -1389,7 +1389,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-17",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1399,7 +1399,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-18",
+          "deadline": "2026-08-15",
           "status": "□"
         }
       ]
@@ -1417,7 +1417,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-15",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -1427,7 +1427,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-15",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -1437,7 +1437,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-15",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -1447,7 +1447,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-15",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -1457,7 +1457,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-16",
+          "deadline": "2026-08-13",
           "status": "□"
         }
       ]
@@ -1475,7 +1475,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-16",
+          "deadline": "2026-08-13",
           "status": "□"
         },
         {
@@ -1485,7 +1485,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-16",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1495,7 +1495,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-16",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1505,7 +1505,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-16",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1515,7 +1515,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-17",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1525,7 +1525,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-17",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1535,7 +1535,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-17",
+          "deadline": "2026-08-14",
           "status": "□"
         },
         {
@@ -1545,7 +1545,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-17",
+          "deadline": "2026-08-14",
           "status": "□"
         }
       ]
@@ -1563,7 +1563,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-18",
+          "deadline": "2026-08-15",
           "status": "□"
         },
         {
@@ -1573,7 +1573,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-18",
+          "deadline": "2026-08-15",
           "status": "□"
         },
         {
@@ -1583,7 +1583,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-18",
+          "deadline": "2026-08-15",
           "status": "□"
         },
         {
@@ -1593,7 +1593,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-18",
+          "deadline": "2026-08-15",
           "status": "□"
         },
         {
@@ -1603,7 +1603,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-19",
+          "deadline": "2026-08-15",
           "status": "□"
         },
         {
@@ -1613,7 +1613,7 @@ const TUAN_PROJECT_DATA = {
           "roles": [
             "Thực hiện"
           ],
-          "deadline": "2026-08-19",
+          "deadline": "2026-08-15",
           "status": "□"
         }
       ]
