@@ -208,7 +208,7 @@
             border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
-        /* Link Edit Modal Overlay */
+        /* Link & File Edit Modal Overlay */
         #link-modal-overlay {
             position: fixed;
             inset: 0;
@@ -227,7 +227,7 @@
             border-radius: 20px;
             padding: 30px;
             width: 100%;
-            max-width: 520px;
+            max-width: 550px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(139, 92, 246, 0.2);
         }
 
@@ -259,7 +259,8 @@
             margin-bottom: 6px;
         }
 
-        .modal-input-group input {
+        .modal-input-group input[type="url"],
+        .modal-input-group input[type="text"] {
             width: 100%;
             padding: 11px 14px;
             background: rgba(15, 23, 42, 0.8);
@@ -273,6 +274,56 @@
         .modal-input-group input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        .file-upload-dropzone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            border: 2px dashed rgba(168, 85, 247, 0.4);
+            border-radius: 12px;
+            background: rgba(168, 85, 247, 0.08);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            gap: 8px;
+        }
+
+        .file-upload-dropzone:hover {
+            background: rgba(168, 85, 247, 0.16);
+            border-color: var(--primary);
+        }
+
+        .file-upload-dropzone i {
+            font-size: 26px;
+            color: #c084fc;
+        }
+
+        .file-upload-dropzone span {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-sub);
+        }
+
+        .modal-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .modal-divider::before,
+        .modal-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
         }
 
         .modal-actions {
@@ -700,8 +751,8 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 4px 10px;
-            border-radius: 6px;
+            padding: 5px 12px;
+            border-radius: 8px;
             background: rgba(56, 189, 248, 0.12);
             border: 1px solid rgba(56, 189, 248, 0.3);
             font-size: 12px;
@@ -709,8 +760,9 @@
         }
 
         .doc-link:hover {
-            background: rgba(56, 189, 248, 0.22);
+            background: rgba(56, 189, 248, 0.25);
             color: #7dd3fc;
+            transform: translateY(-1px);
         }
 
         .btn-attach {
@@ -819,21 +871,34 @@
         </div>
     </div>
 
-    <!-- Edit Link Modal Overlay -->
+    <!-- Edit Link & File Upload Modal Overlay -->
     <div id="link-modal-overlay">
         <div class="modal-card">
-            <h3 id="modal-title"><i class="fa-solid fa-link"></i> Gắn Link Trực Tiếp</h3>
-            <p id="modal-desc">Dán đường link Google Drive, OneDrive, Figma, Website hoặc link tệp thành phẩm...</p>
+            <h3 id="modal-title"><i class="fa-solid fa-cloud-arrow-up"></i> Gắn Link Hoặc Tải Tệp Lên</h3>
+            <p id="modal-desc">Dán đường link URL hoặc tải tệp trực tiếp từ máy tính của bạn...</p>
             
+            <!-- Option A: File Upload from Computer -->
             <div class="modal-input-group">
-                <label id="modal-input-label">Đường Link URL / Link Tệp:</label>
-                <input type="url" id="modal-url-input" placeholder="https://drive.google.com/file/d/..." autofocus>
+                <label><i class="fa-solid fa-hard-drive"></i> Tải Tệp Trực Tiếp Từ Máy Tính (Không cần up Drive):</label>
+                <input type="file" id="modal-file-input" onchange="handleFileSelect(event)" style="display: none;">
+                <label for="modal-file-input" class="file-upload-dropzone">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span id="file-chosen-text">Bấm vào đây để chọn tệp từ máy tính...</span>
+                </label>
+            </div>
+
+            <div class="modal-divider">HOẶC DÁN ĐƯỜNG LINK</div>
+
+            <!-- Option B: Paste Link URL -->
+            <div class="modal-input-group">
+                <label id="modal-input-label"><i class="fa-solid fa-link"></i> Dán Đường Link Web / Drive / Canva / Figma:</label>
+                <input type="url" id="modal-url-input" placeholder="https://drive.google.com/file/d/..." oninput="handleUrlInput()">
             </div>
 
             <div class="modal-actions">
                 <button type="button" class="btn btn-secondary" onclick="closeLinkModal()">Hủy Bỏ</button>
-                <button type="button" class="btn btn-secondary" style="color: #ef4444;" onclick="clearCurrentLink()">Xóa Link</button>
-                <button type="button" class="btn btn-primary" onclick="saveLinkModal()">Lưu Đường Link</button>
+                <button type="button" class="btn btn-secondary" style="color: #ef4444;" onclick="clearCurrentLink()">Xóa Tệp/Link</button>
+                <button type="button" class="btn btn-primary" onclick="saveLinkModal()">Lưu Thành Phẩm</button>
             </div>
         </div>
     </div>
@@ -872,7 +937,7 @@
                     <div class="metric-icon"><i class="fa-solid fa-list-check"></i></div>
                 </div>
                 <div class="metric-value" id="kpi-total">0</div>
-                <p style="font-size: 12.5px; color: var(--text-muted);">Danh mục ấn phẩm truyền thông</p>
+                <p style="font-size: 12.5px; color: var(--text-muted);">Sắp xếp hạn chót từ 10/08 - 15/08</p>
             </div>
 
             <div class="metric-card">
@@ -943,7 +1008,7 @@
                         <th style="width: 210px;">Thành Phẩm (Đầu Ra)</th>
                         <th style="width: 110px;">Phụ Trách</th>
                         <th style="width: 120px;">Thực Hiện</th>
-                        <th style="width: 110px;">Deadline</th>
+                        <th style="width: 130px;">Deadline ▲</th>
                         <th style="width: 130px;">Trạng Thái</th>
                     </tr>
                 </thead>
@@ -979,11 +1044,13 @@
         let savedStatuses = JSON.parse(localStorage.getItem('tuan_publication_task_statuses_v2') || '{}');
         let customRefLinks = JSON.parse(localStorage.getItem('tuan_custom_ref_links') || '{}');
         let customProductLinks = JSON.parse(localStorage.getItem('tuan_custom_product_links') || '{}');
+        let customFiles = JSON.parse(localStorage.getItem('tuan_custom_files_v1') || '{}');
 
         let selectedCategory = 'all';
         let selectedPerson = 'all';
         let activeModalStt = null;
         let activeModalType = null;
+        let pendingUploadedFile = null;
         let chartWorkloadInstance = null;
         let chartCategoryInstance = null;
 
@@ -1017,7 +1084,6 @@
             }
         }
 
-        // Reset all statuses to pending '□'
         function resetAllStatusesToPending() {
             savedStatuses = {};
             TUAN_PROJECT_DATA.tasks.forEach(t => {
@@ -1027,24 +1093,63 @@
             renderDashboard();
         }
 
-        // Link Modal Handlers
+        // Handle direct file selection from computer
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 25 * 1024 * 1024) {
+                alert('Dung lượng tệp tải lên vượt quá 25MB! Vui lòng chọn tệp nhỏ hơn.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                pendingUploadedFile = {
+                    fileName: file.name,
+                    fileData: e.target.result
+                };
+                document.getElementById('file-chosen-text').innerHTML = `<i class="fa-solid fa-check-circle" style="color:#10b981;"></i> Đã chọn: <b>${file.name}</b>`;
+                document.getElementById('modal-url-input').value = '';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleUrlInput() {
+            if (document.getElementById('modal-url-input').value.trim()) {
+                pendingUploadedFile = null;
+                document.getElementById('file-chosen-text').textContent = 'Bấm vào đây để chọn tệp từ máy tính...';
+            }
+        }
+
+        // Link & File Modal Handlers
         function openLinkModal(stt, type) {
             activeModalStt = stt;
             activeModalType = type;
+            pendingUploadedFile = null;
 
             const isRef = type === 'ref_doc';
-            const title = isRef ? '🔗 Gắn Link Tài Liệu Tham Khảo' : '📦 Gắn Link Thành Phẩm (Đầu Ra)';
+            const title = isRef ? '🔗 Tải Tệp / Gắn Link Tài Liệu' : '📦 Tải Tệp / Gắn Link Thành Phẩm';
             const desc = isRef 
-                ? 'Dán đường link Google Drive, OneDrive, Figma, Canva hoặc tài liệu tham khảo cho ấn phẩm này...'
-                : 'Dán đường link file thành phẩm, bản preview, poster in hoặc video đã hoàn thành...';
-            const label = isRef ? 'Đường Link Tài Liệu Tham Khảo (URL):' : 'Đường Link File Thành Phẩm (URL):';
+                ? 'Tải tệp trực tiếp từ máy tính HOẶC dán link Google Drive/Web cho tài liệu này...'
+                : 'Tải tệp sản phẩm/bản thiết kế trực tiếp từ máy tính HOẶC dán link Drive/Canva...';
+            const label = isRef ? 'Đường Link URL (nếu có):' : 'Đường Link URL (nếu có):';
             
-            const existing = isRef ? (customRefLinks[stt] || '') : (customProductLinks[stt] || '');
+            const existingLink = isRef ? (customRefLinks[stt] || '') : (customProductLinks[stt] || '');
+            const existingFileKey = `${type}_${stt}`;
+            const existingFile = customFiles[existingFileKey];
 
-            document.getElementById('modal-title').innerHTML = `<i class="${isRef ? 'fa-solid fa-link' : 'fa-solid fa-box-open'}"></i> ${title}`;
+            document.getElementById('modal-title').innerHTML = `<i class="${isRef ? 'fa-solid fa-folder-open' : 'fa-solid fa-cloud-arrow-up'}"></i> ${title}`;
             document.getElementById('modal-desc').textContent = desc;
             document.getElementById('modal-input-label').textContent = label;
-            document.getElementById('modal-url-input').value = existing;
+            document.getElementById('modal-url-input').value = existingLink;
+            document.getElementById('modal-file-input').value = '';
+
+            if (existingFile) {
+                document.getElementById('file-chosen-text').innerHTML = `<i class="fa-solid fa-file-check" style="color:#10b981;"></i> Tệp hiện tại: <b>${existingFile.fileName}</b>`;
+            } else {
+                document.getElementById('file-chosen-text').textContent = 'Bấm vào đây để chọn tệp từ máy tính...';
+            }
 
             document.getElementById('link-modal-overlay').style.display = 'flex';
         }
@@ -1053,10 +1158,15 @@
             document.getElementById('link-modal-overlay').style.display = 'none';
             activeModalStt = null;
             activeModalType = null;
+            pendingUploadedFile = null;
         }
 
         function clearCurrentLink() {
             if (!activeModalStt || !activeModalType) return;
+            const fileKey = `${activeModalType}_${activeModalStt}`;
+            delete customFiles[fileKey];
+            localStorage.setItem('tuan_custom_files_v1', JSON.stringify(customFiles));
+
             if (activeModalType === 'ref_doc') {
                 delete customRefLinks[activeModalStt];
                 localStorage.setItem('tuan_custom_ref_links', JSON.stringify(customRefLinks));
@@ -1070,16 +1180,24 @@
 
         function saveLinkModal() {
             if (!activeModalStt || !activeModalType) return;
-            const url = document.getElementById('modal-url-input').value.trim();
+            const fileKey = `${activeModalType}_${activeModalStt}`;
 
-            if (activeModalType === 'ref_doc') {
-                if (url) customRefLinks[activeModalStt] = url;
-                else delete customRefLinks[activeModalStt];
-                localStorage.setItem('tuan_custom_ref_links', JSON.stringify(customRefLinks));
+            if (pendingUploadedFile) {
+                customFiles[fileKey] = pendingUploadedFile;
+                localStorage.setItem('tuan_custom_files_v1', JSON.stringify(customFiles));
             } else {
-                if (url) customProductLinks[activeModalStt] = url;
-                else delete customProductLinks[activeModalStt];
-                localStorage.setItem('tuan_custom_product_links', JSON.stringify(customProductLinks));
+                const url = document.getElementById('modal-url-input').value.trim();
+                if (url) {
+                    delete customFiles[fileKey];
+                    localStorage.setItem('tuan_custom_files_v1', JSON.stringify(customFiles));
+                    if (activeModalType === 'ref_doc') {
+                        customRefLinks[activeModalStt] = url;
+                        localStorage.setItem('tuan_custom_ref_links', JSON.stringify(customRefLinks));
+                    } else {
+                        customProductLinks[activeModalStt] = url;
+                        localStorage.setItem('tuan_custom_product_links', JSON.stringify(customProductLinks));
+                    }
+                }
             }
 
             closeLinkModal();
@@ -1116,8 +1234,7 @@
             const container = document.getElementById('personnel-pills');
             container.innerHTML = '<span class="pill-label"><i class="fa-solid fa-filter"></i> Lọc nhân sự:</span>';
 
-            // Dynamically collect all personnel names from dataset
-            const personSet = new Set(['Dũng', 'Ánh', 'Phương', 'Lộc', 'Vân Anh', 'Nam', 'Chi']);
+            const personSet = new Set(['Dũng', 'Ánh', 'Phương', 'Lộc', 'Vân Anh', 'Nam', 'Chi', 'Nhi']);
             TUAN_PROJECT_DATA.tasks.forEach(t => {
                 [t.director, t.executor].forEach(str => {
                     if (str) {
@@ -1170,7 +1287,7 @@
         }
 
         function getFilteredTasks() {
-            let tasks = TUAN_PROJECT_DATA.tasks;
+            let tasks = [...TUAN_PROJECT_DATA.tasks];
 
             if (selectedCategory !== 'all') {
                 tasks = tasks.filter(t => t.category_code === selectedCategory);
@@ -1183,7 +1300,7 @@
             const statusVal = document.getElementById('status-filter').value;
             if (statusVal !== 'all') {
                 tasks = tasks.filter(t => {
-                    const saved = savedStatuses[t.stt] || '□';
+                    const saved = savedStatuses[t.stt] || t.status;
                     return statusVal === 'done' ? saved === '☑' : saved !== '☑';
                 });
             }
@@ -1227,8 +1344,9 @@
             tbody.innerHTML = '';
 
             let doneCount = 0;
+
             TUAN_PROJECT_DATA.tasks.forEach(t => {
-                const currentStatus = savedStatuses[t.stt] || '□';
+                const currentStatus = savedStatuses[t.stt] || t.status;
                 if (currentStatus === '☑') doneCount++;
             });
 
@@ -1257,13 +1375,23 @@
 
             tasks.forEach(t => {
                 const tr = document.createElement('tr');
-                const currentStatus = savedStatuses[t.stt] || '□';
+                const currentStatus = savedStatuses[t.stt] || t.status;
                 const isDone = currentStatus === '☑';
 
-                // Format Ref Doc Column
+                // Format Ref Doc Column (URL or Local File)
+                const refFileKey = `ref_doc_${t.stt}`;
+                const refFileObj = customFiles[refFileKey];
                 const activeRefLink = customRefLinks[t.stt] || (t.ref_doc.startsWith('http') ? t.ref_doc : '');
+
                 let refDocHTML = '';
-                if (activeRefLink) {
+                if (refFileObj) {
+                    refDocHTML = `
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <a href="${refFileObj.fileData}" download="${refFileObj.fileName}" class="doc-link" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);"><i class="fa-solid fa-file-arrow-down"></i> Tải ${refFileObj.fileName}</a>
+                            <button class="btn-edit-icon" title="Đổi tệp" onclick="openLinkModal(${t.stt}, 'ref_doc')"><i class="fa-solid fa-pen"></i></button>
+                        </div>
+                    `;
+                } else if (activeRefLink) {
                     refDocHTML = `
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <a href="${activeRefLink}" target="_blank" class="doc-link"><i class="fa-solid fa-link"></i> Mở Link Tài Liệu</a>
@@ -1274,17 +1402,27 @@
                     refDocHTML = `
                         <div style="display: flex; flex-direction: column; gap: 4px;">
                             <span style="font-size: 12px; color: var(--text-sub);">${t.ref_doc}</span>
-                            <button class="btn-attach" onclick="openLinkModal(${t.stt}, 'ref_doc')"><i class="fa-solid fa-paperclip"></i> Gắn link URL</button>
+                            <button class="btn-attach" onclick="openLinkModal(${t.stt}, 'ref_doc')"><i class="fa-solid fa-paperclip"></i> Gắn tệp/URL</button>
                         </div>
                     `;
                 } else {
-                    refDocHTML = `<button class="btn-attach" onclick="openLinkModal(${t.stt}, 'ref_doc')"><i class="fa-solid fa-plus"></i> Gắn link tài liệu</button>`;
+                    refDocHTML = `<button class="btn-attach" onclick="openLinkModal(${t.stt}, 'ref_doc')"><i class="fa-solid fa-plus"></i> Gắn tệp/link tài liệu</button>`;
                 }
 
-                // Format Product Deliverable Column
+                // Format Product Deliverable Column (URL or Local File)
+                const prodFileKey = `product_${t.stt}`;
+                const prodFileObj = customFiles[prodFileKey];
                 const activeProductLink = customProductLinks[t.stt] || (t.product.startsWith('http') ? t.product : '');
+
                 let productHTML = '';
-                if (activeProductLink) {
+                if (prodFileObj) {
+                    productHTML = `
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <a href="${prodFileObj.fileData}" download="${prodFileObj.fileName}" class="doc-link" style="color: #a855f7; border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.15);"><i class="fa-solid fa-file-arrow-down"></i> Tải ${prodFileObj.fileName}</a>
+                            <button class="btn-edit-icon" title="Đổi thành phẩm" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-pen"></i></button>
+                        </div>
+                    `;
+                } else if (activeProductLink) {
                     productHTML = `
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <a href="${activeProductLink}" target="_blank" class="doc-link" style="color: #a855f7; border-color: rgba(168, 85, 247, 0.3); background: rgba(168, 85, 247, 0.15);"><i class="fa-solid fa-box-open"></i> Xem Thành Phẩm</a>
@@ -1295,11 +1433,11 @@
                     productHTML = `
                         <div style="display: flex; flex-direction: column; gap: 4px;">
                             <span class="product-badge"><i class="fa-solid fa-file-export"></i> ${t.product}</span>
-                            <button class="btn-attach" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.3);" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-cloud-arrow-up"></i> Gắn link tệp</button>
+                            <button class="btn-attach" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.3);" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-cloud-arrow-up"></i> Gắn tệp thành phẩm</button>
                         </div>
                     `;
                 } else {
-                    productHTML = `<button class="btn-attach" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.3);" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-cloud-arrow-up"></i> Gắn link sản phẩm</button>`;
+                    productHTML = `<button class="btn-attach" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.3);" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-cloud-arrow-up"></i> Gắn tệp/link sản phẩm</button>`;
                 }
 
                 const isUrgent = !isDone && (t.deadline <= '2026-08-10');
@@ -1396,7 +1534,7 @@
                 const catName = catObj ? catObj.name : t.category;
                 if (!catStats[catName]) catStats[catName] = { total: 0, done: 0 };
                 catStats[catName].total++;
-                if ((savedStatuses[t.stt] || '□') === '☑') catStats[catName].done++;
+                if ((savedStatuses[t.stt] || t.status) === '☑') catStats[catName].done++;
             });
 
             const catLabels = Object.keys(catStats);
@@ -1448,9 +1586,10 @@
             csvContent += "STT,Hạng Mục Ấn Phẩm,Nhóm Ấn Phẩm,Brief / Nội Dung,Tài Liệu Tham Khảo,Thành Phẩm (Đầu Ra),Phụ Trách (PIC),Người Thực Hiện,Deadline,Trạng Thái\n";
 
             tasks.forEach(t => {
-                const isDone = (savedStatuses[t.stt] || '□') === '☑';
+                const isDone = (savedStatuses[t.stt] || t.status) === '☑';
+                const fileObj = customFiles[`product_${t.stt}`];
                 const refLink = customRefLinks[t.stt] || t.ref_doc;
-                const prodLink = customProductLinks[t.stt] || t.product;
+                const prodLink = fileObj ? fileObj.fileName : (customProductLinks[t.stt] || t.product);
                 const row = [
                     `"${t.stt}"`,
                     `"${t.task_name.replace(/"/g, '""')}"`,
