@@ -1074,7 +1074,7 @@
     </div>
 
     <!-- External Script containing TUAN_PROJECT_DATA -->
-    <script src="dashboard_data.js?v=20260810_v6"></script>
+    <script src="dashboard_data.js?v=20260810_v7"></script>
 
     <script>
         // IndexedDB Storage Helper for Large Files
@@ -1530,10 +1530,39 @@
                             isDB: true
                         };
                     } else {
-                        customFiles[fileKey] = {
-                            fileName: pendingUploadedFile.fileName,
-                            isDB: true
-                        };
+                        // ZERO-TOKEN FALLBACK: Upload file to free cloud storage so ALL TEAM MEMBERS on ANY machine can view & download!
+                        try {
+                            const formData = new FormData();
+                            formData.append('file', pendingUploadedFile.fileBlob, pendingUploadedFile.fileName);
+
+                            const tmpRes = await fetch('https://tmpfiles.org/api/v1/upload', {
+                                method: 'POST',
+                                body: formData
+                            });
+
+                            if (tmpRes.ok) {
+                                const tmpJson = await tmpRes.json();
+                                if (tmpJson.status === 'success' && tmpJson.data && tmpJson.data.url) {
+                                    const directUrl = tmpJson.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+                                    if (activeModalType === 'ref_doc') {
+                                        customRefLinks[activeModalStt] = directUrl;
+                                    } else {
+                                        customProductLinks[activeModalStt] = directUrl;
+                                    }
+                                    customFiles[fileKey] = {
+                                        fileName: pendingUploadedFile.fileName,
+                                        publicUrl: directUrl,
+                                        isDB: true
+                                    };
+                                }
+                            }
+                        } catch (tmpErr) {
+                            console.warn("Lỗi tải đám mây tự do:", tmpErr);
+                            customFiles[fileKey] = {
+                                fileName: pendingUploadedFile.fileName,
+                                isDB: true
+                            };
+                        }
                     }
 
                     if (activeModalType === 'product') {
