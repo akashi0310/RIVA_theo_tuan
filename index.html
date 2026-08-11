@@ -1243,8 +1243,63 @@
                 .replace(/'/g, '&#39;');
         }
 
-        // Universal Opener & Downloader for Links, Base64 Data URLs, and Cloud files
-        function openAttachedFile(event, rawUrl, fileName) {
+        // IndexedDB Permanent Local File Storage Engine
+        const FileStore = {
+            dbName: 'RivaFileDB',
+            storeName: 'uploaded_files',
+            
+            async getDB() {
+                return new Promise((resolve, reject) => {
+                    const req = indexedDB.open(this.dbName, 1);
+                    req.onupgradeneeded = e => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains(this.storeName)) {
+                            db.createObjectStore(this.storeName, { keyPath: 'id' });
+                        }
+                    };
+                    req.onsuccess = e => resolve(e.target.result);
+                    req.onerror = e => reject(e.error);
+                });
+            },
+
+            async saveFile(file) {
+                const id = 'idb_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+                const db = await this.getDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(this.storeName, 'readwrite');
+                    const store = tx.objectStore(this.storeName);
+                    const record = {
+                        id: id,
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: file,
+                        updatedAt: new Date().toISOString()
+                    };
+                    const req = store.put(record);
+                    req.onsuccess = () => resolve(id);
+                    req.onerror = e => reject(e.error);
+                });
+            },
+
+            async getFile(id) {
+                try {
+                    const db = await this.getDB();
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction(this.storeName, 'readonly');
+                        const store = tx.objectStore(this.storeName);
+                        const req = store.get(id);
+                        req.onsuccess = e => resolve(e.target.result);
+                        req.onerror = e => reject(e.error);
+                    });
+                } catch (e) {
+                    return null;
+                }
+            }
+        };
+
+        // Universal Opener & Downloader for Links, Base64 Data URLs, IndexedDB, and Cloud files
+        async function openAttachedFile(event, rawUrl, fileName) {
             if (event) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -1256,7 +1311,26 @@
 
             const cleanName = (fileName || 'tai-lieu').replace(/^[📁\s]+/, '').trim() || 'tai-lieu';
 
-            // Case 1: Base64 Data URL (uploaded local file) -> Automatic Direct Download
+            // Case 1: IndexedDB Permanent Local Storage -> Direct File Download
+            if (rawUrl.startsWith('idb_') || rawUrl.startsWith('indexeddb:')) {
+                const fileId = rawUrl.replace('indexeddb:', '');
+                const record = await FileStore.getFile(fileId);
+                if (record && record.data) {
+                    const blobUrl = URL.createObjectURL(record.data);
+                    const a = document.createElement('a');
+                    a.href = blobUrl;
+                    a.download = record.name || cleanName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+                } else {
+                    alert('⚠️ Không tìm thấy dữ liệu tệp trong bộ nhớ trình duyệt!');
+                }
+                return;
+            }
+
+            // Case 2: Base64 Data URL -> Direct File Download
             if (rawUrl.startsWith('data:')) {
                 try {
                     const parts = rawUrl.split(',');
@@ -1285,8 +1359,14 @@
                 return;
             }
 
-            // Case 2: Direct File Link (tmpfiles, or direct document files) -> Trigger Download
-            if (rawUrl.includes('tmpfiles.org/dl/') || /\.(pdf|png|jpg|jpeg|gif|docx?|xlsx?|pptx?|zip|rar|csv|mp4)$/i.test(rawUrl)) {
+            // Case 3: Old Expired tmpfiles.org URLs -> Friendly Alert
+            if (rawUrl.includes('tmpfiles.org')) {
+                alert('⚠️ Tệp này thuộc đường link tạm thời cũ (tmpfiles.org) và đã bị máy chủ tự động xóa sau 60 phút.\n\n👉 Vui lòng bấm vào nút (✏️ Quản lý) và chọn lại tệp từ máy tính để lưu trữ vĩnh viễn không bao giờ mất!');
+                return;
+            }
+
+            // Case 4: Direct File Link (document/image extension) -> Direct Download
+            if (/\.(pdf|png|jpg|jpeg|gif|docx?|xlsx?|pptx?|zip|rar|csv|mp4)$/i.test(rawUrl)) {
                 const a = document.createElement('a');
                 a.href = rawUrl;
                 a.download = cleanName;
@@ -1297,7 +1377,7 @@
                 return;
             }
 
-            // Case 3: HTTP/HTTPS Web, Drive, Canva, Figma Links -> Open in new tab
+            // Case 5: HTTP/HTTPS Web, Drive, Canva, Figma Links -> Open in new tab
             try {
                 const win = window.open(rawUrl, '_blank');
                 if (!win) {
