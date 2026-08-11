@@ -1199,21 +1199,33 @@
         }
 
         async function pushGlobalStateToCloud() {
+            const payload = JSON.stringify({
+                refLinks: customRefLinks,
+                productLinks: customProductLinks,
+                statuses: savedStatuses,
+                updatedAt: new Date().toISOString()
+            });
+            // Dùng corsproxy.io để tránh lỗi redirect 302 của Apps Script
+            // (302 chuyển POST thành GET khiến doPost không được gọi)
+            const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(APPS_SCRIPT_URL);
             try {
-                const payload = {
-                    refLinks: customRefLinks,
-                    productLinks: customProductLinks,
-                    statuses: savedStatuses,
-                    updatedAt: new Date().toISOString()
-                };
-                await fetch(APPS_SCRIPT_URL, {
+                await fetch(proxyUrl, {
                     method: 'POST',
-                    mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify(payload)
+                    body: payload
                 });
             } catch (err) {
-                console.warn("Lỗi lưu dữ liệu đám mây:", err);
+                // Fallback: thử trực tiếp với no-cors
+                try {
+                    await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'text/plain' },
+                        body: payload
+                    });
+                } catch (err2) {
+                    console.warn("Lỗi lưu dữ liệu đám mây:", err2);
+                }
             }
         }
 
