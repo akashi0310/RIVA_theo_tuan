@@ -1459,15 +1459,14 @@
             renderModalItemList();
         }
 
-        // Upload file to catbox.moe (permanent, free, no token needed)
+        // Upload file to 0x0.st (CORS-enabled, free, files kept 30-365 days)
         async function uploadFileToCloud(file) {
-            // Primary: catbox.moe - permanent cloud storage, files never expire
+            // Primary: 0x0.st - supports CORS from browser, no token needed
             try {
                 const formData = new FormData();
-                formData.append('reqtype', 'fileupload');
-                formData.append('fileToUpload', file, file.name);
+                formData.append('file', file, file.name);
 
-                const res = await fetch('https://catbox.moe/user/api.php', {
+                const res = await fetch('https://0x0.st', {
                     method: 'POST',
                     body: formData
                 });
@@ -1477,20 +1476,30 @@
                     if (url.startsWith('https://')) return url;
                 }
             } catch (err) {
-                console.warn('catbox.moe upload failed, falling back to Base64:', err);
+                console.warn('0x0.st upload failed:', err);
             }
 
-            // Fallback: Base64 DataURL (local only, but better than nothing)
+            // Fallback: try litterbox.catbox.moe via CORS proxy (30-day retention)
             try {
-                return await new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = e => resolve(e.target.result);
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                });
-            } catch (e) {}
+                const formData2 = new FormData();
+                formData2.append('reqtype', 'fileupload');
+                formData2.append('time', '720h');
+                formData2.append('fileToUpload', file, file.name);
 
-            throw new Error('Không thể tải tệp lên. Vui lòng kiểm tra kết nối mạng.');
+                const res2 = await fetch('https://corsproxy.io/?' + encodeURIComponent('https://litterbox.catbox.moe/resources/internals/api.php'), {
+                    method: 'POST',
+                    body: formData2
+                });
+
+                if (res2.ok) {
+                    const url2 = (await res2.text()).trim();
+                    if (url2.startsWith('https://')) return url2;
+                }
+            } catch (err2) {
+                console.warn('Litterbox fallback failed:', err2);
+            }
+
+            throw new Error('Không thể tải tệp lên đám mây. Vui lòng kiểm tra kết nối mạng và thử lại.');
         }
 
         async function handleMultiFileSelect(event) {
@@ -1511,8 +1520,8 @@
                 textEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Đã tải lên ${files.length} tệp thành công!`;
                 renderModalItemList();
             } catch (err) {
-                alert('Lỗi tải tệp: ' + err.message);
-                textEl.textContent = 'Kéo & thả một hoặc nhiều tệp vào đây (hoặc bấm để chọn)';
+                textEl.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi: ${err.message}`;
+                alert('❌ Lỗi tải tệp: ' + err.message + '\n\n💡 Thử lại hoặc kiểm tra kết nối mạng.');
             }
         }
 
@@ -1559,8 +1568,8 @@
                     textEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Đã tải lên ${files.length} tệp thành công!`;
                     renderModalItemList();
                 } catch (err) {
-                    alert('Lỗi tải tệp: ' + err.message);
-                    textEl.textContent = 'Kéo & thả một hoặc nhiều tệp vào đây (hoặc bấm để chọn)';
+                    textEl.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi: ${err.message}`;
+                    alert('❌ Lỗi tải tệp: ' + err.message + '\n\n💡 Thử lại hoặc kiểm tra kết nối mạng.');
                 }
             }
         }
@@ -1646,6 +1655,10 @@
             renderPersonnelPills();
             await syncGlobalStateFromCloud();
             renderDashboard();
+            // Auto-sync every 30 seconds so everyone sees updates without refreshing
+            setInterval(async () => {
+                await syncGlobalStateFromCloud();
+            }, 30000);
         }
 
         function renderCategoryTabs() {
