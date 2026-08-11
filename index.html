@@ -844,13 +844,58 @@
         }
 
         @media (max-width: 768px) {
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
+            body { padding: 8px; }
 
-            body {
-                padding: 12px;
+            /* Header */
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 14px;
             }
+            .header-actions {
+                width: 100%;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .header-actions .btn { flex: 1; min-width: 120px; font-size: 12px; padding: 8px 10px; }
+
+            /* KPI cards */
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .metric-card { padding: 14px; }
+            .metric-value { font-size: 28px !important; }
+
+            /* Charts */
+            .charts-grid { grid-template-columns: 1fr; }
+            .chart-card { min-width: unset; }
+
+            /* Filter panel */
+            .filter-panel { padding: 12px; gap: 10px; }
+            .filter-row { flex-direction: column; gap: 10px; }
+            .search-box { min-width: unset; width: 100%; }
+            .filter-select { min-width: unset; width: 100%; }
+
+            /* Table: cho phép cuộn ngang */
+            .table-section { border-radius: 12px; }
+            .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            table { min-width: 900px; font-size: 12px; }
+            th, td { padding: 10px 8px; white-space: nowrap; }
+
+            /* Modal */
+            .modal-box {
+                width: 95vw !important;
+                max-width: unset !important;
+                max-height: 90vh;
+                overflow-y: auto;
+                padding: 16px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .metrics-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .metric-card { padding: 10px 12px; }
+            .metric-value { font-size: 22px !important; }
+            .pill { font-size: 11px; padding: 5px 10px; }
         }
     </style>
 </head>
