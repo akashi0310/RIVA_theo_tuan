@@ -413,7 +413,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Event brief + agenda",
       "product": "Invitation digital/in",
       "director": "Dũng",
-      "executor": "Nam",
+      "executor": "Sơn",
       "deadline": "2026-08-13",
       "status": "□"
     },
@@ -426,7 +426,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Event brief + logo + chủ đề",
       "product": "01 Key Visual + guideline",
       "director": "Dũng",
-      "executor": "Nam",
+      "executor": "Sơn",
       "deadline": "2026-08-14",
       "status": "□"
     },
@@ -439,7 +439,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Event KV + logo đối tác",
       "product": "File backdrop chuẩn in",
       "director": "Dũng",
-      "executor": "Nam",
+      "executor": "Sơn",
       "deadline": "2026-08-14",
       "status": "□"
     },
@@ -452,7 +452,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Event brief + KV",
       "product": "File standee",
       "director": "Dũng",
-      "executor": "Nam",
+      "executor": "Sơn",
       "deadline": "2026-08-14",
       "status": "□"
     },
@@ -465,7 +465,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Timeline BTC",
       "product": "Agenda PDF/in",
       "director": "Dũng",
-      "executor": "Nam",
+      "executor": "Sơn",
       "deadline": "2026-08-14",
       "status": "□"
     },
@@ -478,7 +478,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Danh sách tham dự",
       "product": "File thiết kế + file in",
       "director": "Dũng",
-      "executor": "Nam",
+      "executor": "Sơn",
       "deadline": "2026-08-14",
       "status": "□"
     },
@@ -491,7 +491,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "Form tư vấn + CRM",
       "product": "Phiếu giấy + QR form",
       "director": "Dũng",
-      "executor": "Nam",
+      "executor": "Sơn",
       "deadline": "2026-08-14",
       "status": "□"
     },
@@ -504,7 +504,7 @@ const TUAN_PROJECT_DATA = {
       "ref_doc": "FAQ + case study + nội dung tư vấn",
       "product": "Bộ tài liệu PDF/in",
       "director": "Dũng",
-      "executor": "Nam",
+      "executor": "Sơn",
       "deadline": "2026-08-14",
       "status": "□"
     },
@@ -1463,7 +1463,7 @@ const TUAN_PROJECT_DATA = {
       ]
     },
     {
-      "name": "Nam",
+      "name": "Sơn",
       "directorCount": 0,
       "executorCount": 8,
       "totalTasks": 8,
