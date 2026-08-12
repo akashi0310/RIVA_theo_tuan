@@ -1596,47 +1596,16 @@
             renderModalItemList();
         }
 
-        // Upload file to 0x0.st (CORS-enabled, free, files kept 30-365 days)
+        const CLOUDFLARE_UPLOAD_URL = 'https://riva-upload.dungdh-2540047.workers.dev';
+
         async function uploadFileToCloud(file) {
-            // Primary: 0x0.st - supports CORS from browser, no token needed
-            try {
-                const formData = new FormData();
-                formData.append('file', file, file.name);
-
-                const res = await fetch('https://0x0.st', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (res.ok) {
-                    const url = (await res.text()).trim();
-                    if (url.startsWith('https://')) return url;
-                }
-            } catch (err) {
-                console.warn('0x0.st upload failed:', err);
-            }
-
-            // Fallback: try litterbox.catbox.moe via CORS proxy (30-day retention)
-            try {
-                const formData2 = new FormData();
-                formData2.append('reqtype', 'fileupload');
-                formData2.append('time', '720h');
-                formData2.append('fileToUpload', file, file.name);
-
-                const res2 = await fetch('https://corsproxy.io/?' + encodeURIComponent('https://litterbox.catbox.moe/resources/internals/api.php'), {
-                    method: 'POST',
-                    body: formData2
-                });
-
-                if (res2.ok) {
-                    const url2 = (await res2.text()).trim();
-                    if (url2.startsWith('https://')) return url2;
-                }
-            } catch (err2) {
-                console.warn('Litterbox fallback failed:', err2);
-            }
-
-            throw new Error('Không thể tải tệp lên đám mây. Vui lòng kiểm tra kết nối mạng và thử lại.');
+            const formData = new FormData();
+            formData.append('file', file, file.name);
+            const res = await fetch(CLOUDFLARE_UPLOAD_URL, { method: 'POST', body: formData });
+            if (!res.ok) throw new Error('Upload thất bại: HTTP ' + res.status);
+            const url = (await res.text()).trim();
+            if (!url.startsWith('https://')) throw new Error('URL không hợp lệ');
+            return url;
         }
 
         async function handleMultiFileSelect(event) {
