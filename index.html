@@ -980,8 +980,7 @@
 
             <!-- Option A: Add File(s) from Computer -->
             <div class="modal-input-group">
-                <label><i class="fa-solid fa-cloud-arrow-up"></i> Tải Thêm Tệp Từ Máy Tính (Có thể chọn nhiều
-                    tệp):</label>
+                <label><i class="fa-solid fa-hard-drive"></i> Tải Thêm Tệp Từ Máy Tính (Lưu cục bộ – xem được trên trình duyệt này, để chia sẻ team dùng Link Drive bên dưới):</label>
                 <input type="file" id="modal-file-input" multiple onchange="handleMultiFileSelect(event)"
                     style="display: none;">
                 <label for="modal-file-input" class="file-upload-dropzone" id="file-dropzone"
@@ -1258,20 +1257,30 @@
                     if (data.refLinks) {
                         Object.keys(data.refLinks).forEach(stt => {
                             if (!Array.isArray(data.refLinks[stt])) return;
-                            // Skip if this key is in the deleted list
+                            // Skip if local already marked this as deleted
                             if (deletedKeys.has(stt + '_ref')) return;
                             customRefLinks[stt] = data.refLinks[stt];
+                            // Cloud sent [] → another machine deleted → mark locally too
+                            if (data.refLinks[stt].length === 0) {
+                                deletedKeys.add(stt + '_ref');
+                            }
                         });
                     }
                     if (data.productLinks) {
                         Object.keys(data.productLinks).forEach(stt => {
                             if (!Array.isArray(data.productLinks[stt])) return;
-                            // Skip if this key is in the deleted list
+                            // Skip if local already marked this as deleted
                             if (deletedKeys.has(stt + '_prod')) return;
                             customProductLinks[stt] = data.productLinks[stt];
+                            // Cloud sent [] → another machine deleted → mark locally too
+                            if (data.productLinks[stt].length === 0) {
+                                deletedKeys.add(stt + '_prod');
+                            }
                         });
                     }
-                    // Apply deletedKeys again after merging cloud data (deletions always win)
+                    // Persist any new deletedKeys picked up from cloud data
+                    localStorage.setItem('tuan_deleted_keys_v3', JSON.stringify([...deletedKeys]));
+                    // Apply deletedKeys again — deletions always win over any cloud data
                     applyDeletedKeys();
                     if (data.statuses) {
                         savedStatuses = { ...savedStatuses, ...data.statuses };
@@ -1634,21 +1643,21 @@
             if (files.length === 0) return;
 
             const textEl = document.getElementById('file-chosen-text');
-            textEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#c084fc;"></i> Đang tải ${files.length} tệp lên Đám Mây công khai...`;
+            textEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#c084fc;"></i> Đang lưu ${files.length} tệp...`;
 
             try {
                 for (let file of files) {
-                    const cloudUrl = await uploadFileToCloud(file);
+                    const idbKey = await FileStore.saveFile(file);
                     currentModalItemList.push({
                         title: '📁 ' + file.name,
-                        url: cloudUrl
+                        url: idbKey
                     });
                 }
-                textEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Đã tải lên ${files.length} tệp thành công!`;
+                textEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Đã lưu ${files.length} tệp thành công!`;
                 renderModalItemList();
             } catch (err) {
                 textEl.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi: ${err.message}`;
-                alert('❌ Lỗi tải tệp: ' + err.message + '\n\n💡 Thử lại hoặc kiểm tra kết nối mạng.');
+                alert('❌ Lỗi lưu tệp: ' + err.message);
             }
         }
 
@@ -1682,21 +1691,21 @@
             const files = Array.from(e.dataTransfer.files);
             if (files.length > 0) {
                 const textEl = document.getElementById('file-chosen-text');
-                textEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#c084fc;"></i> Đang tải ${files.length} tệp lên Đám Mây công khai...`;
+                textEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#c084fc;"></i> Đang lưu ${files.length} tệp...`;
 
                 try {
                     for (let file of files) {
-                        const cloudUrl = await uploadFileToCloud(file);
+                        const idbKey = await FileStore.saveFile(file);
                         currentModalItemList.push({
                             title: '📁 ' + file.name,
-                            url: cloudUrl
+                            url: idbKey
                         });
                     }
-                    textEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Đã tải lên ${files.length} tệp thành công!`;
+                    textEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Đã lưu ${files.length} tệp thành công!`;
                     renderModalItemList();
                 } catch (err) {
                     textEl.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi: ${err.message}`;
-                    alert('❌ Lỗi tải tệp: ' + err.message + '\n\n💡 Thử lại hoặc kiểm tra kết nối mạng.');
+                    alert('❌ Lỗi lưu tệp: ' + err.message);
                 }
             }
         }
