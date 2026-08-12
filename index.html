@@ -847,39 +847,23 @@
             body { padding: 8px; }
 
             /* Header */
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-                padding: 14px;
-            }
-            .header-actions {
-                width: 100%;
-                flex-wrap: wrap;
-                gap: 8px;
-            }
+            .header { flex-direction: column; align-items: flex-start; gap: 12px; padding: 14px; }
+            .header-actions { width: 100%; flex-wrap: wrap; gap: 8px; }
             .header-actions .btn { flex: 1; min-width: 120px; font-size: 12px; padding: 8px 10px; }
 
-            /* KPI cards */
+            /* KPI */
             .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .metric-card { padding: 14px; }
-            .metric-value { font-size: 28px !important; }
+            .metric-value { font-size: 26px !important; }
 
             /* Charts */
             .charts-grid { grid-template-columns: 1fr; }
-            .chart-card { min-width: unset; }
 
-            /* Filter panel */
+            /* Filter */
             .filter-panel { padding: 12px; gap: 10px; }
             .filter-row { flex-direction: column; gap: 10px; }
             .search-box { min-width: unset; width: 100%; }
             .filter-select { min-width: unset; width: 100%; }
-
-            /* Table: cho phép cuộn ngang */
-            .table-section { border-radius: 12px; }
-            .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-            table { min-width: 900px; font-size: 12px; }
-            th, td { padding: 10px 8px; white-space: nowrap; }
 
             /* Modal */
             .modal-box {
@@ -889,12 +873,49 @@
                 overflow-y: auto;
                 padding: 16px !important;
             }
+
+            /* Chuyển bảng thành card view trên mobile */
+            .table-section { background: transparent; border: none; box-shadow: none; padding: 0; }
+            table, thead, tbody, th, td, tr { display: block; }
+            thead { display: none; }
+
+            tbody tr {
+                background: var(--bg-card);
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-md);
+                margin-bottom: 14px;
+                padding: 0;
+                overflow: hidden;
+            }
+            tbody tr:hover { background: var(--bg-card-hover); }
+
+            tbody td {
+                display: flex;
+                flex-direction: column;
+                padding: 10px 14px;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+                white-space: normal;
+                word-break: break-word;
+            }
+            tbody td:last-child { border-bottom: none; }
+
+            tbody td::before {
+                content: attr(data-label);
+                font-size: 10px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.8px;
+                color: var(--text-muted);
+                margin-bottom: 5px;
+            }
+            tbody td[data-label=""]::before { display: none; }
+            tbody td[data-label=""] { padding: 12px 14px; background: rgba(139,92,246,0.06); }
         }
 
         @media (max-width: 480px) {
             .metrics-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
             .metric-card { padding: 10px 12px; }
-            .metric-value { font-size: 22px !important; }
+            .metric-value { font-size: 20px !important; }
             .pill { font-size: 11px; padding: 5px 10px; }
         }
     </style>
@@ -1156,11 +1177,11 @@
             try { refs = { ...refs, ...JSON.parse(localStorage.getItem('tuan_custom_ref_links_v3') || '{}') }; } catch (e) { }
             try { prods = { ...prods, ...JSON.parse(localStorage.getItem('tuan_custom_product_links_v3') || '{}') }; } catch (e) { }
 
-            // Recover old single link v1/v2 format
+            // Recover old single link v1/v2 format (only if key does NOT exist in v3 at all)
             try {
                 const oldRefs = JSON.parse(localStorage.getItem('tuan_custom_ref_links') || '{}');
                 Object.keys(oldRefs).forEach(stt => {
-                    if (!refs[stt] || (Array.isArray(refs[stt]) && refs[stt].length === 0)) {
+                    if (!refs.hasOwnProperty(stt)) {
                         refs[stt] = [{ title: 'Tài liệu 1', url: oldRefs[stt] }];
                     }
                 });
@@ -1169,13 +1190,13 @@
             try {
                 const oldProds = JSON.parse(localStorage.getItem('tuan_custom_product_links') || '{}');
                 Object.keys(oldProds).forEach(stt => {
-                    if (!prods[stt] || (Array.isArray(prods[stt]) && prods[stt].length === 0)) {
+                    if (!prods.hasOwnProperty(stt)) {
                         prods[stt] = [{ title: 'Thành phẩm 1', url: oldProds[stt] }];
                     }
                 });
             } catch (e) { }
 
-            // Recover old uploaded files v1 format
+            // Recover old uploaded files v1 format (only if key does NOT exist in v3 at all)
             try {
                 const oldFiles = JSON.parse(localStorage.getItem('tuan_custom_files_v1') || '{}');
                 Object.keys(oldFiles).forEach(key => {
@@ -1187,12 +1208,12 @@
                         const url = f.publicUrl || f.fileData || '';
                         if (url && stt) {
                             if (type === 'ref_doc') {
-                                if (!refs[stt]) refs[stt] = [];
+                                if (!refs.hasOwnProperty(stt)) refs[stt] = [];
                                 if (Array.isArray(refs[stt]) && !refs[stt].some(i => i.url === url)) {
                                     refs[stt].push({ title: '📁 ' + (f.fileName || 'File'), url: url });
                                 }
                             } else {
-                                if (!prods[stt]) prods[stt] = [];
+                                if (!prods.hasOwnProperty(stt)) prods[stt] = [];
                                 if (Array.isArray(prods[stt]) && !prods[stt].some(i => i.url === url)) {
                                     prods[stt].push({ title: '📁 ' + (f.fileName || 'File'), url: url });
                                 }
@@ -1217,14 +1238,22 @@
                     const data = await res.json();
                     if (data.refLinks) {
                         Object.keys(data.refLinks).forEach(stt => {
-                            if (Array.isArray(data.refLinks[stt]) && data.refLinks[stt].length > 0) {
+                            if (!Array.isArray(data.refLinks[stt])) return;
+                            const localVal = customRefLinks[stt];
+                            const localIsExplicitlyEmpty = Array.isArray(localVal) && localVal.length === 0;
+                            // Local empty array = user deleted → cloud must NOT restore it
+                            if (!localIsExplicitlyEmpty) {
                                 customRefLinks[stt] = data.refLinks[stt];
                             }
                         });
                     }
                     if (data.productLinks) {
                         Object.keys(data.productLinks).forEach(stt => {
-                            if (Array.isArray(data.productLinks[stt]) && data.productLinks[stt].length > 0) {
+                            if (!Array.isArray(data.productLinks[stt])) return;
+                            const localVal = customProductLinks[stt];
+                            const localIsExplicitlyEmpty = Array.isArray(localVal) && localVal.length === 0;
+                            // Local empty array = user deleted → cloud must NOT restore it
+                            if (!localIsExplicitlyEmpty) {
                                 customProductLinks[stt] = data.productLinks[stt];
                             }
                         });
@@ -1997,18 +2026,18 @@
                         : `<span style="font-size: 12.5px; color: var(--text-sub); font-weight: 600;"><i class="fa-regular fa-calendar"></i> ${t.deadline}</span>`);
 
                 tr.innerHTML = `
-                    <td style="font-weight: 700; color: var(--primary); text-align: center;">${t.stt}</td>
-                    <td>
-                        <div style="font-weight: 700; color: #fff; margin-bottom: 4px;">${t.task_name}</div>
+                    <td data-label="STT" style="font-weight:700;color:var(--primary);text-align:center;">${t.stt}</td>
+                    <td data-label="Ấn phẩm">
+                        <div style="font-weight:700;color:#fff;margin-bottom:4px;">${t.task_name}</div>
                         <span class="badge badge-cat">${t.category}</span>
                     </td>
-                    <td style="font-size: 12.5px; line-height: 1.5; color: var(--text-sub);">${t.brief || 'Theo yêu cầu'}</td>
-                    <td>${refDocHTML}</td>
-                    <td>${productHTML}</td>
-                    <td><span class="badge badge-dir"><i class="fa-solid fa-user-gear"></i> ${t.director}</span></td>
-                    <td><span class="badge badge-exec"><i class="fa-solid fa-user-pen"></i> ${t.executor}</span></td>
-                    <td>${deadlineHTML}</td>
-                    <td>
+                    <td data-label="Mô tả" style="font-size:12.5px;line-height:1.5;color:var(--text-sub);">${t.brief || 'Theo yêu cầu'}</td>
+                    <td data-label="Tài liệu tham khảo">${refDocHTML}</td>
+                    <td data-label="Thành phẩm đầu ra">${productHTML}</td>
+                    <td data-label="Phụ trách"><span class="badge badge-dir"><i class="fa-solid fa-user-gear"></i> ${t.director}</span></td>
+                    <td data-label="Thực hiện"><span class="badge badge-exec"><i class="fa-solid fa-user-pen"></i> ${t.executor}</span></td>
+                    <td data-label="Deadline">${deadlineHTML}</td>
+                    <td data-label="Trạng thái">
                         <span class="badge status-badge ${isDone ? 'status-done' : 'status-pending'}" data-stt="${t.stt}">
                             ${isDone ? '<i class="fa-solid fa-check-double"></i> Đã xong' : '<i class="fa-solid fa-hourglass-half"></i> Chưa xong'}
                         </span>
