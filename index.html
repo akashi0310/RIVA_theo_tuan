@@ -1160,6 +1160,8 @@
         let customRefLinks = JSON.parse(localStorage.getItem('tuan_custom_ref_links_v3') || '{}');
         let customProductLinks = JSON.parse(localStorage.getItem('tuan_custom_product_links_v3') || '{}');
         let savedStatuses = JSON.parse(localStorage.getItem('tuan_publication_task_statuses_v2') || '{}');
+        // Cloud-synced deletion list: "stt_ref" | "stt_prod" — survives reload & cross-device
+        let deletedKeys = new Set(JSON.parse(localStorage.getItem('tuan_deleted_keys_v3') || '[]'));
 
         let selectedCategory = 'all';
         let selectedPerson = 'all';
@@ -1227,37 +1229,50 @@
         }
 
         // Sync State to/from Cloud
+        function applyDeletedKeys() {
+            deletedKeys.forEach(key => {
+                const idx = key.lastIndexOf('_');
+                const stt = key.substring(0, idx);
+                const type = key.substring(idx + 1);
+                if (type === 'ref') customRefLinks[stt] = [];
+                if (type === 'prod') { customProductLinks[stt] = []; savedStatuses[stt] = '□'; }
+            });
+        }
+
         async function syncGlobalStateFromCloud() {
             const local = loadAllLocalData();
             customRefLinks = local.refs;
             customProductLinks = local.prods;
+            // Apply local deletions first (protects against stale localStorage from old keys)
+            applyDeletedKeys();
 
             try {
                 const res = await fetch(APPS_SCRIPT_URL + '?v=' + Date.now());
                 if (res.ok) {
                     const data = await res.json();
+                    // Sync cloud deletedKeys (authoritative across all devices)
+                    if (data.deletedKeys && Array.isArray(data.deletedKeys)) {
+                        deletedKeys = new Set(data.deletedKeys);
+                        localStorage.setItem('tuan_deleted_keys_v3', JSON.stringify([...deletedKeys]));
+                    }
                     if (data.refLinks) {
                         Object.keys(data.refLinks).forEach(stt => {
                             if (!Array.isArray(data.refLinks[stt])) return;
-                            const localVal = customRefLinks[stt];
-                            const localIsExplicitlyEmpty = Array.isArray(localVal) && localVal.length === 0;
-                            // Local empty array = user deleted → cloud must NOT restore it
-                            if (!localIsExplicitlyEmpty) {
-                                customRefLinks[stt] = data.refLinks[stt];
-                            }
+                            // Skip if this key is in the deleted list
+                            if (deletedKeys.has(stt + '_ref')) return;
+                            customRefLinks[stt] = data.refLinks[stt];
                         });
                     }
                     if (data.productLinks) {
                         Object.keys(data.productLinks).forEach(stt => {
                             if (!Array.isArray(data.productLinks[stt])) return;
-                            const localVal = customProductLinks[stt];
-                            const localIsExplicitlyEmpty = Array.isArray(localVal) && localVal.length === 0;
-                            // Local empty array = user deleted → cloud must NOT restore it
-                            if (!localIsExplicitlyEmpty) {
-                                customProductLinks[stt] = data.productLinks[stt];
-                            }
+                            // Skip if this key is in the deleted list
+                            if (deletedKeys.has(stt + '_prod')) return;
+                            customProductLinks[stt] = data.productLinks[stt];
                         });
                     }
+                    // Apply deletedKeys again after merging cloud data (deletions always win)
+                    applyDeletedKeys();
                     if (data.statuses) {
                         savedStatuses = { ...savedStatuses, ...data.statuses };
                     }
@@ -1277,6 +1292,7 @@
                 refLinks: customRefLinks,
                 productLinks: customProductLinks,
                 statuses: savedStatuses,
+                deletedKeys: [...deletedKeys],
                 updatedAt: new Date().toISOString()
             });
             // Dùng corsproxy.io để tránh lỗi redirect 302 của Apps Script
@@ -1729,6 +1745,7 @@
             }
 
             try {
+                const dKey = activeModalStt + '_' + (activeModalType === 'ref_doc' ? 'ref' : 'prod');
                 if (activeModalType === 'ref_doc') {
                     customRefLinks[activeModalStt] = currentModalItemList;
                 } else {
@@ -1740,6 +1757,13 @@
                     }
                 }
 
+                // Update deleted-keys list and persist to localStorage
+                if (currentModalItemList.length === 0) {
+                    deletedKeys.add(dKey);
+                } else {
+                    deletedKeys.delete(dKey);
+                }
+                localStorage.setItem('tuan_deleted_keys_v3', JSON.stringify([...deletedKeys]));
                 localStorage.setItem('tuan_custom_ref_links_v3', JSON.stringify(customRefLinks));
                 localStorage.setItem('tuan_custom_product_links_v3', JSON.stringify(customProductLinks));
                 localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
