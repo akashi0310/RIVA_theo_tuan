@@ -1255,6 +1255,14 @@
                 const json = await res.json();
                 const data = json.record;
 
+                // So sánh updatedAt: nếu cloud không thay đổi so với lần sync trước thì bỏ qua merge
+                const lastSeenAt = localStorage.getItem('tuan_last_cloud_updated_at') || '';
+                const cloudUpdatedAt = data.updatedAt || '';
+                if (cloudUpdatedAt && cloudUpdatedAt === lastSeenAt) {
+                    // Cloud chưa có gì mới — giữ nguyên local, không cần merge
+                    return;
+                }
+
                 // Cloud deletedKeys là nguồn chân lý cho tất cả các máy
                 if (data.deletedKeys && Array.isArray(data.deletedKeys)) {
                     deletedKeys = new Set(data.deletedKeys);
@@ -1286,6 +1294,9 @@
                 localStorage.setItem('tuan_custom_ref_links_v3', JSON.stringify(customRefLinks));
                 localStorage.setItem('tuan_custom_product_links_v3', JSON.stringify(customProductLinks));
                 localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
+
+                // Ghi nhớ updatedAt của cloud lần này để lần sau so sánh
+                if (cloudUpdatedAt) localStorage.setItem('tuan_last_cloud_updated_at', cloudUpdatedAt);
             } catch (err) {
                 console.warn('JSONBin sync thất bại, dùng dữ liệu local:', err);
             } finally {
@@ -1294,12 +1305,13 @@
         }
 
         async function pushGlobalStateToCloud() {
+            const newUpdatedAt = new Date().toISOString();
             const payload = {
                 refLinks: customRefLinks,
                 productLinks: customProductLinks,
                 statuses: savedStatuses,
                 deletedKeys: [...deletedKeys],
-                updatedAt: new Date().toISOString()
+                updatedAt: newUpdatedAt
             };
             const res = await fetch(JSONBIN_WRITE_URL, {
                 method: 'PUT',
@@ -1309,6 +1321,8 @@
                 },
                 body: JSON.stringify(payload)
             });
+            // Cập nhật lastSeenAt ngay sau khi push thành công để lần poll tiếp theo không merge lại chính mình
+            if (res.ok) localStorage.setItem('tuan_last_cloud_updated_at', newUpdatedAt);
             if (!res.ok) throw new Error('JSONBin PUT thất bại: HTTP ' + res.status);
         }
 
