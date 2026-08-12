@@ -1445,7 +1445,7 @@
                     document.body.removeChild(a);
                     setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
                 } else {
-                    alert('⚠️ Không tìm thấy dữ liệu tệp trong bộ nhớ trình duyệt!');
+                    alert('⚠️ Tệp này được lưu cục bộ trên máy của người đã tải lên và không thể chia sẻ với thiết bị khác.\n\n👉 Hãy nhờ người đó tải lại tệp — lần này hệ thống sẽ tự động đẩy lên đám mây để cả team mở được.');
                 }
                 return;
             }
@@ -1627,22 +1627,36 @@
             if (files.length === 0) return;
 
             const textEl = document.getElementById('file-chosen-text');
-            textEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#c084fc;"></i> Đang lưu ${files.length} tệp...`;
+            textEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#c084fc;"></i> Đang tải lên đám mây ${files.length} tệp...`;
 
-            try {
-                for (let file of files) {
-                    const idbKey = await FileStore.saveFile(file);
-                    currentModalItemList.push({
-                        title: '📁 ' + file.name,
-                        url: idbKey
-                    });
+            let successCount = 0;
+            let localCount = 0;
+            for (let file of files) {
+                try {
+                    // Try cloud upload first so all team members can access the file
+                    const cloudUrl = await uploadFileToCloud(file);
+                    currentModalItemList.push({ title: '📁 ' + file.name, url: cloudUrl });
+                    successCount++;
+                } catch (cloudErr) {
+                    // Cloud failed — fall back to IndexedDB but warn the user
+                    console.warn('Cloud upload failed, using local storage:', cloudErr);
+                    try {
+                        const idbKey = await FileStore.saveFile(file);
+                        currentModalItemList.push({ title: '📁 ' + file.name, url: idbKey });
+                        localCount++;
+                    } catch (idbErr) {
+                        textEl.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi lưu tệp: ${idbErr.message}`;
+                        alert('❌ Lỗi lưu tệp: ' + idbErr.message);
+                    }
                 }
-                textEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Đã lưu ${files.length} tệp thành công!`;
-                renderModalItemList();
-            } catch (err) {
-                textEl.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi: ${err.message}`;
-                alert('❌ Lỗi lưu tệp: ' + err.message);
             }
+
+            if (localCount > 0) {
+                textEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i> ${successCount} tệp lên đám mây, ${localCount} tệp lưu cục bộ (chỉ mở được trên máy này!)`;
+            } else {
+                textEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Đã tải ${successCount} tệp lên đám mây — cả team có thể mở!`;
+            }
+            renderModalItemList();
         }
 
         function handleDragOver(e) {
@@ -1675,22 +1689,34 @@
             const files = Array.from(e.dataTransfer.files);
             if (files.length > 0) {
                 const textEl = document.getElementById('file-chosen-text');
-                textEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#c084fc;"></i> Đang lưu ${files.length} tệp...`;
+                textEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#c084fc;"></i> Đang tải lên đám mây ${files.length} tệp...`;
 
-                try {
-                    for (let file of files) {
-                        const idbKey = await FileStore.saveFile(file);
-                        currentModalItemList.push({
-                            title: '📁 ' + file.name,
-                            url: idbKey
-                        });
+                let successCount = 0;
+                let localCount = 0;
+                for (let file of files) {
+                    try {
+                        const cloudUrl = await uploadFileToCloud(file);
+                        currentModalItemList.push({ title: '📁 ' + file.name, url: cloudUrl });
+                        successCount++;
+                    } catch (cloudErr) {
+                        console.warn('Cloud upload failed, using local storage:', cloudErr);
+                        try {
+                            const idbKey = await FileStore.saveFile(file);
+                            currentModalItemList.push({ title: '📁 ' + file.name, url: idbKey });
+                            localCount++;
+                        } catch (idbErr) {
+                            textEl.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi lưu tệp: ${idbErr.message}`;
+                            alert('❌ Lỗi lưu tệp: ' + idbErr.message);
+                        }
                     }
-                    textEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Đã lưu ${files.length} tệp thành công!`;
-                    renderModalItemList();
-                } catch (err) {
-                    textEl.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi: ${err.message}`;
-                    alert('❌ Lỗi lưu tệp: ' + err.message);
                 }
+
+                if (localCount > 0) {
+                    textEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i> ${successCount} tệp lên đám mây, ${localCount} tệp lưu cục bộ (chỉ mở được trên máy này!)`;
+                } else {
+                    textEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Đã tải ${successCount} tệp lên đám mây — cả team có thể mở!`;
+                }
+                renderModalItemList();
             }
         }
 
@@ -1787,10 +1813,10 @@
             renderPersonnelPills();
             await syncGlobalStateFromCloud();
             renderDashboard();
-            // Auto-sync every 30 seconds so everyone sees updates without refreshing
+            // Auto-sync every 5 seconds so everyone sees updates quickly
             setInterval(async () => {
                 await syncGlobalStateFromCloud();
-            }, 30000);
+            }, 5000);
         }
 
         function renderCategoryTabs() {
