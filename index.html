@@ -1152,8 +1152,11 @@
     <script src="dashboard_data.js?v=20260810_v10"></script>
 
     <script>
-        // Real-time Global Cloud Database Endpoint (Zero token needed, Instant Team Sync)
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwiQbVc7lyTqYoh_DCsZ4o6GTu1paSJHY-t-JpQGNPukFi8nXTWnAsjQFKfjzSHJTB6/exec';
+        // JSONBin.io — Cloud storage (CORS-native, no proxy needed)
+        const JSONBIN_BIN_ID = '6a7be2baf5f4af5e290a25a5';
+        const JSONBIN_API_KEY = '$2a$10$elSaMQ2O9X3kg1qtJT1pPu1NChOCJVad65jLL7SyBxIlFBGQbIz1W';
+        const JSONBIN_READ_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`;
+        const JSONBIN_WRITE_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
         // State Management (Arrays of objects for multi-link / multi-file per task STT)
         let customRefLinks = JSON.parse(localStorage.getItem('tuan_custom_ref_links_v3') || '{}');
@@ -1242,90 +1245,71 @@
             const local = loadAllLocalData();
             customRefLinks = local.refs;
             customProductLinks = local.prods;
-            // Apply local deletions first (protects against stale localStorage from old keys)
             applyDeletedKeys();
 
             try {
-                const res = await fetch(APPS_SCRIPT_URL + '?v=' + Date.now());
-                if (res.ok) {
-                    const data = await res.json();
-                    // Sync cloud deletedKeys (authoritative across all devices)
-                    if (data.deletedKeys && Array.isArray(data.deletedKeys)) {
-                        deletedKeys = new Set(data.deletedKeys);
-                        localStorage.setItem('tuan_deleted_keys_v3', JSON.stringify([...deletedKeys]));
-                    }
-                    if (data.refLinks) {
-                        Object.keys(data.refLinks).forEach(stt => {
-                            if (!Array.isArray(data.refLinks[stt])) return;
-                            // Skip if local already marked this as deleted
-                            if (deletedKeys.has(stt + '_ref')) return;
-                            customRefLinks[stt] = data.refLinks[stt];
-                            // Cloud sent [] → another machine deleted → mark locally too
-                            if (data.refLinks[stt].length === 0) {
-                                deletedKeys.add(stt + '_ref');
-                            }
-                        });
-                    }
-                    if (data.productLinks) {
-                        Object.keys(data.productLinks).forEach(stt => {
-                            if (!Array.isArray(data.productLinks[stt])) return;
-                            // Skip if local already marked this as deleted
-                            if (deletedKeys.has(stt + '_prod')) return;
-                            customProductLinks[stt] = data.productLinks[stt];
-                            // Cloud sent [] → another machine deleted → mark locally too
-                            if (data.productLinks[stt].length === 0) {
-                                deletedKeys.add(stt + '_prod');
-                            }
-                        });
-                    }
-                    // Persist any new deletedKeys picked up from cloud data
+                const res = await fetch(JSONBIN_READ_URL, {
+                    headers: { 'X-Master-Key': JSONBIN_API_KEY }
+                });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const json = await res.json();
+                const data = json.record;
+
+                // Cloud deletedKeys là nguồn chân lý cho tất cả các máy
+                if (data.deletedKeys && Array.isArray(data.deletedKeys)) {
+                    deletedKeys = new Set(data.deletedKeys);
                     localStorage.setItem('tuan_deleted_keys_v3', JSON.stringify([...deletedKeys]));
-                    // Apply deletedKeys again — deletions always win over any cloud data
-                    applyDeletedKeys();
-                    if (data.statuses) {
-                        savedStatuses = { ...savedStatuses, ...data.statuses };
-                    }
-                    localStorage.setItem('tuan_custom_ref_links_v3', JSON.stringify(customRefLinks));
-                    localStorage.setItem('tuan_custom_product_links_v3', JSON.stringify(customProductLinks));
-                    localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
                 }
+
+                if (data.refLinks) {
+                    Object.keys(data.refLinks).forEach(stt => {
+                        if (!Array.isArray(data.refLinks[stt])) return;
+                        if (deletedKeys.has(stt + '_ref')) return;
+                        customRefLinks[stt] = data.refLinks[stt];
+                        if (data.refLinks[stt].length === 0) deletedKeys.add(stt + '_ref');
+                    });
+                }
+                if (data.productLinks) {
+                    Object.keys(data.productLinks).forEach(stt => {
+                        if (!Array.isArray(data.productLinks[stt])) return;
+                        if (deletedKeys.has(stt + '_prod')) return;
+                        customProductLinks[stt] = data.productLinks[stt];
+                        if (data.productLinks[stt].length === 0) deletedKeys.add(stt + '_prod');
+                    });
+                }
+                if (data.statuses) {
+                    savedStatuses = { ...savedStatuses, ...data.statuses };
+                }
+
+                localStorage.setItem('tuan_deleted_keys_v3', JSON.stringify([...deletedKeys]));
+                applyDeletedKeys();
+                localStorage.setItem('tuan_custom_ref_links_v3', JSON.stringify(customRefLinks));
+                localStorage.setItem('tuan_custom_product_links_v3', JSON.stringify(customProductLinks));
+                localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
             } catch (err) {
-                console.warn("Lỗi tải dữ liệu đám mây:", err);
+                console.warn('JSONBin sync thất bại, dùng dữ liệu local:', err);
             } finally {
                 renderDashboard();
             }
         }
 
         async function pushGlobalStateToCloud() {
-            const payload = JSON.stringify({
+            const payload = {
                 refLinks: customRefLinks,
                 productLinks: customProductLinks,
                 statuses: savedStatuses,
                 deletedKeys: [...deletedKeys],
                 updatedAt: new Date().toISOString()
+            };
+            const res = await fetch(JSONBIN_WRITE_URL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': JSONBIN_API_KEY
+                },
+                body: JSON.stringify(payload)
             });
-            // Dùng corsproxy.io để tránh lỗi redirect 302 của Apps Script
-            // (302 chuyển POST thành GET khiến doPost không được gọi)
-            const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(APPS_SCRIPT_URL);
-            try {
-                await fetch(proxyUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: payload
-                });
-            } catch (err) {
-                // Fallback: thử trực tiếp với no-cors
-                try {
-                    await fetch(APPS_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'text/plain' },
-                        body: payload
-                    });
-                } catch (err2) {
-                    console.warn("Lỗi lưu dữ liệu đám mây:", err2);
-                }
-            }
+            if (!res.ok) throw new Error('JSONBin PUT thất bại: HTTP ' + res.status);
         }
 
         // Authentication Handler
@@ -1777,11 +1761,15 @@
                 localStorage.setItem('tuan_custom_product_links_v3', JSON.stringify(customProductLinks));
                 localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
 
-                // 100% Real-time Public Cloud Sync across all computers!
-                await pushGlobalStateToCloud();
+                // Đồng bộ lên JSONBin cloud
+                try {
+                    await pushGlobalStateToCloud();
+                } catch (cloudErr) {
+                    console.warn('Cloud push thất bại (dữ liệu đã lưu local):', cloudErr);
+                }
 
             } catch (err) {
-                console.error("Lỗi đồng bộ Đám mây:", err);
+                console.error('Lỗi lưu:', err);
             } finally {
                 if (saveBtn) {
                     saveBtn.disabled = false;
