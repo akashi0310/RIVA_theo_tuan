@@ -1527,16 +1527,19 @@
                 const titleText = item.title || ('Món ' + (idx + 1));
                 const urlText = item.url.length > 50 ? item.url.substring(0, 50) + '...' : item.url;
 
+                const isLocal = item.url.startsWith('idb_');
                 const isCatbox = item.url.includes('catbox.moe');
                 const isFileLink = /\.(pdf|png|jpg|jpeg|gif|webp|docx?|xlsx?|pptx?|zip|rar|csv|mp4)$/i.test(item.url);
+                const localBadgeModal = isLocal ? `<span title="Tệp cục bộ — chỉ mở được trên máy này" style="color:#f59e0b;font-size:10px;padding:2px 6px;border:1px solid rgba(245,158,11,0.4);border-radius:4px;background:rgba(245,158,11,0.12);white-space:nowrap;flex-shrink:0;"><i class="fa-solid fa-triangle-exclamation"></i> Cục bộ</span>` : '';
                 itemDiv.innerHTML = `
                     <div style="display: flex; align-items: center; gap: 8px; overflow: hidden; flex: 1;">
-                        <i class="${isUrl ? 'fa-solid fa-link' : 'fa-solid fa-file-export'}" style="color: #c084fc;"></i>
+                        <i class="${isLocal ? 'fa-solid fa-hard-drive' : isUrl ? 'fa-solid fa-link' : 'fa-solid fa-file-export'}" style="color: ${isLocal ? '#f59e0b' : '#c084fc'};"></i>
                         <span style="font-weight: 700; color: #fff; white-space: nowrap;">${escapeHtml(titleText)}:</span>
-                        <a href="#" data-url="${escapeHtml(item.url)}" data-title="${escapeHtml(titleText)}" onclick="openAttachedFile(event, this.dataset.url, this.dataset.title)" style="color: #38bdf8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500;">${escapeHtml(urlText)}</a>
+                        <a href="#" data-url="${escapeHtml(item.url)}" data-title="${escapeHtml(titleText)}" onclick="openAttachedFile(event, this.dataset.url, this.dataset.title)" style="color: ${isLocal ? '#f59e0b' : '#38bdf8'}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500;">${escapeHtml(urlText)}</a>
+                        ${localBadgeModal}
                     </div>
                     <div style="display:flex;gap:4px;margin-left:8px;">
-                        ${(isCatbox || isFileLink) ? `<a href="${escapeHtml(item.url)}" download target="_blank" class="btn-edit-icon" style="color:#10b981;" title="Tải xuống"><i class="fa-solid fa-download"></i></a>` : ''}
+                        ${(!isLocal && (isCatbox || isFileLink)) ? `<a href="${escapeHtml(item.url)}" download target="_blank" class="btn-edit-icon" style="color:#10b981;" title="Tải xuống"><i class="fa-solid fa-download"></i></a>` : ''}
                         <button type="button" class="btn-edit-icon" style="color: #ef4444;" title="Xóa đính kèm này" onclick="removeModalItemAt(${idx})">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
@@ -1992,12 +1995,14 @@
                 if (Array.isArray(refVal) && refVal.length > 0) {
                     const linksHTML = refVal.map((item, idx) => {
                         const titleText = item.title || ('Tài liệu ' + (idx + 1));
-                        const isDownloadable = item.url.includes('catbox.moe') || /\.(pdf|png|jpg|jpeg|gif|webp|docx?|xlsx?|pptx?|zip|rar|csv|mp4)$/i.test(item.url);
+                        const isLocal = item.url.startsWith('idb_');
+                        const isDownloadable = !isLocal && (item.url.includes('catbox.moe') || /\.(pdf|png|jpg|jpeg|gif|webp|docx?|xlsx?|pptx?|zip|rar|csv|mp4)$/i.test(item.url));
+                        const localBadge = isLocal ? `<span title="Tệp này chỉ mở được trên máy người đã tải lên. Nhờ họ tải lại để cả team xem được." style="cursor:help;color:#f59e0b;font-size:10px;padding:2px 6px;border:1px solid rgba(245,158,11,0.4);border-radius:4px;background:rgba(245,158,11,0.12);white-space:nowrap;"><i class="fa-solid fa-triangle-exclamation"></i> Cục bộ</span>` : '';
                         return `
                             <span style="display:inline-flex;align-items:center;gap:3px;">
                                 <a href="#" data-url="${escapeHtml(item.url)}" data-title="${escapeHtml(titleText)}" onclick="openAttachedFile(event, this.dataset.url, this.dataset.title)" class="doc-link" title="${escapeHtml(titleText)}">
                                     <i class="fa-solid fa-paperclip"></i> ${escapeHtml(titleText)}
-                                </a>${isDownloadable ? `<a href="${escapeHtml(item.url)}" download target="_blank" title="Tải xuống" style="color:#10b981;font-size:11px;padding:2px 5px;border:1px solid rgba(16,185,129,0.4);border-radius:4px;background:rgba(16,185,129,0.1);"><i class="fa-solid fa-download"></i></a>` : ''}
+                                </a>${localBadge}${isDownloadable ? `<a href="${escapeHtml(item.url)}" download target="_blank" title="Tải xuống" style="color:#10b981;font-size:11px;padding:2px 5px;border:1px solid rgba(16,185,129,0.4);border-radius:4px;background:rgba(16,185,129,0.1);"><i class="fa-solid fa-download"></i></a>` : ''}
                             </span>
                         `;
                     }).join('');
@@ -2032,12 +2037,14 @@
                 if (Array.isArray(prodVal) && prodVal.length > 0) {
                     const linksHTML = prodVal.map((item, idx) => {
                         const titleText = item.title || ('Thành phẩm ' + (idx + 1));
-                        const isDownloadable = item.url.includes('catbox.moe') || /\.(pdf|png|jpg|jpeg|gif|webp|docx?|xlsx?|pptx?|zip|rar|csv|mp4)$/i.test(item.url);
+                        const isLocal = item.url.startsWith('idb_');
+                        const isDownloadable = !isLocal && (item.url.includes('catbox.moe') || /\.(pdf|png|jpg|jpeg|gif|webp|docx?|xlsx?|pptx?|zip|rar|csv|mp4)$/i.test(item.url));
+                        const localBadge = isLocal ? `<span title="Tệp này chỉ mở được trên máy người đã tải lên. Nhờ họ tải lại để cả team xem được." style="cursor:help;color:#f59e0b;font-size:10px;padding:2px 6px;border:1px solid rgba(245,158,11,0.4);border-radius:4px;background:rgba(245,158,11,0.12);white-space:nowrap;"><i class="fa-solid fa-triangle-exclamation"></i> Cục bộ</span>` : '';
                         return `
                             <span style="display:inline-flex;align-items:center;gap:3px;">
                                 <a href="#" data-url="${escapeHtml(item.url)}" data-title="${escapeHtml(titleText)}" onclick="openAttachedFile(event, this.dataset.url, this.dataset.title)" class="doc-link" style="color: #a855f7; border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.15);" title="${escapeHtml(titleText)}">
                                     <i class="fa-solid fa-box-open"></i> ${escapeHtml(titleText)}
-                                </a>${isDownloadable ? `<a href="${escapeHtml(item.url)}" download target="_blank" title="Tải xuống" style="color:#10b981;font-size:11px;padding:2px 5px;border:1px solid rgba(16,185,129,0.4);border-radius:4px;background:rgba(16,185,129,0.1);"><i class="fa-solid fa-download"></i></a>` : ''}
+                                </a>${localBadge}${isDownloadable ? `<a href="${escapeHtml(item.url)}" download target="_blank" title="Tải xuống" style="color:#10b981;font-size:11px;padding:2px 5px;border:1px solid rgba(16,185,129,0.4);border-radius:4px;background:rgba(16,185,129,0.1);"><i class="fa-solid fa-download"></i></a>` : ''}
                             </span>
                         `;
                     }).join('');
