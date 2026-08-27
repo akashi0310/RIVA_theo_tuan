@@ -1246,11 +1246,8 @@
     <script src="dashboard_data.js"></script>
 
     <script>
-        // JSONBin.io — Cloud storage (CORS-native, no proxy needed)
-        const JSONBIN_BIN_ID = '6a7be2baf5f4af5e290a25a5';
-        const JSONBIN_API_KEY = '$2a$10$elSaMQ2O9X3kg1qtJT1pPu1NChOCJVad65jLL7SyBxIlFBGQbIz1W';
-        const JSONBIN_READ_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`;
-        const JSONBIN_WRITE_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+        // Firebase Realtime Database — Cloud storage (free, no request limits)
+        const FIREBASE_URL = 'https://riva-checklist-default-rtdb.asia-southeast1.firebasedatabase.app/state.json';
 
         // State Management (Arrays of objects for multi-link / multi-file per task STT)
         let customRefLinks = JSON.parse(localStorage.getItem('tuan_custom_ref_links_v3') || '{}');
@@ -1342,13 +1339,14 @@
             applyDeletedKeys();
 
             try {
-                const res = await fetch(JSONBIN_READ_URL + '?t=' + Date.now(), {
-                    headers: { 'X-Master-Key': JSONBIN_API_KEY },
+                const res = await fetch(FIREBASE_URL + '?t=' + Date.now(), {
                     cache: 'no-store'
                 });
                 if (!res.ok) throw new Error('HTTP ' + res.status);
-                const json = await res.json();
-                const data = json.record;
+                const data = await res.json();
+
+                // Firebase trả về null nếu chưa có dữ liệu
+                if (!data) { return; }
 
                 // So sánh updatedAt: nếu cloud không thay đổi so với lần sync trước thì bỏ qua merge
                 const lastSeenAt = localStorage.getItem('tuan_last_cloud_updated_at') || '';
@@ -1393,7 +1391,7 @@
                 // Ghi nhớ updatedAt của cloud lần này để lần sau so sánh
                 if (cloudUpdatedAt) localStorage.setItem('tuan_last_cloud_updated_at', cloudUpdatedAt);
             } catch (err) {
-                console.warn('JSONBin sync thất bại, dùng dữ liệu local:', err);
+                console.warn('Firebase sync thất bại, dùng dữ liệu local:', err);
             } finally {
                 renderDashboard();
             }
@@ -1408,17 +1406,14 @@
                 deletedKeys: [...deletedKeys],
                 updatedAt: newUpdatedAt
             };
-            const res = await fetch(JSONBIN_WRITE_URL, {
+            const res = await fetch(FIREBASE_URL, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': JSONBIN_API_KEY
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
             // Cập nhật lastSeenAt ngay sau khi push thành công để lần poll tiếp theo không merge lại chính mình
             if (res.ok) localStorage.setItem('tuan_last_cloud_updated_at', newUpdatedAt);
-            if (!res.ok) throw new Error('JSONBin PUT thất bại: HTTP ' + res.status);
+            if (!res.ok) throw new Error('Firebase PUT thất bại: HTTP ' + res.status);
         }
 
         // Authentication Handler
