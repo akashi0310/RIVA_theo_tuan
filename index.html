@@ -1,0 +1,2370 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Hệ Thống Quản Lý & Phân Công Ấn Phẩm Truyền Thông - Tuấn</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <style>
+        :root {
+            --bg-body: #090d16;
+            --bg-card: rgba(22, 30, 46, 0.85);
+            --bg-card-hover: rgba(30, 41, 59, 0.95);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(168, 85, 247, 0.35);
+
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-sub: #cbd5e1;
+
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --primary-light: rgba(139, 92, 246, 0.18);
+
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.18);
+
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.18);
+
+            --danger: #ef4444;
+
+            --role-director: #c084fc;
+            --role-director-bg: rgba(192, 132, 252, 0.15);
+
+            --role-executor: #2dd4bf;
+            --role-executor-bg: rgba(45, 212, 191, 0.15);
+
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --shadow-glow: 0 0 25px rgba(139, 92, 246, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.18) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.15) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.08) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 1650px;
+            margin: 0 auto;
+        }
+
+        /* Authentication Overlay */
+        #auth-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(9, 13, 22, 0.96);
+            backdrop-filter: blur(25px);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(139, 92, 246, 0.25);
+            text-align: center;
+            animation: modalFadeIn 0.4s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.92) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .auth-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, #ec4899 100%);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+
+        .auth-card h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .auth-card p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .auth-input-box {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .auth-input-box i.input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .auth-input-box input {
+            width: 100%;
+            padding: 13px 44px 13px 46px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .auth-input-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3.5px rgba(139, 92, 246, 0.25);
+        }
+
+        .toggle-password-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6);
+        }
+
+        .auth-error-msg {
+            display: none;
+            color: #ef4444;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 12px;
+            background: rgba(239, 68, 68, 0.15);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* Edit Link & File Upload Modal Overlay */
+        #link-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(9, 13, 22, 0.88);
+            backdrop-filter: blur(15px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.96) 0%, rgba(15, 23, 42, 0.98) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 20px;
+            padding: 28px;
+            width: 100%;
+            max-width: 640px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(139, 92, 246, 0.2);
+        }
+
+        .modal-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+
+        .modal-input-group {
+            margin-bottom: 14px;
+        }
+
+        .modal-input-group label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+        }
+
+        .modal-input-group input[type="url"],
+        .modal-input-group input[type="text"] {
+            padding: 10px 12px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13.5px;
+            outline: none;
+        }
+
+        .modal-input-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        .file-upload-dropzone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            border: 2px dashed rgba(168, 85, 247, 0.4);
+            border-radius: 12px;
+            background: rgba(168, 85, 247, 0.08);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            gap: 6px;
+        }
+
+        .file-upload-dropzone:hover {
+            background: rgba(168, 85, 247, 0.16);
+            border-color: var(--primary);
+        }
+
+        .file-upload-dropzone i {
+            font-size: 24px;
+            color: #c084fc;
+        }
+
+        .file-upload-dropzone span {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-sub);
+        }
+
+        .modal-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 14px 0;
+            color: var(--text-muted);
+            font-size: 11.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .modal-divider::before,
+        .modal-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-logo {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--primary) 0%, #ec4899 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.35);
+        }
+
+        .brand-text h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #fff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-text p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-sub);
+            border-color: var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* Summary Stats Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .metric-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            background: var(--icon-bg, var(--primary-light));
+            color: var(--card-accent, var(--primary));
+        }
+
+        .metric-value {
+            font-size: 34px;
+            font-weight: 800;
+            margin: 12px 0 4px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            border-radius: 10px;
+            transition: width 0.8s ease;
+        }
+
+        /* Filter Panel & Personnel Pills */
+        .filter-panel {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 280px;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 11px 14px 11px 42px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .filter-select {
+            padding: 11px 14px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+            min-width: 180px;
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary);
+        }
+
+        .personnel-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .pill-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .pill {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pill:hover {
+            background: rgba(139, 92, 246, 0.2);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .pill.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
+        }
+
+        .pill .count-badge {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1px 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            overflow-x: auto;
+        }
+
+        .cat-btn {
+            padding: 10px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cat-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .cat-btn.active {
+            color: #fff;
+            background: var(--primary);
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
+        }
+
+        /* Table Design */
+        .table-container {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        thead {
+            background: rgba(15, 23, 42, 0.85);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            padding: 16px 18px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 16px 18px;
+            font-size: 13.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-sub);
+            vertical-align: middle;
+        }
+
+        tbody tr {
+            transition: background 0.15s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge-cat {
+            background: rgba(139, 92, 246, 0.15);
+            color: #c4b5fd;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .badge-dir {
+            background: var(--role-director-bg);
+            color: var(--role-director);
+            border: 1px solid rgba(192, 132, 252, 0.3);
+        }
+
+        .badge-exec {
+            background: var(--role-executor-bg);
+            color: var(--role-executor);
+            border: 1px solid rgba(45, 212, 191, 0.3);
+        }
+
+        .status-badge {
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            user-select: none;
+        }
+
+        .status-badge:active {
+            transform: scale(0.95);
+        }
+
+        .status-done {
+            background: var(--success-light);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+
+        .status-pending {
+            background: var(--warning-light);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }
+
+        .doc-link {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 8px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            font-size: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .doc-link:hover {
+            background: rgba(56, 189, 248, 0.25);
+            color: #7dd3fc;
+            transform: translateY(-1px);
+        }
+
+        .btn-attach {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            color: var(--text-muted);
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-attach:hover {
+            background: rgba(139, 92, 246, 0.18);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        .btn-edit-icon {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 3px 6px;
+            font-size: 11px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-edit-icon:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Charts Section */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+        }
+
+        .chart-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 280px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+            }
+
+            /* Header */
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 14px;
+            }
+
+            .header-actions {
+                width: 100%;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .header-actions .btn {
+                flex: 1;
+                min-width: 120px;
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            /* KPI */
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .metric-card {
+                padding: 14px;
+            }
+
+            .metric-value {
+                font-size: 26px !important;
+            }
+
+            /* Charts */
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Filter */
+            .filter-panel {
+                padding: 12px;
+                gap: 10px;
+            }
+
+            .filter-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-box {
+                min-width: unset;
+                width: 100%;
+            }
+
+            .filter-select {
+                min-width: unset;
+                width: 100%;
+            }
+
+            /* Modal */
+            .modal-box {
+                width: 95vw !important;
+                max-width: unset !important;
+                max-height: 90vh;
+                overflow-y: auto;
+                padding: 16px !important;
+            }
+
+            /* Chuyển bảng thành card view trên mobile */
+            .table-section {
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tbody tr {
+                background: var(--bg-card);
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-md);
+                margin-bottom: 14px;
+                padding: 0;
+                overflow: hidden;
+            }
+
+            tbody tr:hover {
+                background: var(--bg-card-hover);
+            }
+
+            tbody td {
+                display: flex;
+                flex-direction: column;
+                padding: 10px 14px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                white-space: normal;
+                word-break: break-word;
+            }
+
+            tbody td:last-child {
+                border-bottom: none;
+            }
+
+            tbody td::before {
+                content: attr(data-label);
+                font-size: 10px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.8px;
+                color: var(--text-muted);
+                margin-bottom: 5px;
+            }
+
+            tbody td[data-label=""]::before {
+                display: none;
+            }
+
+            tbody td[data-label=""] {
+                padding: 12px 14px;
+                background: rgba(139, 92, 246, 0.06);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .metric-card {
+                padding: 10px 12px;
+            }
+
+            .metric-value {
+                font-size: 20px !important;
+            }
+
+            .pill {
+                font-size: 11px;
+                padding: 5px 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Authentication Modal Overlay -->
+    <div id="auth-overlay">
+        <div class="auth-card">
+            <div class="auth-icon">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h2>Xác Thực Truy Cập</h2>
+            <p>Hệ Thống Quản Lý & Phân Công Ấn Phẩm Truyền Thông - Tuấn</p>
+
+            <form id="auth-form" onsubmit="handleAuth(event)">
+                <div class="auth-input-box">
+                    <i class="fa-solid fa-key input-icon"></i>
+                    <input type="password" id="auth-password" placeholder="Nhập mật khẩu truy cập..." required
+                        autofocus>
+                    <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility()">
+                        <i class="fa-solid fa-eye" id="toggle-icon"></i>
+                    </button>
+                </div>
+                <button type="submit" class="auth-btn">
+                    <span>Đăng Nhập</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <div class="auth-error-msg" id="auth-error">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Mật khẩu không chính xác!
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Multi-Link & Multi-File Upload Modal Overlay -->
+    <div id="link-modal-overlay">
+        <div class="modal-card">
+            <h3 id="modal-title"><i class="fa-solid fa-folder-plus"></i> Quản Lý Tài Liệu & Thành Phẩm</h3>
+            <p id="modal-desc">Thêm nhiều link hoặc tải lên nhiều tệp cùng lúc cho ấn phẩm này...</p>
+
+            <div
+                style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 12px; padding: 10px 14px; margin-bottom: 16px; font-size: 12.5px; color: #a7f3d0; line-height: 1.5;">
+                <i class="fa-solid fa-cloud-arrow-up" style="color: #10b981; margin-right: 6px;"></i>
+                <b>Đồng bộ Đám mây Toàn Team:</b> Mọi tệp và đường link thêm vào đây đều tự động lưu lên đám mây công
+                khai ➔ <b>Toàn bộ nhân viên trên tất cả máy tính đều xem và tải về được ngay lập tức!</b>
+            </div>
+
+            <!-- List of Currently Attached Items -->
+            <div style="margin-bottom: 18px;">
+                <label
+                    style="font-size: 12.5px; font-weight: 700; color: var(--text-sub); display: block; margin-bottom: 8px;">
+                    <i class="fa-solid fa-paperclip"></i> Danh Sách Tệp & Link Đã Đính Kèm (<span
+                        id="attached-count">0</span>):
+                </label>
+                <div id="attached-items-list"
+                    style="max-height: 160px; overflow-y: auto; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 10px; padding: 10px; display: flex; flex-direction: column; gap: 8px;">
+                    <!-- Item rows inserted dynamically -->
+                </div>
+            </div>
+
+            <!-- Option A: Add File(s) from Computer -->
+            <div class="modal-input-group">
+                <label><i class="fa-solid fa-hard-drive"></i> Tải Thêm Tệp Từ Máy Tính (Lưu cục bộ – xem được trên trình
+                    duyệt này, để chia sẻ team dùng Link Drive bên dưới):</label>
+                <input type="file" id="modal-file-input" multiple onchange="handleMultiFileSelect(event)"
+                    style="display: none;">
+                <label for="modal-file-input" class="file-upload-dropzone" id="file-dropzone"
+                    ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"
+                    ondrop="handleMultiFileDrop(event)">
+                    <i class="fa-solid fa-cloud-arrow-up" style="font-size: 26px; color: #c084fc;"></i>
+                    <span id="file-chosen-text">Kéo & thả một hoặc nhiều tệp vào đây (hoặc bấm để chọn)</span>
+                </label>
+            </div>
+
+            <div class="modal-divider">HOẶC THÊM ĐƯỜNG LINK</div>
+
+            <!-- Option B: Add URL Link -->
+            <div class="modal-input-group">
+                <label><i class="fa-solid fa-link"></i> Dán Đường Link (Web / Drive / Canva / Figma):</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="modal-link-title-input" placeholder="Tên gợi nhớ (Ví dụ: Link Drive 1)"
+                        style="flex: 1;">
+                    <input type="url" id="modal-url-input" placeholder="https://drive.google.com/..." style="flex: 2;">
+                    <button type="button" class="btn btn-secondary" onclick="addLinkToCurrentList()"
+                        style="white-space: nowrap;"><i class="fa-solid fa-plus"></i> Thêm</button>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeLinkModal()">Hủy Bỏ</button>
+                <button type="button" class="btn btn-secondary" style="color: #ef4444;"
+                    onclick="clearAllModalItems()">Xóa TẤT CẢ</button>
+                <button type="button" class="btn btn-primary" id="modal-save-btn" onclick="saveLinkModal()">Lưu Đính
+                    Kèm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application Container -->
+    <div class="container">
+        <!-- Header Bar -->
+        <header class="header">
+            <div class="brand">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-bullhorn"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>CHECKLIST CÔNG VIỆC ẤN PHẨM TRUYỀN THÔNG</h1>
+                    <p>Hệ Thống Theo Dõi Tiến Độ, Phân Công Nhân Sự & Quản Lý Thành Phẩm (Tuấn)</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="resetFilters()">
+                    <i class="fa-solid fa-filter-circle-xmark"></i> Xóa Bộ Lọc
+                </button>
+                <button class="btn btn-secondary" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.4);" onclick="clearLocalCacheAndReload()" title="Xóa bộ nhớ tạm trên máy và tải lại mới nhất">
+                    <i class="fa-solid fa-arrows-rotate"></i> Làm Mới Dữ Liệu
+                </button>
+                <button class="btn btn-primary" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);" onclick="exportToExcel()">
+                    <i class="fa-solid fa-file-excel"></i> Xuất File Excel
+                </button>
+                <button class="btn btn-secondary" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.4);" onclick="logoutUser()" title="Đăng xuất khỏi hệ thống">
+                    <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
+                </button>
+            </div>
+        </header>
+
+        <!-- KPI Metrics Grid -->
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span>Tổng Số Ấn Phẩm</span>
+                    <div class="metric-icon"><i class="fa-solid fa-list-check"></i></div>
+                </div>
+                <div class="metric-value" id="kpi-total">0</div>
+                <p style="font-size: 12.5px; color: var(--text-muted);">Sắp xếp hạn chót từ 10/08 - 15/08</p>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span>Đã Hoàn Thành</span>
+                    <div class="metric-icon" style="--icon-bg: var(--success-light); --card-accent: var(--success);"><i
+                            class="fa-solid fa-circle-check"></i></div>
+                </div>
+                <div class="metric-value" id="kpi-done" style="color: var(--success);">0</div>
+                <p style="font-size: 12.5px; color: var(--text-muted);">Tỉ lệ hoàn thành công việc</p>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span>Đang Triển Khai</span>
+                    <div class="metric-icon" style="--icon-bg: var(--warning-light); --card-accent: var(--warning);"><i
+                            class="fa-solid fa-hourglass-half"></i></div>
+                </div>
+                <div class="metric-value" id="kpi-pending" style="color: var(--warning);">0</div>
+                <p style="font-size: 12.5px; color: var(--text-muted);">Cần tiếp tục hoàn thiện</p>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span>Tiến Độ Tổng Thể</span>
+                    <div class="metric-icon"><i class="fa-solid fa-chart-line"></i></div>
+                </div>
+                <div class="metric-value" id="kpi-rate">0%</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="kpi-progress-bar" style="width: 0%;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Panel & Personnel Pills -->
+        <section class="filter-panel">
+            <div class="filter-row">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="search-input" class="search-input"
+                        placeholder="Tìm kiếm ấn phẩm, brief, tài liệu, người thực hiện..." oninput="renderDashboard()">
+                </div>
+
+                <select id="status-filter" class="filter-select" onchange="renderDashboard()">
+                    <option value="all">Tất cả trạng thái</option>
+                    <option value="done">☑ Đã hoàn thành</option>
+                    <option value="pending">□ Chưa hoàn thành</option>
+                </select>
+            </div>
+
+            <!-- Personnel Pills -->
+            <div class="personnel-pills" id="personnel-pills">
+                <!-- Dynamic Pill Buttons -->
+            </div>
+        </section>
+
+        <!-- Category Tabs -->
+        <nav class="category-tabs" id="category-tabs">
+            <!-- Dynamic Category Buttons -->
+        </nav>
+
+        <!-- Main Task Table -->
+        <section class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">STT</th>
+                        <th style="width: 220px;">Hạng Mục Ấn Phẩm</th>
+                        <th>Brief / Nội Dung Thực Hiện</th>
+                        <th style="width: 230px;">Tài Liệu Tham Khảo</th>
+                        <th style="width: 230px;">Thành Phẩm (Đầu Ra)</th>
+                        <th style="width: 110px;">Phụ Trách</th>
+                        <th style="width: 120px;">Thực Hiện</th>
+                        <th style="width: 130px;">Deadline ▲</th>
+                        <th style="width: 130px;">Trạng Thái</th>
+                    </tr>
+                </thead>
+                <tbody id="task-table-body">
+                    <!-- Dynamic Task Rows -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-grid">
+            <div class="chart-card">
+                <h3><i class="fa-solid fa-users"></i> Khối Lượng Ấn Phẩm Theo Nhân Sự</h3>
+                <div class="chart-container">
+                    <canvas id="chart-workload"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h3><i class="fa-solid fa-chart-pie"></i> Tỷ Lệ Hoàn Thành Theo Hạng Mục</h3>
+                <div class="chart-container">
+                    <canvas id="chart-categories"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- External Script containing TUAN_PROJECT_DATA -->
+    <script src="dashboard_data.js"></script>
+
+    <script>
+        // JSONBin.io — Cloud storage (CORS-native, no proxy needed)
+        const JSONBIN_BIN_ID = '6a7be2baf5f4af5e290a25a5';
+        const JSONBIN_API_KEY = '$2a$10$elSaMQ2O9X3kg1qtJT1pPu1NChOCJVad65jLL7SyBxIlFBGQbIz1W';
+        const JSONBIN_READ_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`;
+        const JSONBIN_WRITE_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+
+        // State Management (Arrays of objects for multi-link / multi-file per task STT)
+        let customRefLinks = JSON.parse(localStorage.getItem('tuan_custom_ref_links_v3') || '{}');
+        let customProductLinks = JSON.parse(localStorage.getItem('tuan_custom_product_links_v3') || '{}');
+        let savedStatuses = JSON.parse(localStorage.getItem('tuan_publication_task_statuses_v2') || '{}');
+        // Cloud-synced deletion list: "stt_ref" | "stt_prod" — survives reload & cross-device
+        let deletedKeys = new Set(JSON.parse(localStorage.getItem('tuan_deleted_keys_v3') || '[]'));
+
+        let selectedCategory = 'all';
+        let selectedPerson = 'all';
+        let activeModalStt = null;
+        let activeModalType = null;
+        let currentModalItemList = [];
+
+        let chartWorkloadInstance = null;
+        let chartCategoryInstance = null;
+
+        function loadAllLocalData() {
+            let refs = {};
+            let prods = {};
+
+            try { refs = { ...refs, ...JSON.parse(localStorage.getItem('tuan_custom_ref_links_v3') || '{}') }; } catch (e) { }
+            try { prods = { ...prods, ...JSON.parse(localStorage.getItem('tuan_custom_product_links_v3') || '{}') }; } catch (e) { }
+
+            // Recover old single link v1/v2 format (only if key does NOT exist in v3 at all)
+            try {
+                const oldRefs = JSON.parse(localStorage.getItem('tuan_custom_ref_links') || '{}');
+                Object.keys(oldRefs).forEach(stt => {
+                    if (!refs.hasOwnProperty(stt)) {
+                        refs[stt] = [{ title: 'Tài liệu 1', url: oldRefs[stt] }];
+                    }
+                });
+            } catch (e) { }
+
+            try {
+                const oldProds = JSON.parse(localStorage.getItem('tuan_custom_product_links') || '{}');
+                Object.keys(oldProds).forEach(stt => {
+                    if (!prods.hasOwnProperty(stt)) {
+                        prods[stt] = [{ title: 'Thành phẩm 1', url: oldProds[stt] }];
+                    }
+                });
+            } catch (e) { }
+
+            // Recover old uploaded files v1 format (only if key does NOT exist in v3 at all)
+            try {
+                const oldFiles = JSON.parse(localStorage.getItem('tuan_custom_files_v1') || '{}');
+                Object.keys(oldFiles).forEach(key => {
+                    const parts = key.split('_');
+                    if (parts.length >= 2) {
+                        const type = parts[0] + '_' + parts[1];
+                        const stt = parts[2] || parts[1];
+                        const f = oldFiles[key];
+                        const url = f.publicUrl || f.fileData || '';
+                        if (url && stt) {
+                            if (type === 'ref_doc') {
+                                if (!refs.hasOwnProperty(stt)) refs[stt] = [];
+                                if (Array.isArray(refs[stt]) && !refs[stt].some(i => i.url === url)) {
+                                    refs[stt].push({ title: '📁 ' + (f.fileName || 'File'), url: url });
+                                }
+                            } else {
+                                if (!prods.hasOwnProperty(stt)) prods[stt] = [];
+                                if (Array.isArray(prods[stt]) && !prods[stt].some(i => i.url === url)) {
+                                    prods[stt].push({ title: '📁 ' + (f.fileName || 'File'), url: url });
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (e) { }
+
+            return { refs, prods };
+        }
+
+        // Sync State to/from Cloud
+        function applyDeletedKeys() {
+            deletedKeys.forEach(key => {
+                const idx = key.lastIndexOf('_');
+                const stt = key.substring(0, idx);
+                const type = key.substring(idx + 1);
+                if (type === 'ref') customRefLinks[stt] = [];
+                if (type === 'prod') { customProductLinks[stt] = []; savedStatuses[stt] = '□'; }
+            });
+        }
+
+        async function syncGlobalStateFromCloud() {
+            const local = loadAllLocalData();
+            customRefLinks = local.refs;
+            customProductLinks = local.prods;
+            applyDeletedKeys();
+
+            try {
+                const res = await fetch(JSONBIN_READ_URL + '?t=' + Date.now(), {
+                    headers: { 'X-Master-Key': JSONBIN_API_KEY },
+                    cache: 'no-store'
+                });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const json = await res.json();
+                const data = json.record;
+
+                // So sánh updatedAt: nếu cloud không thay đổi so với lần sync trước thì bỏ qua merge
+                const lastSeenAt = localStorage.getItem('tuan_last_cloud_updated_at') || '';
+                const cloudUpdatedAt = data.updatedAt || '';
+                if (cloudUpdatedAt && cloudUpdatedAt === lastSeenAt) {
+                    // Cloud chưa có gì mới — giữ nguyên local, không cần merge
+                    return;
+                }
+
+                // Cloud deletedKeys là nguồn chân lý cho tất cả các máy
+                if (data.deletedKeys && Array.isArray(data.deletedKeys)) {
+                    deletedKeys = new Set(data.deletedKeys);
+                    localStorage.setItem('tuan_deleted_keys_v3', JSON.stringify([...deletedKeys]));
+                }
+
+                if (data.refLinks) {
+                    Object.keys(data.refLinks).forEach(stt => {
+                        if (!Array.isArray(data.refLinks[stt])) return;
+                        if (deletedKeys.has(stt + '_ref')) return;
+                        customRefLinks[stt] = data.refLinks[stt];
+                        if (data.refLinks[stt].length === 0) deletedKeys.add(stt + '_ref');
+                    });
+                }
+                if (data.productLinks) {
+                    Object.keys(data.productLinks).forEach(stt => {
+                        if (!Array.isArray(data.productLinks[stt])) return;
+                        if (deletedKeys.has(stt + '_prod')) return;
+                        customProductLinks[stt] = data.productLinks[stt];
+                        if (data.productLinks[stt].length === 0) deletedKeys.add(stt + '_prod');
+                    });
+                }
+                if (data.statuses) {
+                    savedStatuses = { ...savedStatuses, ...data.statuses };
+                }
+
+                localStorage.setItem('tuan_deleted_keys_v3', JSON.stringify([...deletedKeys]));
+                applyDeletedKeys();
+                localStorage.setItem('tuan_custom_ref_links_v3', JSON.stringify(customRefLinks));
+                localStorage.setItem('tuan_custom_product_links_v3', JSON.stringify(customProductLinks));
+                localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
+
+                // Ghi nhớ updatedAt của cloud lần này để lần sau so sánh
+                if (cloudUpdatedAt) localStorage.setItem('tuan_last_cloud_updated_at', cloudUpdatedAt);
+            } catch (err) {
+                console.warn('JSONBin sync thất bại, dùng dữ liệu local:', err);
+            } finally {
+                renderDashboard();
+            }
+        }
+
+        async function pushGlobalStateToCloud() {
+            const newUpdatedAt = new Date().toISOString();
+            const payload = {
+                refLinks: customRefLinks,
+                productLinks: customProductLinks,
+                statuses: savedStatuses,
+                deletedKeys: [...deletedKeys],
+                updatedAt: newUpdatedAt
+            };
+            const res = await fetch(JSONBIN_WRITE_URL, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': JSONBIN_API_KEY
+                },
+                body: JSON.stringify(payload)
+            });
+            // Cập nhật lastSeenAt ngay sau khi push thành công để lần poll tiếp theo không merge lại chính mình
+            if (res.ok) localStorage.setItem('tuan_last_cloud_updated_at', newUpdatedAt);
+            if (!res.ok) throw new Error('JSONBin PUT thất bại: HTTP ' + res.status);
+        }
+
+        // Authentication Handler
+        function handleAuth(e) {
+            e.preventDefault();
+            const pass = document.getElementById('auth-password').value;
+            if (pass === 'riva' || pass === 'riva2026' || pass === '123' || pass === 'tuan') {
+                localStorage.setItem('tuan_auth_unlocked', 'true');
+                document.getElementById('auth-overlay').style.display = 'none';
+            } else {
+                document.getElementById('auth-error').style.display = 'block';
+            }
+        }
+
+        function checkAuth() {
+            if (localStorage.getItem('tuan_auth_unlocked') === 'true') {
+                document.getElementById('auth-overlay').style.display = 'none';
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const input = document.getElementById('auth-password');
+            const icon = document.getElementById('toggle-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-solid fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-solid fa-eye';
+            }
+        }
+
+        async function resetAllStatusesToPending() {
+            savedStatuses = {};
+            TUAN_PROJECT_DATA.tasks.forEach(t => {
+                savedStatuses[t.stt] = '□';
+            });
+            localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
+            await pushGlobalStateToCloud();
+            renderDashboard();
+        }
+
+        // Utility for HTML escaping
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // IndexedDB Permanent Local File Storage Engine
+        const FileStore = {
+            dbName: 'RivaFileDB',
+            storeName: 'uploaded_files',
+
+            async getDB() {
+                return new Promise((resolve, reject) => {
+                    const req = indexedDB.open(this.dbName, 1);
+                    req.onupgradeneeded = e => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains(this.storeName)) {
+                            db.createObjectStore(this.storeName, { keyPath: 'id' });
+                        }
+                    };
+                    req.onsuccess = e => resolve(e.target.result);
+                    req.onerror = e => reject(e.error);
+                });
+            },
+
+            async saveFile(file) {
+                const id = 'idb_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+                const db = await this.getDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(this.storeName, 'readwrite');
+                    const store = tx.objectStore(this.storeName);
+                    const record = {
+                        id: id,
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: file,
+                        updatedAt: new Date().toISOString()
+                    };
+                    const req = store.put(record);
+                    req.onsuccess = () => resolve(id);
+                    req.onerror = e => reject(e.error);
+                });
+            },
+
+            async getFile(id) {
+                try {
+                    const db = await this.getDB();
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction(this.storeName, 'readonly');
+                        const store = tx.objectStore(this.storeName);
+                        const req = store.get(id);
+                        req.onsuccess = e => resolve(e.target.result);
+                        req.onerror = e => reject(e.error);
+                    });
+                } catch (e) {
+                    return null;
+                }
+            }
+        };
+
+        // Universal Opener & Downloader for Links, Base64 Data URLs, IndexedDB, and Cloud files
+        async function openAttachedFile(event, rawUrl, fileName) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            if (!rawUrl) {
+                alert('⚠️ Đường dẫn tệp không tồn tại hoặc bị trống!');
+                return;
+            }
+
+            const cleanName = (fileName || 'tai-lieu').replace(/^[📁\s]+/, '').trim() || 'tai-lieu';
+
+            // Case 1: IndexedDB Permanent Local Storage -> Direct File Download
+            if (rawUrl.startsWith('idb_') || rawUrl.startsWith('indexeddb:')) {
+                const fileId = rawUrl.replace('indexeddb:', '');
+                const record = await FileStore.getFile(fileId);
+                if (record && record.data) {
+                    const blobUrl = URL.createObjectURL(record.data);
+                    const a = document.createElement('a');
+                    a.href = blobUrl;
+                    a.download = record.name || cleanName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+                } else {
+                    alert('⚠️ Tệp này được lưu cục bộ trên máy của người đã tải lên và không thể chia sẻ với thiết bị khác.\n\n👉 Hãy nhờ người đó tải lại tệp — lần này hệ thống sẽ tự động đẩy lên đám mây để cả team mở được.');
+                }
+                return;
+            }
+
+            // Case 2: Base64 Data URL -> Direct File Download
+            if (rawUrl.startsWith('data:')) {
+                try {
+                    const parts = rawUrl.split(',');
+                    const mimeMatch = parts[0].match(/:(.*?);/);
+                    const mime = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
+                    const bstr = atob(parts[1]);
+                    let n = bstr.length;
+                    const u8arr = new Uint8Array(n);
+                    while (n--) {
+                        u8arr[n] = bstr.charCodeAt(n);
+                    }
+                    const blob = new Blob([u8arr], { type: mime });
+                    const blobUrl = URL.createObjectURL(blob);
+
+                    const a = document.createElement('a');
+                    a.href = blobUrl;
+                    a.download = cleanName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+
+                    setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+                } catch (err) {
+                    alert('⚠️ Lỗi khi tải tệp đính kèm: ' + err.message);
+                }
+                return;
+            }
+
+            // Case 3: Old Expired tmpfiles.org URLs -> Friendly Alert
+            if (rawUrl.includes('tmpfiles.org')) {
+                alert('⚠️ Tệp này thuộc đường link tạm thời cũ (tmpfiles.org) và đã bị máy chủ tự động xóa sau 60 phút.\n\n👉 Vui lòng bấm vào nút (✏️ Quản lý) và chọn lại tệp từ máy tính để lưu trữ vĩnh viễn không bao giờ mất!');
+                return;
+            }
+
+            // Case 4: catbox.moe permanent files -> open in new tab (viewable) + downloadable
+            if (rawUrl.includes('catbox.moe') || rawUrl.includes('files.catbox.moe')) {
+                window.open(rawUrl, '_blank');
+                return;
+            }
+
+            // Case 5: Direct File Link (document/image extension) -> Open in new tab + download
+            if (/\.(pdf|png|jpg|jpeg|gif|webp|docx?|xlsx?|pptx?|zip|rar|csv|mp4|mov|avi)$/i.test(rawUrl)) {
+                window.open(rawUrl, '_blank');
+                return;
+            }
+
+            // Case 6: HTTP/HTTPS Web, Drive, Canva, Figma Links -> Open in new tab
+            try {
+                const win = window.open(rawUrl, '_blank');
+                if (!win) {
+                    window.location.href = rawUrl;
+                }
+            } catch (err) {
+                alert('⚠️ Không thể mở liên kết: ' + err.message);
+            }
+        }
+
+        // Modal Item List Functions
+        function renderModalItemList() {
+            const listEl = document.getElementById('attached-items-list');
+            document.getElementById('attached-count').textContent = currentModalItemList.length;
+            listEl.innerHTML = '';
+
+            if (currentModalItemList.length === 0) {
+                listEl.innerHTML = `<div style="font-size: 12.5px; color: var(--text-muted); text-align: center; padding: 12px;"><i class="fa-solid fa-folder-open"></i> Chưa có tài liệu/thành phẩm nào được đính kèm.</div>`;
+                return;
+            }
+
+            currentModalItemList.forEach((item, idx) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.style.cssText = 'display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.06); padding: 8px 12px; border-radius: 8px; font-size: 12.5px; border: 1px solid var(--border-color);';
+
+                const isUrl = item.url.startsWith('http');
+                const titleText = item.title || ('Món ' + (idx + 1));
+                const urlText = item.url.length > 50 ? item.url.substring(0, 50) + '...' : item.url;
+
+                const isLocal = item.url.startsWith('idb_');
+                const isCatbox = item.url.includes('catbox.moe');
+                const isFileLink = /\.(pdf|png|jpg|jpeg|gif|webp|docx?|xlsx?|pptx?|zip|rar|csv|mp4)$/i.test(item.url);
+                const localBadgeModal = isLocal ? `<span title="Tệp cục bộ — chỉ mở được trên máy này" style="color:#f59e0b;font-size:10px;padding:2px 6px;border:1px solid rgba(245,158,11,0.4);border-radius:4px;background:rgba(245,158,11,0.12);white-space:nowrap;flex-shrink:0;"><i class="fa-solid fa-triangle-exclamation"></i> Cục bộ</span>` : '';
+                itemDiv.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 8px; overflow: hidden; flex: 1;">
+                        <i class="${isLocal ? 'fa-solid fa-hard-drive' : isUrl ? 'fa-solid fa-link' : 'fa-solid fa-file-export'}" style="color: ${isLocal ? '#f59e0b' : '#c084fc'};"></i>
+                        <span style="font-weight: 700; color: #fff; white-space: nowrap;">${escapeHtml(titleText)}:</span>
+                        <a href="#" data-url="${escapeHtml(item.url)}" data-title="${escapeHtml(titleText)}" onclick="openAttachedFile(event, this.dataset.url, this.dataset.title)" style="color: ${isLocal ? '#f59e0b' : '#38bdf8'}; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500;">${escapeHtml(urlText)}</a>
+                        ${localBadgeModal}
+                    </div>
+                    <div style="display:flex;gap:4px;margin-left:8px;">
+                        ${(!isLocal && (isCatbox || isFileLink)) ? `<a href="${escapeHtml(item.url)}" download target="_blank" class="btn-edit-icon" style="color:#10b981;" title="Tải xuống"><i class="fa-solid fa-download"></i></a>` : ''}
+                        <button type="button" class="btn-edit-icon" style="color: #ef4444;" title="Xóa đính kèm này" onclick="removeModalItemAt(${idx})">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+                listEl.appendChild(itemDiv);
+            });
+        }
+
+        function removeModalItemAt(idx) {
+            currentModalItemList.splice(idx, 1);
+            renderModalItemList();
+        }
+
+        function clearAllModalItems() {
+            if (confirm('Bạn có chắc chắn muốn xóa TẤT CẢ đính kèm của ấn phẩm này?')) {
+                currentModalItemList = [];
+                renderModalItemList();
+            }
+        }
+
+        function addLinkToCurrentList() {
+            const titleInput = document.getElementById('modal-link-title-input');
+            const urlInput = document.getElementById('modal-url-input');
+            const url = urlInput.value.trim();
+            let title = titleInput.value.trim();
+
+            if (!url) {
+                alert('Vui lòng nhập đường link URL hợp lệ!');
+                return;
+            }
+
+            if (!title) {
+                title = 'Link ' + (currentModalItemList.length + 1);
+            }
+
+            currentModalItemList.push({ title: title, url: url });
+            titleInput.value = '';
+            urlInput.value = '';
+            renderModalItemList();
+        }
+
+        const CLOUDFLARE_UPLOAD_URL = 'https://riva-upload.dungdh-2540047.workers.dev';
+
+        async function uploadFileToCloud(file) {
+            const formData = new FormData();
+            formData.append('file', file, file.name);
+            const res = await fetch(CLOUDFLARE_UPLOAD_URL, { method: 'POST', body: formData });
+            if (!res.ok) throw new Error('Upload thất bại: HTTP ' + res.status);
+            const url = (await res.text()).trim();
+            if (!url.startsWith('https://')) throw new Error('URL không hợp lệ');
+            return url;
+        }
+
+        async function handleMultiFileSelect(event) {
+            const files = Array.from(event.target.files);
+            if (files.length === 0) return;
+
+            const textEl = document.getElementById('file-chosen-text');
+            textEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#c084fc;"></i> Đang tải lên đám mây ${files.length} tệp...`;
+
+            let successCount = 0;
+            let localCount = 0;
+            for (let file of files) {
+                try {
+                    // Try cloud upload first so all team members can access the file
+                    const cloudUrl = await uploadFileToCloud(file);
+                    currentModalItemList.push({ title: '📁 ' + file.name, url: cloudUrl });
+                    successCount++;
+                } catch (cloudErr) {
+                    // Cloud failed — fall back to IndexedDB but warn the user
+                    console.warn('Cloud upload failed, using local storage:', cloudErr);
+                    try {
+                        const idbKey = await FileStore.saveFile(file);
+                        currentModalItemList.push({ title: '📁 ' + file.name, url: idbKey });
+                        localCount++;
+                    } catch (idbErr) {
+                        textEl.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi lưu tệp: ${idbErr.message}`;
+                        alert('❌ Lỗi lưu tệp: ' + idbErr.message);
+                    }
+                }
+            }
+
+            if (localCount > 0) {
+                textEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i> ${successCount} tệp lên đám mây, ${localCount} tệp lưu cục bộ (chỉ mở được trên máy này!)`;
+            } else {
+                textEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Đã tải ${successCount} tệp lên đám mây — cả team có thể mở!`;
+            }
+            renderModalItemList();
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const dropzone = document.getElementById('file-dropzone');
+            if (dropzone) {
+                dropzone.style.borderColor = '#8b5cf6';
+                dropzone.style.background = 'rgba(139, 92, 246, 0.28)';
+                dropzone.style.transform = 'scale(1.02)';
+            }
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const dropzone = document.getElementById('file-dropzone');
+            if (dropzone) {
+                dropzone.style.borderColor = 'rgba(168, 85, 247, 0.4)';
+                dropzone.style.background = 'rgba(168, 85, 247, 0.08)';
+                dropzone.style.transform = 'scale(1)';
+            }
+        }
+
+        async function handleMultiFileDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            handleDragLeave(e);
+
+            const files = Array.from(e.dataTransfer.files);
+            if (files.length > 0) {
+                const textEl = document.getElementById('file-chosen-text');
+                textEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#c084fc;"></i> Đang tải lên đám mây ${files.length} tệp...`;
+
+                let successCount = 0;
+                let localCount = 0;
+                for (let file of files) {
+                    try {
+                        const cloudUrl = await uploadFileToCloud(file);
+                        currentModalItemList.push({ title: '📁 ' + file.name, url: cloudUrl });
+                        successCount++;
+                    } catch (cloudErr) {
+                        console.warn('Cloud upload failed, using local storage:', cloudErr);
+                        try {
+                            const idbKey = await FileStore.saveFile(file);
+                            currentModalItemList.push({ title: '📁 ' + file.name, url: idbKey });
+                            localCount++;
+                        } catch (idbErr) {
+                            textEl.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Lỗi lưu tệp: ${idbErr.message}`;
+                            alert('❌ Lỗi lưu tệp: ' + idbErr.message);
+                        }
+                    }
+                }
+
+                if (localCount > 0) {
+                    textEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i> ${successCount} tệp lên đám mây, ${localCount} tệp lưu cục bộ (chỉ mở được trên máy này!)`;
+                } else {
+                    textEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Đã tải ${successCount} tệp lên đám mây — cả team có thể mở!`;
+                }
+                renderModalItemList();
+            }
+        }
+
+        // Link & File Modal Handlers
+        function openLinkModal(stt, type) {
+            activeModalStt = stt;
+            activeModalType = type;
+
+            const isRef = type === 'ref_doc';
+            const rawVal = isRef ? customRefLinks[stt] : customProductLinks[stt];
+
+            if (Array.isArray(rawVal)) {
+                currentModalItemList = JSON.parse(JSON.stringify(rawVal));
+            } else if (typeof rawVal === 'string' && rawVal) {
+                currentModalItemList = [{ title: 'Tài liệu 1', url: rawVal }];
+            } else {
+                currentModalItemList = [];
+            }
+
+            renderModalItemList();
+
+            document.getElementById('modal-title').innerHTML = `<i class="${isRef ? 'fa-solid fa-folder-open' : 'fa-solid fa-cloud-arrow-up'}"></i> ${isRef ? '🔗 Quản Lý Tài Liệu Tham Khảo' : '📦 Quản Lý Thành Phẩm (Đầu Ra)'}`;
+            document.getElementById('modal-link-title-input').value = '';
+            document.getElementById('modal-url-input').value = '';
+            document.getElementById('modal-file-input').value = '';
+            document.getElementById('file-chosen-text').textContent = 'Kéo & thả một hoặc nhiều tệp vào đây (hoặc bấm để chọn)';
+
+            document.getElementById('link-modal-overlay').style.display = 'flex';
+        }
+
+        function closeLinkModal() {
+            document.getElementById('link-modal-overlay').style.display = 'none';
+            activeModalStt = null;
+            activeModalType = null;
+            currentModalItemList = [];
+        }
+
+        async function saveLinkModal() {
+            if (!activeModalStt || !activeModalType) return;
+
+            const saveBtn = document.getElementById('modal-save-btn');
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Đang đồng bộ cả Team...`;
+            }
+
+            try {
+                const dKey = activeModalStt + '_' + (activeModalType === 'ref_doc' ? 'ref' : 'prod');
+                if (activeModalType === 'ref_doc') {
+                    customRefLinks[activeModalStt] = currentModalItemList;
+                } else {
+                    customProductLinks[activeModalStt] = currentModalItemList;
+                    if (currentModalItemList.length > 0) {
+                        savedStatuses[activeModalStt] = '☑';
+                    } else {
+                        savedStatuses[activeModalStt] = '□';
+                    }
+                }
+
+                // Update deleted-keys list and persist to localStorage
+                if (currentModalItemList.length === 0) {
+                    deletedKeys.add(dKey);
+                } else {
+                    deletedKeys.delete(dKey);
+                }
+                localStorage.setItem('tuan_deleted_keys_v3', JSON.stringify([...deletedKeys]));
+                localStorage.setItem('tuan_custom_ref_links_v3', JSON.stringify(customRefLinks));
+                localStorage.setItem('tuan_custom_product_links_v3', JSON.stringify(customProductLinks));
+                localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
+
+                // Đồng bộ lên JSONBin cloud
+                try {
+                    await pushGlobalStateToCloud();
+                } catch (cloudErr) {
+                    console.warn('Cloud push thất bại (dữ liệu đã lưu local):', cloudErr);
+                }
+
+            } catch (err) {
+                console.error('Lỗi lưu:', err);
+            } finally {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = `Lưu Đính Kèm`;
+                }
+                closeLinkModal();
+                renderDashboard();
+            }
+        }
+
+        // Initialize UI
+        async function initUI() {
+            checkAuth();
+            renderCategoryTabs();
+            renderPersonnelPills();
+            await syncGlobalStateFromCloud();
+            renderDashboard();
+            // Auto-sync every 5 seconds so everyone sees updates quickly
+            setInterval(async () => {
+                await syncGlobalStateFromCloud();
+            }, 5000);
+        }
+
+        function renderCategoryTabs() {
+            const container = document.getElementById('category-tabs');
+            container.innerHTML = '';
+            if (typeof TUAN_PROJECT_DATA === 'undefined' || !TUAN_PROJECT_DATA || !TUAN_PROJECT_DATA.categories) return;
+
+            TUAN_PROJECT_DATA.categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = `cat-btn ${selectedCategory === cat.code ? 'active' : ''}`;
+                btn.innerHTML = `<i class="fa-solid fa-folder-open"></i> ${cat.name}`;
+                btn.addEventListener('click', () => {
+                    selectedCategory = cat.code;
+                    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderDashboard();
+                });
+                container.appendChild(btn);
+            });
+        }
+
+        function renderPersonnelPills() {
+            const container = document.getElementById('personnel-pills');
+            container.innerHTML = '<span class="pill-label"><i class="fa-solid fa-filter"></i> Lọc nhân sự:</span>';
+            if (typeof TUAN_PROJECT_DATA === 'undefined' || !TUAN_PROJECT_DATA || !TUAN_PROJECT_DATA.tasks) return;
+
+            const personSet = new Set(['Dũng', 'Ánh', 'Phương', 'Lộc', 'Vân Anh', 'Nam', 'Chi', 'Nhi']);
+            TUAN_PROJECT_DATA.tasks.forEach(t => {
+                [t.director, t.executor].forEach(str => {
+                    if (str) {
+                        str.split(',').forEach(p => {
+                            p = p.trim();
+                            if (p) personSet.add(p);
+                        });
+                    }
+                });
+            });
+            const allPersons = Array.from(personSet);
+
+            // "Tất cả" Pill
+            const allPill = document.createElement('button');
+            allPill.className = `pill ${selectedPerson === 'all' ? 'active' : ''}`;
+            allPill.innerHTML = `Tất cả <span class="count-badge">${TUAN_PROJECT_DATA.tasks.length}</span>`;
+            allPill.addEventListener('click', () => {
+                selectedPerson = 'all';
+                updatePillStates();
+                renderDashboard();
+            });
+            container.appendChild(allPill);
+
+            allPersons.forEach(person => {
+                const taskCount = TUAN_PROJECT_DATA.tasks.filter(t =>
+                    t.director.includes(person) || t.executor.includes(person)
+                ).length;
+
+                const pill = document.createElement('button');
+                pill.className = `pill ${selectedPerson === person ? 'active' : ''}`;
+                pill.dataset.person = person;
+                pill.innerHTML = `${person} <span class="count-badge">${taskCount}</span>`;
+                pill.addEventListener('click', () => {
+                    selectedPerson = selectedPerson === person ? 'all' : person;
+                    updatePillStates();
+                    renderDashboard();
+                });
+                container.appendChild(pill);
+            });
+        }
+
+        function updatePillStates() {
+            document.querySelectorAll('.pill').forEach(p => {
+                if (p.dataset.person) {
+                    p.classList.toggle('active', p.dataset.person === selectedPerson);
+                } else {
+                    p.classList.toggle('active', selectedPerson === 'all');
+                }
+            });
+        }
+
+        function getFilteredTasks() {
+            if (typeof TUAN_PROJECT_DATA === 'undefined' || !TUAN_PROJECT_DATA || !TUAN_PROJECT_DATA.tasks) return [];
+            let tasks = [...TUAN_PROJECT_DATA.tasks];
+
+            if (selectedCategory !== 'all') {
+                tasks = tasks.filter(t => t.category_code === selectedCategory);
+            }
+
+            if (selectedPerson !== 'all') {
+                tasks = tasks.filter(t => t.director.includes(selectedPerson) || t.executor.includes(selectedPerson));
+            }
+
+            const statusVal = document.getElementById('status-filter').value;
+            if (statusVal !== 'all') {
+                tasks = tasks.filter(t => {
+                    const saved = savedStatuses[t.stt] || t.status;
+                    return statusVal === 'done' ? saved === '☑' : saved !== '☑';
+                });
+            }
+
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            if (query) {
+                tasks = tasks.filter(t => {
+                    const customRef = JSON.stringify(customRefLinks[t.stt] || t.ref_doc);
+                    const customProd = JSON.stringify(customProductLinks[t.stt] || t.product);
+                    return t.task_name.toLowerCase().includes(query) ||
+                        t.brief.toLowerCase().includes(query) ||
+                        customRef.toLowerCase().includes(query) ||
+                        customProd.toLowerCase().includes(query) ||
+                        t.director.toLowerCase().includes(query) ||
+                        t.executor.toLowerCase().includes(query);
+                });
+            }
+
+            // Sort: Uncompleted tasks first, then ascending by deadline date
+            tasks.sort((a, b) => {
+                const statusA = savedStatuses[a.stt] || a.status;
+                const statusB = savedStatuses[b.stt] || b.status;
+                const isDoneA = statusA === '☑';
+                const isDoneB = statusB === '☑';
+
+                if (isDoneA !== isDoneB) return isDoneA ? 1 : -1;
+
+                const dateA = a.deadline || '9999-12-31';
+                const dateB = b.deadline || '9999-12-31';
+                if (dateA !== dateB) return dateA.localeCompare(dateB);
+
+                return a.stt - b.stt;
+            });
+
+            return tasks;
+        }
+
+        function renderDashboard() {
+            const tasks = getFilteredTasks();
+            const tbody = document.getElementById('task-table-body');
+            tbody.innerHTML = '';
+
+            let doneCount = 0;
+
+            TUAN_PROJECT_DATA.tasks.forEach(t => {
+                const currentStatus = savedStatuses[t.stt] || t.status;
+                if (currentStatus === '☑') doneCount++;
+            });
+
+            const totalTasks = TUAN_PROJECT_DATA.tasks.length;
+            const pendingCount = totalTasks - doneCount;
+            const rate = totalTasks > 0 ? Math.round((doneCount / totalTasks) * 100) : 0;
+
+            document.getElementById('kpi-total').textContent = totalTasks;
+            document.getElementById('kpi-done').textContent = doneCount;
+            document.getElementById('kpi-pending').textContent = pendingCount;
+            document.getElementById('kpi-rate').textContent = `${rate}%`;
+            document.getElementById('kpi-progress-bar').style.width = `${rate}%`;
+
+            if (tasks.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                            <i class="fa-solid fa-folder-open" style="font-size: 32px; margin-bottom: 10px;"></i>
+                            <p>Không tìm thấy ấn phẩm nào phù hợp với bộ lọc!</p>
+                        </td>
+                    </tr>
+                `;
+                renderCharts(tasks);
+                return;
+            }
+
+            tasks.forEach(t => {
+                const tr = document.createElement('tr');
+                const currentStatus = savedStatuses[t.stt] || t.status;
+                const isDone = currentStatus === '☑';
+
+                // Format Multi-Ref Doc Column
+                const refVal = customRefLinks[t.stt];
+                let refDocHTML = '';
+
+                if (Array.isArray(refVal) && refVal.length > 0) {
+                    const linksHTML = refVal.map((item, idx) => {
+                        const titleText = item.title || ('Tài liệu ' + (idx + 1));
+                        const isLocal = item.url.startsWith('idb_');
+                        const isDownloadable = !isLocal && (item.url.includes('catbox.moe') || /\.(pdf|png|jpg|jpeg|gif|webp|docx?|xlsx?|pptx?|zip|rar|csv|mp4)$/i.test(item.url));
+                        const localBadge = isLocal ? `<span title="Tệp này chỉ mở được trên máy người đã tải lên. Nhờ họ tải lại để cả team xem được." style="cursor:help;color:#f59e0b;font-size:10px;padding:2px 6px;border:1px solid rgba(245,158,11,0.4);border-radius:4px;background:rgba(245,158,11,0.12);white-space:nowrap;"><i class="fa-solid fa-triangle-exclamation"></i> Cục bộ</span>` : '';
+                        return `
+                            <span style="display:inline-flex;align-items:center;gap:3px;">
+                                <a href="#" data-url="${escapeHtml(item.url)}" data-title="${escapeHtml(titleText)}" onclick="openAttachedFile(event, this.dataset.url, this.dataset.title)" class="doc-link" title="${escapeHtml(titleText)}">
+                                    <i class="fa-solid fa-paperclip"></i> ${escapeHtml(titleText)}
+                                </a>${localBadge}${isDownloadable ? `<a href="${escapeHtml(item.url)}" download target="_blank" title="Tải xuống" style="color:#10b981;font-size:11px;padding:2px 5px;border:1px solid rgba(16,185,129,0.4);border-radius:4px;background:rgba(16,185,129,0.1);"><i class="fa-solid fa-download"></i></a>` : ''}
+                            </span>
+                        `;
+                    }).join('');
+                    refDocHTML = `
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px;">${linksHTML}</div>
+                            <button class="btn-attach" onclick="openLinkModal(${t.stt}, 'ref_doc')"><i class="fa-solid fa-pen"></i> Quản lý (${refVal.length})</button>
+                        </div>
+                    `;
+                } else if (typeof refVal === 'string' && refVal) {
+                    refDocHTML = `
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <a href="#" data-url="${escapeHtml(refVal)}" data-title="Tài liệu" onclick="openAttachedFile(event, this.dataset.url, this.dataset.title)" class="doc-link"><i class="fa-solid fa-link"></i> Mở Link</a>
+                            <button class="btn-edit-icon" onclick="openLinkModal(${t.stt}, 'ref_doc')"><i class="fa-solid fa-pen"></i></button>
+                        </div>
+                    `;
+                } else if (t.ref_doc) {
+                    refDocHTML = `
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="font-size: 12px; color: var(--text-sub);">${escapeHtml(t.ref_doc)}</span>
+                            <button class="btn-attach" onclick="openLinkModal(${t.stt}, 'ref_doc')"><i class="fa-solid fa-paperclip"></i> Thêm tệp/URL</button>
+                        </div>
+                    `;
+                } else {
+                    refDocHTML = `<button class="btn-attach" onclick="openLinkModal(${t.stt}, 'ref_doc')"><i class="fa-solid fa-plus"></i> Gắn tệp/link</button>`;
+                }
+
+                // Format Multi-Product Deliverable Column
+                const prodVal = customProductLinks[t.stt];
+                let productHTML = '';
+
+                if (Array.isArray(prodVal) && prodVal.length > 0) {
+                    const linksHTML = prodVal.map((item, idx) => {
+                        const titleText = item.title || ('Thành phẩm ' + (idx + 1));
+                        const isLocal = item.url.startsWith('idb_');
+                        const isDownloadable = !isLocal && (item.url.includes('catbox.moe') || /\.(pdf|png|jpg|jpeg|gif|webp|docx?|xlsx?|pptx?|zip|rar|csv|mp4)$/i.test(item.url));
+                        const localBadge = isLocal ? `<span title="Tệp này chỉ mở được trên máy người đã tải lên. Nhờ họ tải lại để cả team xem được." style="cursor:help;color:#f59e0b;font-size:10px;padding:2px 6px;border:1px solid rgba(245,158,11,0.4);border-radius:4px;background:rgba(245,158,11,0.12);white-space:nowrap;"><i class="fa-solid fa-triangle-exclamation"></i> Cục bộ</span>` : '';
+                        return `
+                            <span style="display:inline-flex;align-items:center;gap:3px;">
+                                <a href="#" data-url="${escapeHtml(item.url)}" data-title="${escapeHtml(titleText)}" onclick="openAttachedFile(event, this.dataset.url, this.dataset.title)" class="doc-link" style="color: #a855f7; border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.15);" title="${escapeHtml(titleText)}">
+                                    <i class="fa-solid fa-box-open"></i> ${escapeHtml(titleText)}
+                                </a>${localBadge}${isDownloadable ? `<a href="${escapeHtml(item.url)}" download target="_blank" title="Tải xuống" style="color:#10b981;font-size:11px;padding:2px 5px;border:1px solid rgba(16,185,129,0.4);border-radius:4px;background:rgba(16,185,129,0.1);"><i class="fa-solid fa-download"></i></a>` : ''}
+                            </span>
+                        `;
+                    }).join('');
+                    productHTML = `
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px;">${linksHTML}</div>
+                            <button class="btn-attach" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.3);" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-pen"></i> Quản lý (${prodVal.length})</button>
+                        </div>
+                    `;
+                } else if (typeof prodVal === 'string' && prodVal) {
+                    productHTML = `
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <a href="#" data-url="${escapeHtml(prodVal)}" data-title="Thành phẩm" onclick="openAttachedFile(event, this.dataset.url, this.dataset.title)" class="doc-link" style="color: #a855f7; border-color: rgba(168, 85, 247, 0.3); background: rgba(168, 85, 247, 0.15);"><i class="fa-solid fa-box-open"></i> Xem Thành Phẩm</a>
+                            <button class="btn-edit-icon" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-pen"></i></button>
+                        </div>
+                    `;
+                } else if (t.product) {
+                    productHTML = `
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="product-badge"><i class="fa-solid fa-file-export"></i> ${escapeHtml(t.product)}</span>
+                            <button class="btn-attach" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.3);" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-cloud-arrow-up"></i> Thêm tệp thành phẩm</button>
+                        </div>
+                    `;
+                } else {
+                    productHTML = `<button class="btn-attach" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.3);" onclick="openLinkModal(${t.stt}, 'product')"><i class="fa-solid fa-cloud-arrow-up"></i> Gắn tệp/link sản phẩm</button>`;
+                }
+
+                const isUrgent = !isDone && (t.deadline <= '2026-08-10');
+                const deadlineHTML = isDone
+                    ? `<span style="font-size: 12.5px; color: var(--success); font-weight: 600;"><i class="fa-solid fa-check"></i> ${t.deadline}</span>`
+                    : (isUrgent
+                        ? `<span style="font-size: 12.5px; color: #ef4444; font-weight: 800;"><i class="fa-regular fa-calendar" style="color: #ef4444;"></i> ${t.deadline}</span>`
+                        : `<span style="font-size: 12.5px; color: var(--text-sub); font-weight: 600;"><i class="fa-regular fa-calendar"></i> ${t.deadline}</span>`);
+
+                tr.innerHTML = `
+                    <td data-label="STT" style="font-weight:700;color:var(--primary);text-align:center;">${t.stt}</td>
+                    <td data-label="Ấn phẩm">
+                        <div style="font-weight:700;color:#fff;margin-bottom:4px;">${t.task_name}</div>
+                        <span class="badge badge-cat">${t.category}</span>
+                    </td>
+                    <td data-label="Mô tả" style="font-size:12.5px;line-height:1.5;color:var(--text-sub);">${t.brief || 'Theo yêu cầu'}</td>
+                    <td data-label="Tài liệu tham khảo">${refDocHTML}</td>
+                    <td data-label="Thành phẩm đầu ra">${productHTML}</td>
+                    <td data-label="Phụ trách"><span class="badge badge-dir"><i class="fa-solid fa-user-gear"></i> ${t.director}</span></td>
+                    <td data-label="Thực hiện"><span class="badge badge-exec"><i class="fa-solid fa-user-pen"></i> ${t.executor}</span></td>
+                    <td data-label="Deadline">${deadlineHTML}</td>
+                    <td data-label="Trạng thái">
+                        <span class="badge status-badge ${isDone ? 'status-done' : 'status-pending'}" data-stt="${t.stt}">
+                            ${isDone ? '<i class="fa-solid fa-check-double"></i> Đã xong' : '<i class="fa-solid fa-hourglass-half"></i> Chưa xong'}
+                        </span>
+                    </td>
+                `;
+
+                // Interactive 2-state status toggle
+                const badge = tr.querySelector('.status-badge');
+                badge.addEventListener('click', async () => {
+                    const newStatus = isDone ? '□' : '☑';
+                    savedStatuses[t.stt] = newStatus;
+                    localStorage.setItem('tuan_publication_task_statuses_v2', JSON.stringify(savedStatuses));
+                    await pushGlobalStateToCloud();
+                    renderDashboard();
+                });
+
+                tbody.appendChild(tr);
+            });
+
+            renderCharts(tasks);
+        }
+
+        function renderCharts(tasks) {
+            const staffCounts = {};
+            tasks.forEach(t => {
+                [t.director, t.executor].forEach(roleStr => {
+                    if (roleStr) {
+                        roleStr.split(',').forEach(p => {
+                            p = p.trim();
+                            if (p) staffCounts[p] = (staffCounts[p] || 0) + 1;
+                        });
+                    }
+                });
+            });
+
+            const labels = Object.keys(staffCounts);
+            const dataCounts = labels.map(name => staffCounts[name]);
+
+            const ctxWorkload = document.getElementById('chart-workload').getContext('2d');
+            if (chartWorkloadInstance) chartWorkloadInstance.destroy();
+
+            chartWorkloadInstance = new Chart(ctxWorkload, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Số lượng ấn phẩm tham gia',
+                        data: dataCounts,
+                        backgroundColor: 'rgba(139, 92, 246, 0.75)',
+                        borderColor: '#8b5cf6',
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#94a3b8' } } },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+
+            const catStats = {};
+            TUAN_PROJECT_DATA.categories.filter(c => c.code !== 'all').forEach(c => {
+                catStats[c.name] = { total: 0, done: 0 };
+            });
+
+            TUAN_PROJECT_DATA.tasks.forEach(t => {
+                const catObj = TUAN_PROJECT_DATA.categories.find(c => c.code === t.category_code);
+                const catName = catObj ? catObj.name : t.category;
+                if (!catStats[catName]) catStats[catName] = { total: 0, done: 0 };
+                catStats[catName].total++;
+                if ((savedStatuses[t.stt] || t.status) === '☑') catStats[catName].done++;
+            });
+
+            const catLabels = Object.keys(catStats);
+            const doneData = catLabels.map(k => catStats[k].done);
+            const pendingData = catLabels.map(k => catStats[k].total - catStats[k].done);
+
+            const ctxCategory = document.getElementById('chart-categories').getContext('2d');
+            if (chartCategoryInstance) chartCategoryInstance.destroy();
+
+            chartCategoryInstance = new Chart(ctxCategory, {
+                type: 'bar',
+                data: {
+                    labels: catLabels.map(l => l.split('. ')[1] || l),
+                    datasets: [
+                        { label: 'Đã hoàn thành', data: doneData, backgroundColor: 'rgba(16, 185, 129, 0.75)' },
+                        { label: 'Chưa xong', data: pendingData, backgroundColor: 'rgba(245, 158, 11, 0.75)' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#94a3b8' } } },
+                    scales: {
+                        x: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+        }
+
+        function resetFilters() {
+            selectedCategory = 'all';
+            selectedPerson = 'all';
+            document.getElementById('search-input').value = '';
+            document.getElementById('status-filter').value = 'all';
+            renderCategoryTabs();
+            updatePillStates();
+            renderDashboard();
+        }
+
+        function clearLocalCacheAndReload() {
+            if (confirm('Bạn có chắc chắn muốn xóa bộ nhớ tạm cũ trên máy để đồng bộ lại dữ liệu mới nhất từ Đám mây?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        function logoutUser() {
+            if (confirm('Bạn có chắc chắn muốn đăng xuất khỏi hệ thống?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        function exportToExcel() {
+            const tasks = getFilteredTasks();
+            if (tasks.length === 0) {
+                alert('Không có dữ liệu để xuất file Excel!');
+                return;
+            }
+
+            if (typeof XLSX === 'undefined') {
+                alert('⚠️ Đang tải thư viện Excel, vui lòng thử lại sau 2 giây!');
+                return;
+            }
+
+            const excelData = tasks.map(t => {
+                const isDone = (savedStatuses[t.stt] || t.status) === '☑';
+                const refVal = customRefLinks[t.stt] || t.ref_doc;
+                const prodVal = customProductLinks[t.stt] || t.product;
+                const refText = Array.isArray(refVal) ? refVal.map(i => (i.title || 'Link') + ': ' + i.url).join('\n') : (refVal || '');
+                const prodText = Array.isArray(prodVal) ? prodVal.map(i => (i.title || 'Link') + ': ' + i.url).join('\n') : (prodVal || '');
+
+                return {
+                    "STT": t.stt,
+                    "Hạng Mục Ấn Phẩm": t.task_name,
+                    "Nhóm Ấn Phẩm": t.category,
+                    "Brief / Nội Dung": t.brief || '',
+                    "Tài Liệu Tham Khảo": refText,
+                    "Thành Phẩm (Đầu Ra)": prodText,
+                    "Phụ Trách (PIC)": t.director || '',
+                    "Người Thực Hiện": t.executor || '',
+                    "Deadline": t.deadline || '',
+                    "Trạng Thái": isDone ? 'Đã xong' : 'Chưa xong'
+                };
+            });
+
+            const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+            // Auto-adjust column widths
+            worksheet['!cols'] = [
+                { wch: 6 },  // STT
+                { wch: 32 }, // Hạng Mục
+                { wch: 25 }, // Nhóm
+                { wch: 40 }, // Brief
+                { wch: 40 }, // Tài liệu
+                { wch: 40 }, // Thành phẩm
+                { wch: 15 }, // Phụ trách
+                { wch: 15 }, // Thực hiện
+                { wch: 12 }, // Deadline
+                { wch: 15 }  // Trạng thái
+            ];
+
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Checklist Ấn Phẩm");
+
+            const todayStr = new Date().toISOString().slice(0, 10);
+            XLSX.writeFile(workbook, `Checklist_An_Pham_RIVA_${todayStr}.xlsx`);
+        }
+
+        // Run on Page Load
+        window.addEventListener('DOMContentLoaded', initUI);
+    </script>
+</body>
+
+</html>

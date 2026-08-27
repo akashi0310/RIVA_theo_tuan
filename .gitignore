@@ -1,0 +1,24 @@
+# Ignore Excel files
+*.xlsx
+*.xls
+*.csv
+
+# Ignore OS & Temporary files
+.DS_Store
+Thumbs.db
+
+# Ignore large document folders
+Tài liệu cung cấp/
+uploads/
+*.pdf
+*.docx
+*.doc
+*.pptx
+*.ppt
+*.zip
+*.rar
+*.synctex.gz
+*.aux
+*.log
+*.out
+*.tex
